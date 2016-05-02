@@ -1,0 +1,102 @@
+<div class="row">
+    <!--=== Feeds (with Tabs) ===-->
+    <div class="col-md-12">
+        <div class="widget">
+            <div class="widget-header">
+                <h4><i class="icon-reorder"></i> Clientes</h4>
+                <div class="toolbar no-padding">
+                    <div class="btn-group">
+                        <!--<a href="#/ventas/pedido_nuevo" class="btn btn-xs"><i class="icon-plus"></i></a>-->
+                        <span class="btn btn-xs widget-refresh" ><i class="icon-refresh" ng-click = "ConsultarDatos(menu)"></i></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="widget-content" ng-controller="TercerosController">
+
+            <div class="tabbable tabbable-custom">
+                    <ul class="nav nav-tabs tabs">
+                        <li data-tab="tab_1" class="active"><a data-tab="tab_1" data-toggle="tab">Lista de terceros</a></li>
+                        <li data-tab="tab_2"><a data-tab="tab_2" data-toggle="tab">2. Detalle</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab_1">
+                            <div class="col-md-12">
+                                
+                                <label for="rowid_tercero" class="control-label">Tercero  <span class="required">*</span></label>
+                                        <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control"></input>
+                                <ul class="feeds clearfix" >
+                        
+                                <!--<li ng-repeat="menu in terceros  |filter:Search">
+                                    <a  ng-click = "ConsultarDatos(menu)">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                        {{menu.razonsocial}} - {{menu.identificacion}}
+                                    </a>
+                                    
+                                </li>
+            
+                                </ul> <!-- /.feeds -->
+
+                                
+                                <table class="table table-hover table-striped" >
+                                            <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Nit</th>
+                                                <th>Razon social</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="menu in terceros  |filter:Search">
+                                                <td>
+                                                    <a  ng-click = "ConsultarDatos(menu)">
+                                                    <i class="glyphicon glyphicon-search"></i>
+                                                     </a>
+                                                </td>
+                                                <td>{{menu.identificacion}}</td>
+                                                <td>{{menu.razonsocial}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab_2">
+                            <div class="col-md-12">
+                                
+                                <form class="form-vertical row-border">
+                                
+                                    <div class="form-group">
+                                        <label class="control-label">Razon Social:</label>              
+                                        <input class="form-control" type="text" ng-model="terceroSeleccionado.razonsocial"  />
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label">Nombre Comercial:</label>              
+                                        <input class="form-control" type="text" ng-model="terceroSeleccionado.razonsocial" />
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label">Tipo Documento:</label>                
+                                        <input class="form-control" type="text" ng-model="terceroSeleccionado.tipo_identificacion"/>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label">Identificacion:</label>                
+                                        <input class="form-control" type="text" ng-model="terceroSeleccionado.identificacion"  />
+                                    </div>
+                                </form>
+                                
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-primary pull-right" type="submit" ng-click="CambiarTab('2','atras')" >Atras</button>
+                            </div>
+                        </div>
+                    </div>
+    </div>
+
+            </div> <!-- /.widget-content -->
+        </div> <!-- /.widget .box -->
+    </div> <!-- /.col-md-6 -->
+    <!-- /Feeds (with Tabs) -->
+</div> <!-- /.row -->
