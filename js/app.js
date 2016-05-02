@@ -36,26 +36,10 @@ app_angular.config(['$routeProvider',//'$locationProvider',
 ]);
 
 //CONTROLADOR DE GENERAL
-
-app_angular.controller('appController',['Conexion','$scope','$location','$http', '$routeParams', 'Factory' ,function (Conexion, $scope, $location, $http, $routeParams, Factory) {
-	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
-    if (window.localStorage.getItem("CUR_USER") == null || window.localStorage.getItem("CUR_USER")==undefined) {
-        location.href='login.html';
-        return;
-    }
-    
-    if ($routeParams.url == undefined) {
-   
-    }
-    else {
-        console.log($routeParams);
-        $scope.templateUrl = 'view/' + $routeParams.modulo + '/' + $routeParams.url + '.html';
-    }
-
-	$scope.tabla1=[];
-    
-
+app_angular.controller('sessionController',['Conexion','$scope','$location','$http', '$routeParams', 'Factory' ,function (Conexion, $scope, $location, $http, $routeParams, Factory) {
+    $scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
     $scope.sincronizar=function(){
+        console.log('sincronizo')
         for(var i=0; i < STEP_SINCRONIZACION.length; i++)
         {
             DATOS_ENTIDADES_SINCRONIZACION[i]=localStorage.getItem(STEP_SINCRONIZACION[i].toString());
@@ -95,6 +79,28 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
             }
         }
     }
+}]);
+
+
+app_angular.controller('appController',['Conexion','$scope','$location','$http', '$routeParams', 'Factory' ,function (Conexion, $scope, $location, $http, $routeParams, Factory) {
+	
+    if (window.localStorage.getItem("CUR_USER") == null || window.localStorage.getItem("CUR_USER")==undefined) {
+        location.href='login.html';
+        return;
+    }
+    
+    if ($routeParams.url == undefined) {
+   
+    }
+    else {
+        console.log($routeParams);
+        $scope.templateUrl = 'view/' + $routeParams.modulo + '/' + $routeParams.url + '.html';
+    }
+
+	$scope.tabla1=[];
+    
+
+    
     
 	
 }]);
