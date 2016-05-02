@@ -78,7 +78,9 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 
             }
         }
+        Mensajes('Sincronizado Con Exito','success','')
     }
+
 }]);
 
 
