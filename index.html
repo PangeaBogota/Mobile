@@ -38,7 +38,8 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/ion.rangeSlider.css" />
     <link rel="stylesheet" href="css/ion.rangeSlider.skinFlat.css" />
-
+    <link href="css/calendar/fullcalendar.css" rel="stylesheet">
+    <link href="css/calendar/fullcalendar.print.css" rel="stylesheet" media="print">
     <!-- switchery -->
     <link rel="stylesheet" href="css/switchery/switchery.min.css" />
 
@@ -58,9 +59,6 @@
     <script type="text/javascript" src="cssjs/datepicker/daterangepicker.js"></script>
     
    
-    <!-- daterangepicker -->
-    <script type="text/javascript" src="cssjs/moment.min2.js"></script>
-    <script type="text/javascript" src="cssjs/datepicker/daterangepicker.js"></script>
     <!-- sparkline -->
     <script src="cssjs/sparkline/jquery.sparkline.min.js"></script>
 
@@ -108,11 +106,17 @@
     <script type="text/javascript" src="cssjs/noty/layouts/bottomCenter.js"></script>
     <script type="text/javascript" src="cssjs/noty/layouts/bottom.js"></script>
     <script type="text/javascript" src="cssjs/noty/themes/default.js"></script>
-
+    <script src="cssjs/nprogress.js"></script>
+    <!-- icheck -->
+    <script src="cssjs/icheck/icheck.min.js"></script>
+    
+    <script src="cssjs/moment.min.js"></script>
+    <script src="cssjs/calendar/fullcalendar.min.js"></script>
 	<!-- PEDIDOS ONLINE  ANGULARJS -->
     <script type="text/javascript" src="js/constantes.js"></script>
 
     <script type="text/javascript" src="libs/angular.min.js"></script>
+    <script src="libs/calendar.js"></script>
     <script type="text/javascript" src="libs/angular-resource.min.js"></script>
     <script type="text/javascript" src="libs/angular-route.min.js"></script>
     <script type="text/javascript" src="libs/angular-websql.min.js"></script>
@@ -127,7 +131,7 @@
     <script type="text/javascript" src="model/crud.js"></script>
     <!-- Controladores JS -->
     <script type="text/javascript" src="controller/erp_tercerosController.js"></script>
-
+    <script type="text/javascript" src="controller/crm_actividades.js"></script>
     <script type="text/javascript" src="controller/ventasController.js"></script>
     <script type="text/javascript" src="controller/t_pedidosController.js"></script>
     <script type="text/javascript" src="controller/t_pedidos_detalleController.js"></script>
@@ -254,7 +258,7 @@
                         <div class="menu_section">
                             
                             <ul class="nav side-menu right hide-on-med-and-down  ">
-                                <li ><a  href="#/"><i class="fa fa-home "></i> Home <span class="fa fa-chevron-down"></span></a>
+                                <li ><a  href="index.html#/"><i class="fa fa-home "></i> Home <span class="fa fa-chevron-down"></span></a>
                                     
                                 </li>
                                 <li ><a><i class="fa fa-shopping-cart"></i> Pedidos <span class="fa fa-chevron-down"></span></a>
@@ -265,6 +269,9 @@
                                         </li>
                                        
                                     </ul>
+                                </li>
+                                <li ><a href="#/crm/calendario"><i class="fa fa-calendar"></i> Actividades <span class="fa fa-chevron-down"></span></a>
+                                    
                                 </li>
                                 <li ><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu" style="display: none">
@@ -452,7 +459,7 @@
                 
 
                 <!-- footer content -->
-                <footer >
+                <footer style="margin: 0px">
                     <div class="">
                         <p class="pull-right">Powered By Pangea Group 
                             <span class="lead"> <i class="fa fa-home"></i> http://pedidosonline.co/</span>

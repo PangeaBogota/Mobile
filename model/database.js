@@ -3,7 +3,69 @@ app_angular = angular.module('PedidosOnline')
 app_angular.service('Factory', function ($webSql) {
 
     db = $webSql.openDatabase(DATABASE, '1.0', 'Test DB', 200000);
+    db.createTable('crm_actividades',{
+        "rowid": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "tipo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tema": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_prioridad": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "descripcion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tipo_relacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_estado": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "relacionado_a": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_inicial": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_final": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuario_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuario_modificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_modificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_relacion": {
+            "type": "INTEGER",
+            "null": "NULL"
+        }
 
+    })
     db.createTable('erp_items', {
         //1
         "rowid": {

@@ -1,7 +1,7 @@
 /**
  * Created by dev10 on 12/23/2015.
  */
-var app_angular = angular.module('PedidosOnline', ['angular-websql', 'ngResource', 'ngRoute']);
+var app_angular = angular.module('PedidosOnline', ['ui.calendar','angular-websql', 'ngResource', 'ngRoute']);
 
 app_angular.config(['$routeProvider',//'$locationProvider',
     function ($routeProvider) {
@@ -74,6 +74,9 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_ITEMS_PRECIOS) {
                     CRUD.insert('erp_items_precios',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                }
+                else if (STEP_SINCRONIZACION[i] == ENTIDAD_ACTIVIDADES) {
+                    CRUD.insert('crm_actividades',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
                 }
                 
             }
