@@ -78,6 +78,13 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_ACTIVIDADES) {
                     CRUD.insert('crm_actividades',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
                 }
+                else if (STEP_SINCRONIZACION[i] == ENTIDAD_METACLASS) {
+                    CRUD.insert('m_metaclass',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                }
+                else if (STEP_SINCRONIZACION[i] == ENTIDAD_ESTADOS) {
+                    CRUD.insert('m_estados',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                }
+                
                 
             }
         }

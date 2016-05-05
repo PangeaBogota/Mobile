@@ -12,14 +12,16 @@ var ENTIDAD_METACLASS='METACLASS';
 var ENTIDAD_LOCALIZACION='LOCALIZACION';
 var ENTIDAD_ITEMS_PRECIOS='ITEMS_PRECIOS';
 var ENTIDAD_ACTIVIDADES='ACTIVIDADES';
+var ENTIDAD_ESTADOS='ESTADOS';
 
 var STEP_SINCRONIZACION=
     [
         //                    ENTIDAD_MODULOS_CONFIG,
         //                    ENTIDAD_OPCIONES_MENU,
         //                    ENTIDAD_PARAMETROS,
-        //                    ENTIDAD_METACLASS,
+                            ENTIDAD_METACLASS,
         //                    ENTIDAD_LOCALIZACION,
+        ENTIDAD_ESTADOS,
         ENTIDAD_ACTIVIDADES,
         ENTIDAD_ITEMS,
         ENTIDAD_ITEMS_PRECIOS,
@@ -32,7 +34,7 @@ var STEP_SINCRONIZACION=
 ];
 
 
-var DATABASE='PedidosOnlineAndres23';
+var DATABASE='PedidosOnlineAndres28';
 var DATOS_ENTIDADES_SINCRONIZACION = [];
 var CUR_USER=[];
 

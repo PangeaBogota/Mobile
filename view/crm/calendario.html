@@ -1,12 +1,18 @@
 <script type="text/javascript">
-     $(document).ready(function() {
-        setTimeout(function(){
-            $('.calendar').fullCalendar('refetchEvents');
-        },2000)
-        
-     });
+     $('#fecha_inicial').datetimepicker({
+        dayOfWeekStart: 1,
+        lang: 'en',
+        disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
+        startDate:Date.now()
+    });
+     $('#fecha_final').datetimepicker({
+        dayOfWeekStart: 1,
+        lang: 'en',
+        disabledDates: ['1986/01/08', '1986/01/09', '1986/01/10'],
+        startDate:Date.now()
+    });
 </script>
-<div class="ng-cloak" ng-controller="actividadesController" >
+<div class="ng-cloak" ng-controller="actividadesController" ng-init="RefrescarVista()" >
 
     <div class="clearfix"></div>
 
@@ -15,30 +21,14 @@
             <div class="x_panel">
                 <div class="x_title">
                     <h2>Actividades</h2>
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Settings 1</a>
-                                </li>
-                                <li><a href="#">Settings 2</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a class="close-link"><i class="fa fa-close"></i></a>
-                        </li>
-                    </ul>
+                    
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-
+                    <div class="form-group">
+                        <button class="btn btn-primary" ng-click='abrirModal()'>Nueva Actividad</button>
+                    </div>
                     <div class="calendar"  id="calendar1" ui-calendar="calOptions" ng-model="eventSources" calendar="calendar"></div>
-
-
-
-                    <div class="form-group"><button ng-click="sincronizar()"> Llenar Calendario</button></div>
                     <!-- Start Calender modal -->
                 <div id="CalenderModalNew" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -50,80 +40,184 @@
                             </div>
                             <div class="modal-body">
                                 <div id="testmodal" style="padding: 5px 20px;">
-                                    <form id="antoform" class="form-horizontal calender" role="form">
+                                    <form id="antoform" class="form-horizontal calender form-label-left" role="form" novalidate name="formNuevaActividad">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Titulo</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Asunto</label>
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="title" name="title">
+                                                <input required type="text" class="form-control" id="title" name="title" ng-model="NuevoEvento.tema">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Hora Inicial</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Tipo Actividad</label>
                                             <div class="col-sm-9">
-                                                <input type="time" class="form-control"  ng-model="NuevoEvento.horainicial">
+                                                <select  required
+                                                    ng-model="NuevoEvento.tipo"  ng-options="partner.tipo_reg_nombre as partner.tipo_reg_nombre 
+                                                    for partner in listActividadTipo " class="form-control"  >
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Hora Final</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Fecha Inicial</label>
                                             <div class="col-sm-9">
-                                                <input type="time" class="form-control" ng-model="NuevoEvento.horafinal" >
+                                                <input type="text" required id="fecha_inicial" class="form-control"  ng-model="NuevoEvento.fecha_inicial">
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Description</label>
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Fecha Final</label>
                                             <div class="col-sm-9">
-                                                <textarea class="form-control" style="height:55px;" id="descr" name="descr"></textarea>
+                                                <input type="text" required id="fecha_final" class="form-control" ng-model="NuevoEvento.fecha_final" >
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Tipo Referencia</label>
+                                            <div class="col-sm-9">
+                                                <select 
+                                                    ng-model="NuevoEvento.tipo_relacion" required  ng-options="partner.tipo_reg_nombre as partner.tipo_reg_nombre 
+                                                    for partner in listActividadTipoRelacion " class="form-control"  >
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Prioridad</label>
+                                            <div class="col-sm-9">
+                                                <select 
+                                                    ng-model="NuevoEvento.ind_prioridad"  required ng-options="partner.tipo_reg_nombre as partner.tipo_reg_nombre 
+                                                    for partner in listActividadPrioridad " class="form-control"  >
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Estado</label>
+                                            <div class="col-sm-9">
+                                                <select  required
+                                                    ng-model="NuevoEvento.rowid_estado"  ng-options="partner.id_estado as partner.nombre_estado 
+                                                    for partner in listEstadoActividad " class="form-control"  >
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Description</label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control"  required id="descr" name="descr" ng-model="NuevoEvento.descripcion"></textarea>
                                             </div>
                                         </div>
                                         
                                     </form>
                                 </div>
                             </div>
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default antoclose"  data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary antosubmit" ng-click="AgregarActividad()">Save changes</button>
+                                <button type="button" class="btn btn-primary " ng-click="guardarActividad()" ng-disabled="formNuevaActividad.$invalid" >Save changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div id="CalenderModalEdit" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div id="CalenderModalViewDay" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
 
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                <h4 class="modal-title" id="myModalLabel2">Editar Actividad</h4>
+                                <h4 class="modal-title" id="myModalLabel2">Actividad</h4>
+                            </div>
+                            <div class="modal-body" style="padding-top: 0px">
+                                <div id="testmodal2" class="x_content" >
+                                    <form id="antoform3" class="form-horizontal calender form-label-left" role="form">
+                                        <div class="form-group" ng-repeat="actividad in actividadesDia">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12"> Asunto</label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">{{actividad.tema}}</label>
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Descripcion</label>
+                                                <div class="col-md-9 col-sm-9 col-xs-300" >
+                                                    <textarea class="form-control" value="{{actividad.descripcion}}">{{actividad.descripcion}}</textarea>
+                                                </div>
+                                            </div> 
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Inicial</label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">{{actividad.fecha_inicial}}</label>
+                                                    
+                                                </div>
+                                                
+                                            </div>
+                                                
+                                            <div class="form-group">  
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Final</label>
+                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                    <label class="control-label col-md-3 col-sm-3 col-xs-12"> {{actividad.fecha_final}}</label>
+                                                    
+                                                </div>
+                                            </div>
+                                                
+                                            
+                                        </div>
+
+                                    </form>
+                                    
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default antoclose3" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="CalenderModalViewEvent" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel2"> Actividad</h4>
                             </div>
                             <div class="modal-body">
 
                                 <div id="testmodal2" style="padding: 5px 20px;">
-                                    <form id="antoform2" class="form-horizontal calender" role="form">
+                                    <form id="antoform2" class="form-horizontal calender form-label-left" role="form">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Title</label>
+                                            
                                             <div class="col-sm-9">
-                                                <input type="text" class="form-control" id="title2" name="title2">
+                                                <label class=" control-label">Asunto: </label>
+                                                {{actividad.tema}}
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">Description</label>
                                             <div class="col-sm-9">
-                                                <textarea class="form-control" style="height:55px;" id="descr2" name="descr"></textarea>
+                                                <label class=" control-label">Descripcion: </label>
+                                                <textarea class="form-control">{{actividad.descripcion}}</textarea>
+                                                
                                             </div>
+                                            <div class="col-sm-9">
+                                                <label class="control-label">Fecha Final: </label>
+                                                {{actividad.fecha_inicial}}
+                                            </div>
+                                            
+                                            <div class="col-sm-9">
+                                                <label class="control-label">Fecha Inicial: </label>
+                                                {{actividad.fecha_final}}
+                                            </div>
+                                            
+                                                
+                                                
+                                                
                                         </div>
-
                                     </form>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary antosubmit2">Save changes</button>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <div id="fc_create" data-toggle="modal" data-target="#CalenderModalNew"></div>
-                <div id="fc_edit" data-toggle="modal" data-target="#CalenderModalEdit"></div>
+                <div id="fc_ViewEvent" data-toggle="modal" data-target="#CalenderModalViewEvent"></div>
+                <div id="fc_View" data-toggle="modal" data-target="#CalenderModalViewDay"></div>
 
                 <!-- End Calender modal -->
                 <!-- /page content -->

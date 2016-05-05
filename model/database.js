@@ -3,6 +3,66 @@ app_angular = angular.module('PedidosOnline')
 app_angular.service('Factory', function ($webSql) {
 
     db = $webSql.openDatabase(DATABASE, '1.0', 'Test DB', 200000);
+
+
+    db.createTable('m_metaclass',{
+        "rowid": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "class_code": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tipo_reg_codigo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tipo_reg_nombre": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_activo": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "CreatedBy": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "CreationDate": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ModifiedBy": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ModDate": {
+            "type": "text",
+            "null": "NULL"
+        }
+    })
+    db.createTable('m_estados',{
+        "id_estado": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "tipo_estado": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombre_estado": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_editar": {
+            "type": "integer",
+            "null": "NULL"
+        }
+    })
+
+
     db.createTable('crm_actividades',{
         "rowid": {
             "type": "INTEGER",
