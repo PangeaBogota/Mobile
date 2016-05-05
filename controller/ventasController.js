@@ -39,6 +39,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 //        })
 //    }
 	$scope.fechasolicitud=function(){
+		console.log("DF")
 		$scope.datenow=new Date();
 		$scope.pedidos.fecha_solicitud=$scope.datenow.getDate() + "/" +$scope.datenow.getDay()+"/"+$scope.datenow.getFullYear();
 		$scope.pedidos.fechacreacion=$scope.datenow.getDate() + "/" +$scope.datenow.getDay()+"/"+$scope.datenow.getFullYear();
