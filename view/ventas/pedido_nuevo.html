@@ -1,4 +1,39 @@
 <!-- select2 -->
+<script type="text/javascript">
+        $(document).ready(function () {
+            $('#single_cal1').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker_1"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $('#single_cal2').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker_2"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $('#single_cal3').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker_3"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $('#single_cal4').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker_4"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#reservation').daterangepicker(null, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+        });
+    </script>
         <script>
             $(document).ready(function () {
                 $(".select2_single").select2({
@@ -111,145 +146,124 @@
 <div ng-controller="pedidoController">
 	<div class="page-title">
 		<div class="title_left">
-            <h3 style="width: 200px">Nuevo Pedido</h3>
+            <h3>Nuevo Pedido</h3>
         </div>
-	</div>
 
+	</div>
+	<div class="clearfix"></div>
 	<div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="tabbable tabbable-custom">
-                    <ul class="nav nav-tabs tabs">
-                        <li data-tab="tab_1" class="active"><a data-tab="tab_1" data-toggle="tab">1. Encabezado</a></li>
-                        <li data-tab="tab_2"><a data-tab="tab_2" data-toggle="tab">2. Detalle</a></li>
-                        <li data-tab="tab_3"><a data-tab="tab_3" data-toggle="tab">1. sss</a></li>
-                    </ul>   
-                    <div class="tab-content">
-                        <div id="tab_1" class="tab-pane active">
-                            <form id="form_encabezado" data-parsley-validate class="form-horizontal form-label-left">
-
-                                <div class="form-group">
-                                    <label for="rowid_tercero" class="control-label col-md-3 col-sm-3 col-xs-12">Tercero<span class="required">*</span></label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control col-md-7 col-xs-12"></input>
-                                        <select 
-                                                    ng-model="terceroSelected" id="TerceroSelected" ng-options="partner as partner.razonsocial 
-                                                    for partner in list_tercero | filter:Search" class="form-control" ng-change="onChangeTercero()" >
-                                                </select>
-
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Facturacion<span class="required">*</span></label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select  id="rowid_cliente_facturacion" required
-                                                    ng-model="sucursal"  ng-options="sucursal as sucursal.nombre_sucursal 
-                                                    for sucursal in list_Sucursales " class="form-control" ng-change="onChangeSucursal()" >
-                                                </select>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Despacho<span class="required">*</span></label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select  id="rowid_cliente_despacho" required
-                                                    ng-model="pedidos.rowid_cliente_despacho"  ng-options="sucursal.rowid as sucursal.nombre_sucursal 
-                                                    for sucursal in list_Sucursales " class="form-control"  >
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" >Lista Precio<span class="required">*</span></label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select  id="rowid_lista_precios"
-                                                    ng-model="pedidos.rowid_lista_precios"  ng-options="listprecios.rowid as listprecios.erp_descripcion 
-                                                    for listprecios in list_precios " class="form-control"  required>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" >Punto Envio<span class="required">*</span></label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <select id="id_punto_envio"  required
-                                                    ng-model="pedidos.id_punto_envio"  ng-options="puntoenvio.rowid as puntoenvio.Nombre_punto_envio 
-                                                    for puntoenvio in list_puntoEnvio " class="form-control" >
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12" >Orden Compra<span class="required">*</span></label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input  placeholder="Orden Compra" id="orden_compra" type="text" ng-model="pedidos.orden_compra" class="form-control col-md-7 col-xs-12"  required="required"></input>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-
-                                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Solicitud <span class="required">*</span>
-                                    </label>
-                                    <div class="col-md-6 col-sm-6 col-xs-12">
-                                        <input type="date" id="fecha_solicitud" name="fecha_solicitud" class="form-control"  ng-model="date"  ng-change="fechasolicitud()" required>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                        <button type="submit" class="btn btn-primary">Cancel</button>
-                                        <button type="submit" class="btn btn-success"  ng-click="guardarCabezera()">Continuar</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div id="tab_2" class="tab-pane">
-                            <form class="form-horizontal form-label-left" name="form_detalle" >
-                                <div class="form-group">
-                                    <label for="rowid_item" class="control-label">Items<span class="required">*</span>
-                                    </label>
-                                    <input type="text" ng-model="SearchItem"  placeholder="Buscar Item" name="  rowid_item" class="form-control"/>
-                                    <select  id="rowid_item" ng-model="item"  ng-options="item as item.descripcion 
-                                        for item in list_items  |filter:SearchItem" class="form-control" required >
-                                    </select>
-                                    </br>
-                                    <button type="button" class="btn btn-success"  ng-click="adicionaritem()" data-toggle="dropdown"><span class="icon-ok" ng-disabled"form_detalle.$invalid"></span>
-                                    </button>
-                                </div>
-                                <label for="rowid_item" class="control-label">Listado de items agregados:</label>
-        
-                                <div class="form-group" ng-repeat="itemsAgregadoPedido in itemsAgregadosPedido">
-                                        
-                                        <div class="separator"></div>
-                                        <div class="col-md-5 col-sm-12 col-xs-12">
-
-                                            <div class="col-md-1 col-sm-2 col-xs-6">
-                                             {{itemsAgregadoPedido.descripcion}} 
-                                            </div>
-                                            <!--<div >-->
-                                            <div class="col-md-1 col-sm-2 col-xs-6">
-                                                <input type="number" class="form-control" ng-model="itemsAgregadoPedido.cantidad" value="1" min="1"/>
-                                                </br>
-                                                <button type="button" class="btn btn-danger" ng-click="delete($index)" value="Eliminar" data-toggle="dropdown">Eliminar
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div >
-                                            <span class="badge">V. Unitario: {{itemsAgregadoPedido.precio}}</span>
-                                            <span class="badge">V. Total: {{itemsAgregadoPedido.precio*itemsAgregadoPedido.cantidad}}</span>
-                                            <div class="separator"></div>
-                                        </div>
-                                        
-                                </div>
-
-                                <div class="form-actions">
-                                    <button class="btn btn-primary pull-right" type="submit" ng-click="guardarDetalle()" >Continuar</button>
-                                    <button class="btn btn-primary pull-right" type="submit" ng-click="CambiarTab('2','atras');">Atras</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+            <div class="x_panel">
+                <div class="x_title">
+                    <ul class="nav navbar-right panel_toolbox">
+                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#">Settings 1</a>
+                                </li>
+                                <li><a href="#">Settings 2</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li><a class="close-link"><i class="fa fa-close"></i></a>
+                        </li>
+                    </ul>
+                    <div class="clearfix"></div>
                 </div>
+                <div class="x_content">
+                    <br />
+
+                    <form id="form_encabezado" data-parsley-validate class="form-horizontal form-label-left">
+
+                        <div class="form-group">
+                            <label for="rowid_tercero" class="control-label col-md-3 col-sm-3 col-xs-12">Tercero<span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control col-md-7 col-xs-12"></input>
+                                <select 
+                                            ng-model="terceroSelected" id="TerceroSelected" ng-options="partner as partner.razonsocial 
+                                            for partner in list_tercero | filter:Search" class="form-control" ng-change="onChangeTercero()" >
+                                        </select>
+
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Facturacion<span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select  id="rowid_cliente_facturacion" required
+                                            ng-model="sucursal"  ng-options="sucursal as sucursal.nombre_sucursal 
+                                            for sucursal in list_Sucursales " class="form-control" ng-change="onChangeSucursal()" >
+                                        </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Despacho<span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select  id="rowid_cliente_despacho" required
+                                            ng-model="pedidos.rowid_cliente_despacho"  ng-options="sucursal.rowid as sucursal.nombre_sucursal 
+                                            for sucursal in list_Sucursales " class="form-control"  >
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" >Lista Precio<span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select  id="rowid_lista_precios"
+                                            ng-model="pedidos.rowid_lista_precios"  ng-options="listprecios.rowid as listprecios.erp_descripcion 
+                                            for listprecios in list_precios " class="form-control"  required>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" >Punto Envio<span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <select id="id_punto_envio"  required
+                                            ng-model="pedidos.id_punto_envio"  ng-options="puntoenvio.rowid as puntoenvio.Nombre_punto_envio 
+                                            for puntoenvio in list_puntoEnvio " class="form-control" >
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12" >Orden Compra<span class="required">*</span></label>
+                            <div class="col-md-6 col-sm-6 col-xs-12">
+                                <input  placeholder="Orden Compra" id="orden_compra" type="text" ng-model="pedidos.orden_compra" class="form-control col-md-7 col-xs-12"  required="required"></input>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+
+                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Solicitud <span class="required">*</span>
+                            </label>
+
+                                                <div class="control-group">
+                                                    <div class="controls">
+                                                        <div class="col-md-11 xdisplay_inputx form-group has-feedback">
+                                                            <input type="text" class="form-control has-feedback-left" id="single_cal2" placeholder="First Name" aria-describedby="inputSuccess2Status2">
+                                                            <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+                                                            <span id="inputSuccess2Status2" class="sr-only">(success)</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                            
+                        </div>
+                        
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <button type="submit" class="btn btn-primary">Cancel</button>
+                                <button type="submit" class="btn btn-success"  ng-click="guardarCabezera() " >Continuar</button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>
