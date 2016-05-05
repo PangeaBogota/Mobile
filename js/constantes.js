@@ -34,7 +34,7 @@ var STEP_SINCRONIZACION=
 ];
 
 
-var DATABASE='PedidosOnlineAndres28';
+var DATABASE='PedidosOnlineAndres29';
 var DATOS_ENTIDADES_SINCRONIZACION = [];
 var CUR_USER=[];
 

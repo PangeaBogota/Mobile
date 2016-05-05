@@ -1,1 +1,49 @@
-adasda
+<div ng-controller='PedidosController'>
+    <div class="page-title">
+    <div class="title_left">
+        <h3>Pedidos Ingresados</h3>
+    </div>
+    
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="x_panel">
+                
+                <div class="x_content">
+                    <br />
+                    <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                        <div class="x_content">
+                            <div class="row alert alert-info" ng-repeat='pedidos in pedidos' style="padding: 4px" >
+                                <a href="index.html#/">
+                                    <div class="row" style="margin: 0px">
+                                        <div class="form-group col-md-1" style="margin: 1px">
+                                            PEDIDO No: {{pedidos.rowidpedido}}
+                                        </div>
+                                        <div class="form-group pull-right" style="margin: 1px">
+                                            {{pedidos.fecha_solicitud}}
+                                        </div>   
+                                    </div>
+                                    <div class="row" style="margin: 0px">
+                                        <div class="form-group col-md-2" style="margin: 1px">
+                                           <strong> {{pedidos.razonsocial}}</strong>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin: 0px">
+                                        <div class="form-group col-md-1" style="margin: 1px" >
+                                            Cantidad Productos: {{pedidos.cantidadproductos}}
+                                        </div>
+                                        <div class="form-group pull-right" style="margin: 1px">
+                                           <strong> $ {{pedidos.valor_total}}</strong>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                                    
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
