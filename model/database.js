@@ -4,6 +4,80 @@ app_angular.service('Factory', function ($webSql) {
 
     db = $webSql.openDatabase(DATABASE, '1.0', 'Test DB', 200000);
 
+    db.createTable('crm_contactos',{
+        "rowid": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "rowid_sucursal": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "identificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombres": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "apellidos": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "email": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "telefono": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "skype": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "descripcion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ruta_imagen": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "celular": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "cargo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "area": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_principal": {
+            "type": "integer",
+            "null": "NULL"
+        },
+        "usuario_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuario_modificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_modificacion": {
+            "type": "text",
+            "null": "NULL"
+        }
+    });
 
     db.createTable('m_metaclass',{
         "rowid": {

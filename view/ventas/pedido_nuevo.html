@@ -215,21 +215,21 @@
                                     <label for="rowid_item" class="control-label">Items<span class="required">*</span>
                                     </label>
                                     <input type="text" ng-model="SearchItem"  placeholder="Buscar Item" name="  rowid_item" class="form-control"/>
-                                    <select  id="rowid_item" ng-model="item"  ng-options="item as item.descripcion 
+                                    <select  id="rowid_item" ng-model="item"  ng-options="item as item.producto 
                                         for item in list_items  |filter:SearchItem" class="form-control" required >
                                     </select>
                                     </br>
-                                    <button type="button" class="btn btn-success"  ng-click="adicionaritem()" data-toggle="dropdown"><span class="icon-ok" ng-disabled"form_detalle.$invalid"></span>
+                                    <button type="button" class="btn btn-success"  ng-click="adicionaritem()" data-toggle="dropdown"><span class="icon-ok control-label" ng-disabled"form_detalle.$invalid">Agregar Item</span>
                                     </button>
                                 </div>
                                 <label for="rowid_item" class="control-label">Listado de items agregados:</label>
         
                                 <div class="form-group" ng-repeat="itemsAgregadoPedido in itemsAgregadosPedido">
                                     <div class="row">
-                                        <div class="col-md-1 col-sm-12 col-xs-5 form-group">
-                                            {{itemsAgregadoPedido.descripcion}}
+                                        <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                            {{itemsAgregadoPedido.producto}}
                                         </div>
-                                        <div class="col-md-2 col-sm-12 col-xs-3 form-group">
+                                        <div class="col-md-1 col-sm-12 col-xs-3 form-group">
                                             <input type="number" class="form-control" ng-model="itemsAgregadoPedido.cantidad" value="1" min="1"/>
                                         </div>
                                         <div class="col-md-2 col-sm-13 col-xs-12 form-group">
@@ -271,7 +271,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr ng-repeat="itemsAgregadoPedido in itemsAgregadosPedido" >
-                                                    <td>{{itemsAgregadoPedido.descripcion}} </td>
+                                                    <td>{{itemsAgregadoPedido.producto}} </td>
                                                     <td>{{itemsAgregadoPedido.cantidad}}</td>
                                                     <td>{{itemsAgregadoPedido.precio*itemsAgregadoPedido.cantidad}}</td>
                                                 </tr>

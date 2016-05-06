@@ -4,38 +4,25 @@ app_angular.controller("TercerosController",['Conexion','$scope',function (Conex
 	// body...
 	$scope.terceros = [];
 	$scope.terceroSeleccionado=[];
+	$scope.detalleTercero=[];
+	$scope.terceroDetalles=[];
     CRUD.selectAll('erp_terceros',function(elem) {$scope.terceros.push(elem)});
-    
+    $scope.query=
 	$scope.ConsultarDatos =function(tercero){
 		$scope.terceroSeleccionado=tercero;
-		$scope.CambiarTab('1','siguiente');	
+		$scope.terceroDetalles=[];
+		$scope.detalleTercero=[];
+		CRUD.select("select sucursal.rowid,  tercero.identificacion, tercero.razonsocial,sucursal.nombre_sucursal,contacto.nombres||' '||contacto.apellidos as contacto,contacto.telefono,contacto.celular from erp_terceros tercero inner join erp_terceros_sucursales sucursal  on sucursal.rowid_tercero=tercero.rowid inner join crm_contactos contacto on contacto.rowid_sucursal=sucursal.rowid where contacto.ind_principal='true'   and tercero.rowid="+tercero.rowid+"",
+		function(elem){$scope.detalleTercero.push(elem);$scope.terceroDetalles=$scope.detalleTercero[0];})
 	}
-	
+	$scope.abrirModal=function(tercero){
+		$('#terceroOpenModal').click();
+		$scope.ConsultarDatos(tercero);
+	}
 	$scope.Refrescar =function(){
     	CRUD.selectAll('erp_terceros',function(elem) {$scope.terceros.push(elem)});
 		$scope.Search = '';
 	}
-	
-	
-	$scope.CambiarTab = function (tab_actual, accion) {
-        var tab_id = null;
-
-        if (tab_actual == '1' && accion == 'siguiente')
-            tab_id = 'tab_2';
-        else if (tab_actual == '2' && accion == 'atras')
-            tab_id = 'tab_1';
-
-        angular.element('ul.tabs li').removeClass('active');
-        angular.element('.tab-pane').removeClass('active');
-
-        angular.element("ul.tabs").find("[data-tab='" + tab_id + "']").toggleClass('active');
-        angular.element("#" + tab_id).toggleClass('active');
-    };
-    angular.element('#ui-id-1').mouseover(function (){
-        angular.element('#ui-id-1').show();
-    });
-	
-	
 }]);
 
 

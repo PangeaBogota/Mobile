@@ -1,50 +1,45 @@
 <div ng-controller='PedidosController'>
     <div class="page-title">
     <div class="title_left">
-        <h3>Pedidos Ingresados</h3>
+        <h3 style="width: 300px">Pedidos Ingresados</h3>
     </div>
     
     </div>
     <div class="clearfix"></div>
     <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                
-                <div class="x_content">
+                <div class="x_content x_panel" style="margin: 0px">
                     <br />
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
-                        <div class="x_content">
-                            <div class="" ng-repeat='pedidos in pedidos' style="padding: 4px" >
+                            <div class="x_content" ng-repeat='pedidos in pedidos' style="padding: 0px" >
                                 <a ng-click="abrirModal(pedidos)">
                                     <div class="row" style="margin: 0px">
-                                        <div class="form-group col-md-1" style="margin: 1px">
+                                        <div class="form-group col-md-4" style="margin: 1px">
                                             PEDIDO No: {{pedidos.rowidpedido}}
                                         </div>
-                                        <div class="form-group pull-right" style="margin: 1px">
+                                        <div class="form-group col-md-4 pull-right" style="margin: 1px">
                                             {{pedidos.fecha_solicitud}}
                                         </div>   
                                     </div>
                                     <div class="row" style="margin: 0px">
-                                        <div class="form-group col-md-2" style="margin: 1px">
+                                        <div class="form-group col-md-12" style="margin: 1px">
                                            <strong> {{pedidos.razonsocial}}</strong>
                                         </div>
                                     </div>
                                     <div class="row" style="margin: 0px">
-                                        <div class="form-group col-md-1" style="margin: 1px" >
+                                        <div class="form-group col-md-6" style="margin: 1px" >
                                             Cantidad Productos: {{pedidos.cantidadproductos}}
                                         </div>
-                                        <div class="form-group pull-right" style="margin: 1px">
+                                        <div class="form-group col-md-4 pull-right" style="margin: 1px">
                                            <strong> $ {{pedidos.valor_total}}</strong>
                                         </div>
                                     </div>
                                 </a>
                                 <div class="separator"></div>
                             </div>
-                                    
-                        </div>
+                                 
                     </form>
                 </div>
-            </div>
         </div>
     </div>
     <div id="PedidoDetalle" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -55,35 +50,35 @@
                     <h4 class="modal-title" id="myModalLabel">Detalle Pedido</h4>
                 </div>
                 <div class="modal-body">
-                    <div id="testmodal" style="padding: 5px 20px;">
+                    <div id="testmodal" style="padding: 0px;">
                         <form id="antoform" class="form-horizontal calender form-label-left" role="form">
-                            <div class="row" style="margin: 0px">
-                                <div class="form-group col-md-1" style="margin: 1px">
-                                    Fecha Solicitud:{{pedidoSeleccionado.fecha_solicitud}}
+                            <div class="row " style="margin: 0px">
+                                <div class="form-group col-md-4 col-xs-12" style="margin: 1px">
+                                    Fecha Solicitud: <strong>{{pedidoSeleccionado.fecha_solicitud}}</strong>
                                 </div> 
                             </div>
                             
                             <div class="row" style="margin: 0px">
-                                <div class="form-group col-md-1" style="margin: 1px">
+                                <div class="form-group col-md-12" style="margin: 1px">
                                     Tercero: <strong>{{pedidoSeleccionado.razonsocial}}</strong> 
                                 </div>
 
                             </div>
                             <div class="row" style="margin: 0px">
-                                <div class="form-group col-md-1" style="margin: 1px">
+                                <div class="form-group col-md-12 col-xs-12" style="margin: 1px">
                                     Sucursal Facturacion :<strong> {{pedidoSeleccionado.nombre_sucursal}}</strong>
                                 </div>
                             </div>
                             <div class="row" style="margin: 0px">
-                                <div class="form-group col-md-1" style="margin: 1px">
+                                <div class="form-group col-md-12 col-xs-12" style="margin: 1px">
                                     Punto Envio :<strong> {{pedidoSeleccionado.Nombre_punto_envio}}</strong>
                                 </div>
                             </div>
                             <div class="row" style="margin: 0px">
-                                <div class="form-group col-md-1" style="margin: 1px">
+                                <div class="form-group col-md-6 col-xs-12" style="margin: 1px">
                                     Cantidad Total Productos :<strong> {{pedidoSeleccionado.cantidadproductos}}</strong>
                                 </div>
-                                <div class="form-group col-md-2" style="margin: 1px">
+                                <div class="form-group col-md-4 col-xs-12" style="margin: 1px">
                                     Valor Total : $ :<strong> {{pedidoSeleccionado.valor_total}}</strong>
                                 </div>
                             </div>
@@ -93,26 +88,26 @@
                                 <div class="" ng-repeat='detallespedido in detallespedido' style="padding: 4px" >
                                     <a >
                                         <div class="row" style="margin: 0px">
-                                            <div class="form-group col-md-1" style="margin: 1px">
-                                                Referencia: {{detallespedido.item_referencia}}
+                                            <div class="form-group col-md-4" style="margin: 1px">
+                                                Referencia: <strong>{{detallespedido.item_referencia}}</strong>
                                             </div>
-                                            
+                                            <div class="form-group col-md-4" style="margin: 1px" >
+                                                Cantidad :<strong> {{detallespedido.cantidad}}</strong>
+                                            </div>
                                         </div>
                                         <div class="row" style="margin: 0px">
-                                            <div class="form-group  col-md-1" style="margin: 1px">
+                                            <div class="form-group  col-md-12" style="margin: 1px">
                                                 Descripcion: <strong>{{detallespedido.item_descripcion}}</strong> 
                                             </div>   
                                         </div>
                                         <div class="row" style="margin: 0px">
-                                            <div class="form-group col-md-1" style="margin: 1px" >
-                                                Cantidad : {{detallespedido.cantidad}}
-                                            </div>
-                                            <div class="form-group col-md-2 pull-right" style="margin: 1px">
+                                            
+                                            <div class="form-group col-md-4 pull-right" style="margin: 1px">
                                                 V. Total $ :<strong> {{detallespedido.valor_base}}</strong>
                                               
                                             </div>
-                                            <div class="form-group col-md-3 pull-right" style="margin: 1px">
-                                                V. Unitario $ <strong> $ {{detallespedido.precio_unitario}}   </strong>
+                                            <div class="form-group col-md-4 pull-right" style="margin: 1px">
+                                                V. Unitario $ <strong>  {{detallespedido.precio_unitario}}   </strong>
                                             </div>
                                         </div>
                                     </a>

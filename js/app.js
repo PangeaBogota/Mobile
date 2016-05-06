@@ -84,6 +84,10 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_ESTADOS) {
                     CRUD.insert('m_estados',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
                 }
+                else if (STEP_SINCRONIZACION[i] == ENTIDAD_CONTACTOS) {
+                    CRUD.insert('crm_contactos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                }
+
                 
                 
             }
@@ -108,8 +112,12 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
         console.log($routeParams);
         $scope.templateUrl = 'view/' + $routeParams.modulo + '/' + $routeParams.url + '.html';
     }
-
-	$scope.tabla1=[];
+    $scope.cantidadTerceros=[];
+    $scope.cantidadTerceros1=[];
+    $scope.cantidadPedidos=[];
+    $scope.cantidadPedidos1=[];
+    CRUD.select('SELECT COUNT(*) as cantidad FROM erp_terceros',function(elem){$scope.cantidadTerceros.push(elem);$scope.cantidadTerceros1=$scope.cantidadTerceros[0];})
+    CRUD.select('SELECT COUNT(*) as cantidad FROM t_pedidos',function(elem){$scope.cantidadPedidos.push(elem);$scope.cantidadPedidos1=$scope.cantidadPedidos[0];})
     
 
     

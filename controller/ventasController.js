@@ -30,7 +30,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.pedido_detalle=[];
 	$scope.list_pedidos_detalles=[];
 	$scope.valorTotal;
-	CRUD.select('select item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item',function(elem){$scope.list_items.push(elem);});
+	CRUD.select("select item.item_referencia||'-'||item.item_descripcion as producto,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item",function(elem){$scope.list_items.push(elem);});
     
 	CRUD.selectAll('erp_terceros',function(elem){$scope.list_tercero.push(elem);});
 	
