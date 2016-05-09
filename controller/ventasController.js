@@ -162,6 +162,9 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			
 			CRUD.select('SELECT  SUM (valor_base)  as total,SUM (cantidad)  as cantidad FROM  t_pedidos_detalle  where rowid_pedido='+$scope.pedidos.rowid+'',function(elem){$scope.pedidoDetalles.push(elem)});
 	}
+	$scope.actualizarPrecio=function(){
+		$scope.CalcularCantidadValorTotal();
+	}
 	$scope.guardarCabezera=function(){
 		CRUD.select('select max(rowid) as rowid from t_pedidos',function(elem){$scope.ultimoRegistro.push(elem);
 			$scope.ultimoRegistroseleccionado=$scope.ultimoRegistro[0];
@@ -240,7 +243,7 @@ app_angular.controller("PedidosController",['Conexion','$scope',function (Conexi
 		$('#pedidoOpenModal').click();
 		$scope.ConsultarDatos(pedido);
 	}
-	
+
 	
 	$scope.CambiarTab = function (tab_actual, accion) {
         var tab_id = null;

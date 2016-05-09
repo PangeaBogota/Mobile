@@ -232,7 +232,7 @@
                                             {{itemsAgregadoPedido.producto}}
                                         </div>
                                         <div class="col-md-1 col-sm-12 col-xs-3 form-group">
-                                            <input type="number" class="form-control" ng-model="itemsAgregadoPedido.cantidad" value="1" min="1"/>
+                                            <input type="number" class="form-control" ng-model="itemsAgregadoPedido.cantidad" ng-change="actualizarPrecio()" value="1" min="1"/>
                                         </div>
                                         <div class="col-md-2 col-sm-13 col-xs-12 form-group">
                                             <span class="badge">V. Unitario: {{itemsAgregadoPedido.precio}}</span>
