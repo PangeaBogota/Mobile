@@ -34,11 +34,9 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
     
 	CRUD.selectAll('erp_terceros',function(elem){$scope.list_tercero.push(elem);});
 	
-    //$scope.AutoCompletar=function(){
-//        $("#tercerosBusqueda").autocomplete({
-//            source: $scope.list_tercero
-//        })
-//    }
+	
+
+	
 	$scope.CurrentDate=function(){
 		$scope.day;
 		$scope.DayNow=Date.now();
@@ -62,7 +60,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.HourS=$scope.DayNow.getHours();
 		$scope.MinuteS=$scope.DayNow.getMinutes();
 		if ($scope.DayS<10) {$scope.DayS='0'+$scope.DayS}
-		$scope.day=$scope.YearS+'/'+$scope.MonthS+'/'+$scope.DayS;
+		$scope.day=$scope.YearS+'-'+$scope.MonthS+'-'+$scope.DayS;
 		return $scope.day;
 	}
 	$scope.fechasolicitud=function(){

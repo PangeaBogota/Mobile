@@ -1,7 +1,7 @@
 /**
  * Created by dev10 on 12/23/2015.
  */
-var app_angular = angular.module('PedidosOnline', ['ui.calendar','angular-websql', 'ngResource', 'ngRoute']);
+var app_angular = angular.module('PedidosOnline', ['chart.js','ui.calendar','angular-websql', 'ngResource', 'ngRoute']);
 
 app_angular.config(['$routeProvider',//'$locationProvider',
     function ($routeProvider) {
@@ -92,7 +92,11 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 
             }
         }
-        Mensajes('Sincronizado Con Exito','success','')
+        
+        window.setTimeout(function(){
+            window.location.href = 'index.html#/';
+            Mensajes('Sincronizado Con Exito','success','')
+        },5000)
     }
 
 }]);
@@ -116,10 +120,35 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
     $scope.cantidadTerceros1=[];
     $scope.cantidadPedidos=[];
     $scope.cantidadPedidos1=[];
+    $scope.estadisticagrafica=[];
+    $scope.enero=0;
+    $scope.febrero=0;
+    $scope.marzo=0;
+    $scope.abril=0;
+    $scope.mayo=0;
+    $scope.junio=0;
+    $scope.registros=[];
+    $scope.validacion='';
     CRUD.select('SELECT COUNT(*) as cantidad FROM erp_terceros',function(elem){$scope.cantidadTerceros.push(elem);$scope.cantidadTerceros1=$scope.cantidadTerceros[0];})
     CRUD.select('SELECT COUNT(*) as cantidad FROM t_pedidos',function(elem){$scope.cantidadPedidos.push(elem);$scope.cantidadPedidos1=$scope.cantidadPedidos[0];})
+    CRUD.select("select strftime('%m', fecha_solicitud) as mes,count(strftime('%m', fecha_solicitud)) as cantidad from t_pedidos group by mes ",
+        function(elem){$scope.estadisticagrafica.push(elem);
+            if (elem.mes=='01') {$scope.enero=elem.cantidad};
+            if (elem.mes=='02') {$scope.febrero=elem.cantidad};
+            if (elem.mes=='03') {$scope.marzo=elem.cantidad};
+            if (elem.mes=='04') {$scope.abril=elem.cantidad};
+            if (elem.mes=='05') {$scope.mayo=elem.cantidad};
+            if (elem.mes=='06') {$scope.junio=elem.cantidad};
+            $scope.registros=[[$scope.enero,$scope.febrero,$scope.marzo,$scope.abril,$scope.mayo,$scope.junio]];
+            
+    })
+    window.setTimeout(function(){
+        if ($scope.estadisticagrafica.length==0) {$scope.validacion='No fue encontrado Ningun  Pedido'}
+    },2000);
     
-
+    $scope.labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
+    $scope.data = [ [65, 59, 80, 81, 56, 55] ];
+    $scope.colours=["#26B99A"];
     
     
 	

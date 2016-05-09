@@ -7,6 +7,7 @@ app_angular.directive("myAutocomplete",function () {
     // body...
     function link(scope,element,attrs){
         $(element).autocomplete({
+
             source:scope[attrs.myAutocomplete],
             select: function(ev,ui){
                 ev.preventDefault();
