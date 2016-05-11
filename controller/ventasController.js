@@ -30,12 +30,18 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.pedido_detalle=[];
 	$scope.list_pedidos_detalles=[];
 	$scope.valorTotal;
-	CRUD.select("select item.item_referencia||'-'||item.item_descripcion as producto,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item",function(elem){$scope.list_items.push(elem);});
+	
     
 	CRUD.selectAll('erp_terceros',function(elem){$scope.list_tercero.push(elem);});
 	
 	
-
+	$scope.onChangeListaPrecios=function(){
+		if ($scope.pedidos.rowid_lista_precios==undefined) {$scope.list_items=[];return}
+		$scope.list_items=[];
+		var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
+		var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item and item.id_unidad=precios.id_unidad inner join erp_entidades_master maestro on maestro.erp_id_maestro=precios.id_lista_precios and maestro.id_tipo_maestro='LISTA_PRECIOS' WHERE item_referencia NOT LIKE '%*DESC*%'   and maestro.rowid="+$scope.pedidos.rowid_lista_precios+"";
+		CRUD.select(query,function(elem){$scope.list_items.push(elem);});
+	}
 	
 	$scope.CurrentDate=function(){
 		$scope.day;
@@ -73,24 +79,21 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.list_Sucursales=[];
 		$scope.list_puntoEnvio=[];
 		CRUD.selectParametro('erp_terceros_sucursales','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_Sucursales.push(elem)});
-		CRUD.selectParametro('erp_terceros_punto_envio','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_puntoEnvio.push(elem)});
-		
-		
+		CRUD.selectParametro('erp_terceros_punto_envio','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_puntoEnvio.push(elem)});	
 	}
 	
 	$scope.onChangeSucursal=function(){
+		if ($scope.sucursal==undefined) {$scope.pedidos.rowid_lista_precios='';$scope.list_items=[];return}
 		$scope.list_precios=[];
 		CRUD.selectParametro('erp_entidades_master','erp_id_maestro',$scope.sucursal.id_lista_precios,function(elem){$scope.list_precios.push(elem)});
 		$scope.pedidos.rowid_cliente_facturacion=$scope.sucursal.rowid;
 	}
 	$scope.finalizarPedido=function(){
-
 		if($scope.itemsAgregadosPedido.length==0)
 		{
 			Mensajes('Debe Seleccionar al menos un item de la lista','error','');
 			return
 		}
-		
 		$scope.guardarCabezera();
 		window.setTimeout(function(){
 			$scope.guardarDetalle();
@@ -143,24 +146,28 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
     	$scope.CalcularCantidadValorTotal();
 	}
 	$scope.guardarDetalle=function(){
-			if($scope.itemsAgregadosPedido.length==0)
-			{
-				Mensajes('Debe Seleccionar al menos un item de la lista','error','');
-				return
-			}
-			angular.forEach($scope.itemsAgregadosPedido,function(value,key){
-				$scope.detalle=[];
-				$scope.detalle.rowid_item=value.rowid_item;
-				$scope.detalle.rowid_pedido=$scope.pedidos.rowid;
-				$scope.detalle.cantidad=value.cantidad;
-				$scope.detalle.precio_unitario=value.precio;
-				$scope.detalle.valor_base=value.precio*value.cantidad;
-				$scope.detalle.usuariocreacion=$scope.sessiondate.nombre_usuario;
-				$scope.detalle.fechacreacion=$scope.CurrentDate();
-				CRUD.insert('t_pedidos_detalle',$scope.detalle);
-			})
-			
-			CRUD.select('SELECT  SUM (valor_base)  as total,SUM (cantidad)  as cantidad FROM  t_pedidos_detalle  where rowid_pedido='+$scope.pedidos.rowid+'',function(elem){$scope.pedidoDetalles.push(elem)});
+		if($scope.itemsAgregadosPedido.length==0)
+		{
+			Mensajes('Debe Seleccionar al menos un item de la lista','error','');
+			return
+		}
+		angular.forEach($scope.itemsAgregadosPedido,function(value,key){
+			$scope.detalle=[];
+			$scope.detalle.rowid_item=value.rowid_item;
+			$scope.detalle.rowid_pedido=$scope.pedidos.rowid;
+			$scope.detalle.linea_descripcion=value.descripcion;
+			$scope.detalle.id_unidad=value.id_unidad;
+			$scope.detalle.cantidad=value.cantidad;
+			$scope.detalle.factor=0;
+
+			$scope.detalle.precio_unitario=value.precio;
+			$scope.detalle.valor_base=value.precio*value.cantidad;
+			$scope.detalle.usuariocreacion=$scope.sessiondate.nombre_usuario;
+			$scope.detalle.fechacreacion=$scope.CurrentDate();
+			CRUD.insert('t_pedidos_detalle',$scope.detalle);
+		})
+		
+		CRUD.select('SELECT  SUM (valor_base)  as total,SUM (cantidad)  as cantidad FROM  t_pedidos_detalle  where rowid_pedido='+$scope.pedidos.rowid+'',function(elem){$scope.pedidoDetalles.push(elem)});
 	}
 	$scope.actualizarPrecio=function(){
 		$scope.CalcularCantidadValorTotal();
