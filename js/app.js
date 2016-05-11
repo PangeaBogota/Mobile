@@ -38,6 +38,38 @@ app_angular.config(['$routeProvider',//'$locationProvider',
 //CONTROLADOR DE GENERAL
 app_angular.controller('sessionController',['Conexion','$scope','$location','$http', '$routeParams', 'Factory' ,function (Conexion, $scope, $location, $http, $routeParams, Factory) {
     $scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
+    $scope.pedidos=[];
+    $scope.actividades=[];
+    $scope.datosSubir=function(){
+        $scope.pedidos=[];
+        $scope.actividades=[];
+        console.log('entro'); 
+        CRUD.select('select *from crm_actividades where usuario_modificacion="MOBILE"',function(elem){$scope.actividades.push(elem)})
+        CRUD.select('select *from t_pedidos where modulo_creacion="MOBILE"',function(elem){$scope.actividades.push(elem)})
+        window.setTimeout(function(){
+            for (var i =0;i< STEP_SUBIRDATOS.length ; i++) {
+                STEP_SUBIRDATOS[i]=$scope.actividades;
+                for (var j =0;j< STEP_SUBIRDATOS[i].length ;j++) {
+                    if (i==0) {
+                        $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
+                        $scope.objeto=STEP_SUBIRDATOS[i][j];
+                        SubirDatos('ACTIVIDADES',$scope.objeto,$scope.codigoempresa) 
+                        $scope.objeto.usuario_modificacion='SINCRONIZADO'
+                        CRUD.Update('crm_actividades',$scope.objeto);
+                    } 
+                    if (i==1) {
+                        $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
+                        $scope.objeto=STEP_SUBIRDATOS[i][j];
+                        SubirDatos('PEDIDOS',$scope.objeto,$scope.codigoempresa) 
+                        CRUD.Update('crm_actividades',$scope.objeto);
+                    }    
+                }
+            } 
+        },2000)
+        
+        
+
+    }
     $scope.sincronizar=function(){
         console.log('sincronizo')
         for(var i=0; i < STEP_SINCRONIZACION.length; i++)
@@ -46,12 +78,8 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
             DATOS_ENTIDADES_SINCRONIZACION[i] = JSON.parse(DATOS_ENTIDADES_SINCRONIZACION[i]);
     
             for(var j=0; j < DATOS_ENTIDADES_SINCRONIZACION[i].length; j++) {
-                
-                
                 if (STEP_SINCRONIZACION[i] == ENTIDAD_PEDIDOS) {
-                    
                     CRUD.insert('t_pedidos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
-                    
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_PEDIDOS_DETALLE) {
                     
@@ -94,7 +122,6 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
         }
         
         window.setTimeout(function(){
-            window.location.href = 'index.html#/';
             Mensajes('Sincronizado Con Exito','success','')
         },5000)
     }

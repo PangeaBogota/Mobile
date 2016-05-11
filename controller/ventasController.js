@@ -159,7 +159,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			$scope.detalle.id_unidad=value.id_unidad;
 			$scope.detalle.cantidad=value.cantidad;
 			$scope.detalle.factor=0;
-
+			$scope.detalle.usuariomod='MOBILE';
 			$scope.detalle.precio_unitario=value.precio;
 			$scope.detalle.valor_base=value.precio*value.cantidad;
 			$scope.detalle.usuariocreacion=$scope.sessiondate.nombre_usuario;
@@ -177,9 +177,18 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			$scope.ultimoRegistroseleccionado=$scope.ultimoRegistro[0];
 			$scope.pedidos.rowid=$scope.ultimoRegistroseleccionado.rowid+1;
 			$scope.pedido_detalle.rowid_pedido=$scope.pedidos.rowid;
-			$scope.pedidos.modulo_creacion='MOVIL';
+			$scope.pedidos.modulo_creacion='MOBILE';
 			$scope.pedidos.valor_total=$scope.pedidoDetalles.total;
 			$scope.pedidos.usuariocreacion=$scope.sessiondate.nombre_usuario;
+			$scope.pedidos.rowid_empresa=4;
+			$scope.pedidos.id_cia=1;
+			$scope.pedidos.fecha_pedido=$scope.pedidos.fecha_solicitud;
+			$scope.pedidos.fecha_entrega=$scope.pedidos.fecha_solicitud;
+			$scope.pedidos.valor_impuesto=0;
+			$scope.pedidos.valor_descuento=0;
+			$scope.pedidosid_estado=101;
+			$scope.ind_estado_erp=0;
+			$scope.valor_facturado=0;
 			CRUD.insert('t_pedidos',$scope.pedidos)
 		})
 	}

@@ -42,7 +42,7 @@
                                 <div id="testmodal" style="padding: 5px 20px;">
                                     <form id="antoform" class="form-horizontal calender form-label-left" role="form" novalidate name="formNuevaActividad">
                                         <div class="row form-group">
-                                            <div class="col-md-3 ">
+                                            <div class="col-md-3 col-sm-3 col-xs-4" style="padding: 0px">
                                                 <label class="control-label ">Asunto</label>
                                             </div>
                                             
@@ -51,38 +51,72 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Tipo Actividad</label>
-                                            <div class="col-sm-9">
+                                            <div class="col-md-3 col-sm-3 col-xs-4" style="padding: 0px">
+                                                <label class="control-label ">Actividad</label>
+                                            </div>
+                                            <div class="col-sm-9 col-md-8  ">
                                                 <select  required
                                                     ng-model="NuevoEvento.tipo"  ng-options="partner.tipo_reg_nombre as partner.tipo_reg_nombre 
-                                                    for partner in listActividadTipo " class="form-control"  >
+                                                    for partner in listActividadTipo " class="form-control  "  >
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Fecha Inicial</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" required id="fecha_inicial" class="form-control"  ng-model="NuevoEvento.fecha_inicial">
+                                        <div class=" form-group">
+                                            <div class="col-md-4 col-sm-3 col-xs-4" style="padding: 0px">
+                                               <label class="control-label ">Fecha Inicial</label> 
+                                            </div>
+                                            <div class="col-sm-9 " style="padding: 0px">
+                                                <div class="col-md-8 ">
+                                                    <input type="date" class="form-control " required ng-model="horario.fechaInicial"></input>
+                                                    
+                                                </div>
+                                                <div class="col-md-4 ">
+                                                    <input type="time" class="form-control " required ng-model="horario.horaInicial"></input>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" form-group">
+                                            <div class="col-md-4 col-sm-3 col-xs-4" style="padding: 0px">
+                                               <label class="control-label ">Fecha Final</label> 
+                                            </div>
+                                            <div class="col-sm-9 " style="padding: 0px">
+                                                <div class="col-md-8 ">
+                                                    <input type="date" class="form-control " required ng-model="horario.fechaFinal"></input>
+                                                    
+                                                </div>
+                                                <div class="col-md-4 ">
+                                                    <input type="time" class="form-control " required ng-model="horario.horaFinal"></input>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Fecha Final</label>
-                                            <div class="col-sm-9">
-                                                <input type="text" required id="fecha_final" class="form-control" ng-model="NuevoEvento.fecha_final" >
+                                            <div class="col-md-4 col-sm-3 col-xs-4" style="padding: 0px">
+                                               <label class="control-label ">Referencia</label> 
                                             </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Tipo Referencia</label>
-                                            <div class="col-sm-9">
+                                            <div class="col-sm-8 col-md-8 ">
                                                 <select 
                                                     ng-model="NuevoEvento.tipo_relacion" required  ng-options="partner.tipo_reg_nombre as partner.tipo_reg_nombre 
-                                                    for partner in listActividadTipoRelacion " class="form-control"  >
+                                                    for partner in listActividadTipoRelacion " class="form-control col-md-8"   >
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Prioridad</label>
-                                            <div class="col-sm-9">
+                                            <div class="col-md-4 col-sm-3 col-xs-4" style="padding: 0px">
+                                               <label class="control-label ">Tercero</label> 
+                                            </div>
+                                            <div class="col-sm-9 col-md-4 ">
+                                                <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control "></input>
+                                                <select  required 
+                                                    ng-model="terceroSelected" id="TerceroSelected" ng-options="partner as partner.razonsocial 
+                                                    for partner in list_tercero | filter:Search" class="form-control" >
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-4 col-sm-3 col-xs-4" style="padding: 0px">
+                                               <label class="control-label ">Prioridad</label> 
+                                            </div>
+                                            <div class="col-sm-9 col-md-8 col-xs-7">
                                                 <select 
                                                     ng-model="NuevoEvento.ind_prioridad"  required ng-options="partner.tipo_reg_nombre as partner.tipo_reg_nombre 
                                                     for partner in listActividadPrioridad " class="form-control"  >
@@ -90,8 +124,10 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Estado</label>
-                                            <div class="col-sm-9">
+                                            <div class="col-md-8 col-sm-3 col-xs-4" style="padding: 0px">
+                                               <label class="control-label ">Estado</label> 
+                                            </div>
+                                            <div class="col-sm-9 col-md-8 col-xs-6">
                                                 <select  required
                                                     ng-model="NuevoEvento.rowid_estado"  ng-options="partner.id_estado as partner.nombre_estado 
                                                     for partner in listEstadoActividad " class="form-control"  >
@@ -99,8 +135,10 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3 col-sm-3 col-xs-3">Description</label>
-                                            <div class="col-sm-9">
+                                            <div class="col-md-4 col-sm-3 col-xs-4" style="padding: 0px">
+                                               <label class="control-label ">Descripcion</label> 
+                                            </div>
+                                            <div class="col-sm-9 col-md-8 col-xs-7">
                                                 <textarea class="form-control"  required id="descr" name="descr" ng-model="NuevoEvento.descripcion"></textarea>
                                             </div>
                                         </div>

@@ -17,6 +17,10 @@ app_angular.controller("actividadesController",['Conexion','$scope',function (Co
 	$scope.registro.fecha_final='//Date1462992485000';
 	//CRUD.insert('crm_actividades',$scope.registro);
 	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
+	$scope.terceroSelected=[];
+	$scope.list_tercero=[];
+	CRUD.selectAll('erp_terceros',function(elem){$scope.list_tercero.push(elem);});
+	$scope.horario=[];
 	$scope.CurrentDate=function(){
 		$scope.day;
 		$scope.DayNow=Date.now();
@@ -28,6 +32,33 @@ app_angular.controller("actividadesController",['Conexion','$scope',function (Co
 		$scope.MinuteS=$scope.DayNow.getMinutes();
 		if ($scope.DayS<10) {$scope.DayS='0'+$scope.DayS}
 		$scope.day=$scope.YearS+'/'+$scope.MonthS+'/'+$scope.DayS+' '+$scope.HourS+':'+$scope.MinuteS;
+		return $scope.day;
+	}
+	$scope.selectedDate=function(day){
+		$scope.day;
+		$scope.DayNow=new Date(day);
+		$scope.YearS=$scope.DayNow.getFullYear();
+		$scope.MonthS=$scope.DayNow.getMonth()+1;
+		if ($scope.MonthS<10) {$scope.MonthS='0'+$scope.MonthS}
+		$scope.DayS=$scope.DayNow.getDate();
+		$scope.HourS=$scope.DayNow.getHours();
+		$scope.MinuteS=$scope.DayNow.getMinutes();
+		if ($scope.DayS<10) {$scope.DayS='0'+$scope.DayS}
+		$scope.day=$scope.YearS+'-'+$scope.MonthS+'-'+$scope.DayS;
+		return $scope.day;
+	}
+	$scope.getHour=function(day){
+		$scope.day;
+		$scope.DayNow=new Date(day);
+		$scope.YearS=$scope.DayNow.getFullYear();
+		$scope.MonthS=$scope.DayNow.getMonth()+1;
+		
+		$scope.DayS=$scope.DayNow.getDate();
+		$scope.HourS=$scope.DayNow.getHours();
+		$scope.MinuteS=$scope.DayNow.getMinutes();
+		if ($scope.MinuteS<10) {$scope.MinuteS='0'+$scope.MinuteS}
+		if ($scope.HourS<10) {$scope.HourS='0'+$scope.HourS}
+		$scope.day=$scope.HourS+':'+$scope.MinuteS;
 		return $scope.day;
 	}
 	$scope.ultimoRegistro=[];
@@ -45,7 +76,7 @@ app_angular.controller("actividadesController",['Conexion','$scope',function (Co
 	$scope.actividadSelected=[];
 	$scope.actividad=[];
 	CRUD.select('select * from m_estados where  tipo_estado="ACTIVIDAD"',function(elem){$scope.listEstadoActividad.push(elem)});
-	CRUD.select('select * from m_metaclass where  class_code="ACTIVIDAD.TIPO.RELACION"',function(elem){$scope.listActividadTipoRelacion.push(elem)});
+	CRUD.select('select * from m_metaclass where  class_code="ACTIVIDAD.TIPO.RELACION" and tipo_reg_nombre="Cliente"',function(elem){$scope.listActividadTipoRelacion.push(elem)});
 	CRUD.select('select * from m_metaclass where  class_code="ACTIVIDAD.PRIORIDAD"',function(elem){$scope.listActividadPrioridad.push(elem)});
 	CRUD.select('select * from m_metaclass where  class_code="ACTIVIDAD.TIPO"',function(elem){$scope.listActividadTipo.push(elem)});
 	$scope.RefrescarVista=function(){
@@ -82,6 +113,10 @@ app_angular.controller("actividadesController",['Conexion','$scope',function (Co
 		$scope.ultimoRegistroseleccionado=$scope.ultimoRegistro[0];
 		$scope.NuevoEvento.rowid=$scope.ultimoRegistroseleccionado.rowid+1;
 		$scope.NuevoEvento.usuario_creacion=$scope.sessiondate.nombre_usuario;
+		$scope.NuevoEvento.relacionado_a=$scope.terceroSelected.razonsocial;
+		$scope.NuevoEvento.usuario_modificacion='MOBILE';
+		$scope.NuevoEvento.fecha_inicial=$scope.selectedDate($scope.horario.fechaInicial)+' '+$scope.getHour($scope.horario.horaInicial) ;
+		$scope.NuevoEvento.fecha_final=$scope.selectedDate($scope.horario.fechaFinal)+' '+$scope.getHour($scope.horario.horaFinal) ;
 		$scope.NuevoEvento.fecha_creacion=$scope.CurrentDate();
 		CRUD.insert('crm_actividades',$scope.NuevoEvento)
 		$scope.NuevoEvento=[];
