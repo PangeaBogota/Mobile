@@ -949,56 +949,6 @@ app_angular.service('Factory', function ($webSql) {
         }
     });
 
-    db.createTable('erp_items_precios', {
-        "rowid": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "rowid_empresa": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "id_cia": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "id_lista_precios": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "rowid_item": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "rowid_item_ext": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "id_unidad": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "precio_lista": {
-            "type": "REAL",
-            "null": "NULL"
-        },
-        "fechacreacion": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "usuariocreacion": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "fechamod": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "usuariomod": {
-            "type": "TEXT",
-            "null": "NULL"
-        }
-    });
 
     db.createTable('m_empresas_config', {
         "rowid": {
@@ -1302,6 +1252,18 @@ app_angular.service('Factory', function ($webSql) {
             "null": "NULL"
         },
         "usuariomod": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "fecha_activacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "fecha_inactivacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "estado_item": {
             "type": "TEXT",
             "null": "NULL"
         }
