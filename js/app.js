@@ -37,8 +37,10 @@ app_angular.config(['$routeProvider',//'$locationProvider',
 
 //CONTROLADOR DE GENERAL
 app_angular.controller('sessionController',['Conexion','$scope','$location','$http', '$routeParams', 'Factory' ,function (Conexion, $scope, $location, $http, $routeParams, Factory) {
+    
     $scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
     $scope.sincronizar=function(){
+        ProcesadoShow();
         console.log('sincronizo')
         for(var i=0; i < STEP_SINCRONIZACION.length; i++)
         {
@@ -46,15 +48,11 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
             DATOS_ENTIDADES_SINCRONIZACION[i] = JSON.parse(DATOS_ENTIDADES_SINCRONIZACION[i]);
     
             for(var j=0; j < DATOS_ENTIDADES_SINCRONIZACION[i].length; j++) {
-                
-                
                 if (STEP_SINCRONIZACION[i] == ENTIDAD_PEDIDOS) {
-                    
+
                     CRUD.insert('t_pedidos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
-                    
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_PEDIDOS_DETALLE) {
-                    
                     CRUD.insert('t_pedidos_detalle',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_TERCEROS) {
@@ -87,16 +85,10 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_CONTACTOS) {
                     CRUD.insert('crm_contactos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
                 }
-
-                
-                
             }
         }
-        
-        window.setTimeout(function(){
-            window.location.href = 'index.html#/';
-            Mensajes('Sincronizado Con Exito','success','')
-        },5000)
+        ProcesadoHiden(); 
+        Mensajes('Sincronizado Con Exito','success','')
     }
 
 }]);
@@ -149,7 +141,7 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
     $scope.labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
     $scope.data = [ [65, 59, 80, 81, 56, 55] ];
     $scope.colours=["#26B99A"];
-    
+    $scope.series = ['Pedidos'];
     
 	
 }]);

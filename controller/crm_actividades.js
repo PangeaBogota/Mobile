@@ -130,9 +130,10 @@ app_angular.controller("actividadesController",['Conexion','$scope',function (Co
 		
 		day=YearS+''+MonthS+''+DayS;
 		$scope.actividadesDia=[];
-		var query="select  tema,descripcion,fecha_inicial,fecha_final ,replace(fecha_inicial,'/','') as fecha_inicialF,replace(fecha_final,'/','') as fecha_finalF from crm_actividades ";
+		var query="select  tema,descripcion,fecha_inicial,fecha_final ,replace(fecha_inicial,'-','') as fecha_inicialF,replace(fecha_final,'-','') as fecha_finalF from crm_actividades ";
 		
 		CRUD.select(query,function(elem){
+			
 			var f1 = elem.fecha_inicialF.slice(0,8);
 			var f2 = elem.fecha_finalF.slice(0,8);
 			f1.replace(' ','');
