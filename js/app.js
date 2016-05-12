@@ -15,7 +15,10 @@ app_angular.config(['$routeProvider',//'$locationProvider',
                 template: '<div ng-include="templateUrl">Loading...</div>',
                 controller: 'appController'
             })
-
+            .when('/:modulo/:url/:personId', {
+                template: '<div ng-include="templateUrl">Loading...</div>',
+                controller: 'appController'
+            })
             /*.when("/:modulo/:url",{
              controller:'appController',
              templateUrl: function(urlattr){
@@ -56,27 +59,31 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 
                 for (var j =0;j< ALMACENARDATOS[i].length ;j++) {
                     if (STEP_SUBIRDATOS[i]==ENTIDAD_ACTIVIDADES) {
+                        $scope.usuario=$scope.sessiondate.nombre_usuario;
                         $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
                         $scope.objeto=ALMACENARDATOS[i][j];
-                        SubirDatos('ACTIVIDADES',$scope.objeto,$scope.codigoempresa) 
+                        SubirDatos( $scope.usuario,'ACTIVIDADES',$scope.objeto,$scope.codigoempresa) 
                         CRUD.Updatedynamic("update crm_actividades set usuario_modificacion='SINCRONIZADO' where rowid="+$scope.objeto.rowid+"");
                     } 
                     if (STEP_SUBIRDATOS[i]==ENTIDAD_PEDIDOS) {
                         $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
                         $scope.objeto=ALMACENARDATOS[i][j];
-                        SubirDatos('PEDIDOS',$scope.objeto,$scope.codigoempresa) 
+                        $scope.usuario=$scope.sessiondate.nombre_usuario;
+                        SubirDatos( $scope.usuario,'PEDIDOS',$scope.objeto,$scope.codigoempresa) 
                         CRUD.Updatedynamic("update t_pedidos set usuariomod='SINCRONIZADO' where rowid="+$scope.objeto.rowid+"");
                     }
                     if (STEP_SUBIRDATOS[i]==ENTIDAD_PEDIDOS_DETALLE) {
                         debugger
                         $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
+                        $scope.usuario=$scope.sessiondate.nombre_usuario;
                         $scope.objeto=ALMACENARDATOS[i][j];
-                        SubirDatos('PEDIDO_DETALLE',$scope.objeto,$scope.codigoempresa) 
+                        SubirDatos( $scope.usuario,'PEDIDO_DETALLE',$scope.objeto,$scope.codigoempresa) 
                         CRUD.Updatedynamic("update t_pedidos_detalle set usuariomod='SINCRONIZADO' where rowid="+$scope.objeto.rowid+"");
                         
                     }  
                 }
-            } 
+            }
+            Mensajes('Sincronizado Con Exito','success','') 
         },2000)
         
         
@@ -155,6 +162,36 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
         console.log($routeParams);
         $scope.templateUrl = 'view/' + $routeParams.modulo + '/' + $routeParams.url + '.html';
     }
+    $scope.CurrentDate=function(){
+        $scope.day;
+        $scope.DayNow=Date.now();
+        $scope.YearS=$scope.DayNow.getFullYear();
+        $scope.MonthS=$scope.DayNow.getMonth()+1;
+        if ($scope.MonthS<10) {$scope.MonthS='0'+$scope.MonthS}
+        $scope.DayS=$scope.DayNow.getDate();
+        $scope.HourS=$scope.DayNow.getHours();
+        $scope.MinuteS=$scope.DayNow.getMinutes();
+        if ($scope.DayS<10) {$scope.DayS='0'+$scope.DayS}
+        $scope.day=$scope.YearS+''+$scope.MonthS+''+$scope.DayS;
+        return $scope.day;
+    }
+
+    $scope.actividadesToday=[];
+
+    var query="select  tema,descripcion,fecha_inicial,fecha_final ,replace(fecha_inicial,'-','') as fecha_inicialF,replace(fecha_final,'-','') as fecha_finalF from crm_actividades ";
+    $scope.today=$scope.CurrentDate();
+    CRUD.select(query,function(elem){
+        var f1 = elem.fecha_inicialF.slice(0,8);
+        var f2 = elem.fecha_finalF.slice(0,8);
+        f1.replace(' ','');
+        f2.replace(' ','');
+        if (f1<=$scope.today) {
+            if (f2>=$scope.today) {
+                $scope.actividadesToday.push(elem);
+            }
+        }
+    })
+
     $scope.cantidadTerceros=[];
     $scope.cantidadTerceros1=[];
     $scope.cantidadPedidos=[];

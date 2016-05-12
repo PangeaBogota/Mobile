@@ -42,6 +42,10 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item and item.id_unidad=precios.id_unidad inner join erp_entidades_master maestro on maestro.erp_id_maestro=precios.id_lista_precios and maestro.id_tipo_maestro='LISTA_PRECIOS' WHERE item_referencia NOT LIKE '%*DESC*%'   and maestro.rowid="+$scope.pedidos.rowid_lista_precios+"";
 		CRUD.select(query,function(elem){$scope.list_items.push(elem);});
 	}
+	$scope.onChangeFiltro=function()
+	{
+		if ($scope.SearchItem=='') {$scope.item=[]}
+	}
 	
 	$scope.CurrentDate=function(){
 		$scope.day;
@@ -104,6 +108,9 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		},1200)
 		
 	}
+	$scope.onChangeFiltroTercero=function(){
+		if ($scope.Search=='') {$scope.terceroSelected=[];}
+	}
 	$scope.adicionaritem=function(){
 		if($scope.item==null)
 		{
@@ -117,6 +124,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		}
 		if ($scope.itemsAgregadosPedido.indexOf($scope.item) == -1) {
 			$scope.item.cantidad=1;
+			$scope.item.iva=$scope.item.precio*16/100;
 			$scope.item.valorTotal=0;
 			$scope.itemsAgregadosPedido.push($scope.item);
 			Mensajes('Item Agregado','success','');
@@ -132,14 +140,18 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	}
 	$scope.CalcularCantidadValorTotal=function(){
 		$scope.valortotal=0;
+		$scope.iva=0;
 		$scope.cantidad=0;
+		$scope.ivatotal=0;
 		angular.forEach($scope.itemsAgregadosPedido,function(value,key){
 			$scope.precioEstandar=value.precio*value.cantidad;
 			$scope.valortotal+=$scope.precioEstandar;
 			$scope.cantidad+=value.cantidad;
+			$scope.ivatotal+=value.iva*value.cantidad;
 		})
+		$scope.pedidoDetalles.iva=$scope.ivatotal;
 		$scope.pedidoDetalles.cantidad=$scope.cantidad;
-		$scope.pedidoDetalles.total=$scope.valortotal;
+		$scope.pedidoDetalles.total=$scope.valortotal+$scope.ivatotal;
 	}
 	$scope.delete = function (index) {
     	$scope.itemsAgregadosPedido.splice(index, 1);
@@ -192,14 +204,14 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			$scope.pedidos.rowid=$scope.ultimoRegistroseleccionado.rowid+1;
 			$scope.pedido_detalle.rowid_pedido=$scope.pedidos.rowid;
 			$scope.pedidos.modulo_creacion='MOBILE';
-			$scope.pedidos.valor_total=0;
+			$scope.pedidos.valor_total=$scope.pedidoDetalles.total;
 			$scope.pedidos.valor_base=$scope.pedidoDetalles.total;
 			$scope.pedidos.usuariocreacion=$scope.sessiondate.nombre_usuario;
 			$scope.pedidos.rowid_empresa=4;
 			$scope.pedidos.id_cia=1;
 			$scope.pedidos.fecha_pedido=$scope.pedidos.fecha_solicitud;
 			$scope.pedidos.fecha_entrega=$scope.pedidos.fecha_solicitud;
-			$scope.pedidos.valor_impuesto=0;
+			$scope.pedidos.valor_impuesto=$scope.pedidoDetalles.iva;
 			$scope.pedidos.valor_descuento=0;
 			$scope.pedidos.id_estado=101;
 			$scope.pedidos.ind_estado_erp=0;

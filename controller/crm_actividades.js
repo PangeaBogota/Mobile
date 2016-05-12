@@ -3,7 +3,7 @@
 
 var app_angular= angular.module('PedidosOnline');
 
-app_angular.controller("actividadesController",['Conexion','$scope',function (Conexion,$scope) {
+app_angular.controller("actividadesController",['Conexion','$scope', '$routeParams',function (Conexion,$scope,$routeParams) {
 	
 	$scope.registro=[];
 	$scope.registro.rowid=1000;
@@ -16,10 +16,31 @@ app_angular.controller("actividadesController",['Conexion','$scope',function (Co
 	$scope.registro.fecha_inicial='//Date1462301285000';
 	$scope.registro.fecha_final='//Date1462992485000';
 	//CRUD.insert('crm_actividades',$scope.registro);
-	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
+
 	$scope.terceroSelected=[];
+	CRUD.select('select * from erp_terceros ',function(elem){$scope.list_tercero.push(elem);});
+	$scope.terceroDeTercero=$routeParams.personId;
+	window.setTimeout(function(){
+		if ($scope.terceroDeTercero!=undefined) 
+		{
+			debugger
+			$scope.tercero1=[];
+			CRUD.select('select * from erp_terceros where rowid='+$scope.terceroDeTercero+'',
+				function(elem)
+				{
+					$scope.tercero1.push(elem);
+					$scope.terceroSelected=elem;
+					$('#fc_create').click();
+				}
+			)
+		}
+	},2000)
+
+
+	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
+	
 	$scope.list_tercero=[];
-	CRUD.selectAll('erp_terceros',function(elem){$scope.list_tercero.push(elem);});
+	
 	$scope.horario=[];
 	$scope.CurrentDate=function(){
 		$scope.day;
@@ -80,6 +101,8 @@ app_angular.controller("actividadesController",['Conexion','$scope',function (Co
 	CRUD.select('select * from m_metaclass where  class_code="ACTIVIDAD.PRIORIDAD"',function(elem){$scope.listActividadPrioridad.push(elem)});
 	CRUD.select('select * from m_metaclass where  class_code="ACTIVIDAD.TIPO"',function(elem){$scope.listActividadTipo.push(elem)});
 	$scope.RefrescarVista=function(){
+
+
 		$scope.eventSources=[];
 		$scope.events=[];
 		CRUD.select('select rowid,  fecha_inicial, fecha_final,tema,ind_prioridad from crm_Actividades',
@@ -165,7 +188,7 @@ app_angular.controller("actividadesController",['Conexion','$scope',function (Co
 		
 		day=YearS+''+MonthS+''+DayS;
 		$scope.actividadesDia=[];
-		var query="select  tema,descripcion,fecha_inicial,fecha_final ,replace(fecha_inicial,'/','') as fecha_inicialF,replace(fecha_final,'/','') as fecha_finalF from crm_actividades ";
+		var query="select  tema,descripcion,fecha_inicial,fecha_final ,replace(fecha_inicial,'-','') as fecha_inicialF,replace(fecha_final,'-','') as fecha_finalF from crm_actividades ";
 		
 		CRUD.select(query,function(elem){
 			var f1 = elem.fecha_inicialF.slice(0,8);

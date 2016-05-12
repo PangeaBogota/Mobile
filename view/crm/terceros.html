@@ -42,7 +42,10 @@
                 <div class="modal-body">
                     <div id="testmodal" style="padding: 0px;">
                         <form id="antoform" class="form-horizontal calender form-label-left" role="form">
-
+                        <div class="row">
+                            <a class="btn btn-success" href="#/crm/calendario/{{terceroSeleccionado.rowid}}">Actividad</a>
+                            <a class="btn btn-success" href="#/ventas/pedido_nuevo/{{terceroSeleccionado.rowid}}">Pedido</a>
+                        </div>
                             <div class="row " style="margin: 0px">
                                 <div class="form-group col-md-4 col-xs-12" style="margin: 1px">
                                     Razon Social : <strong>{{terceroSeleccionado.razonsocial}}</strong>
@@ -53,7 +56,16 @@
                                 <div class="form-group col-md-12" style="margin: 1px">
                                     Documento : <strong>{{terceroSeleccionado.identificacion}}</strong> 
                                 </div>
-
+                            </div>
+                            <div class="row" style="margin: 0px">
+                                <div class="form-group col-md-12" style="margin: 1px">
+                                    Telefono : <strong>{{terceroSeleccionado.identificacion}}</strong> 
+                                </div>
+                            </div>
+                            <div class="row" style="margin: 0px">
+                                <div class="form-group col-md-12" style="margin: 1px">
+                                    Direccion : <strong>{{terceroSeleccionado.identificacion}}</strong> 
+                                </div>
                             </div>
                             <h3>Informacion Contacto</h3>
                             <div class="row" style="margin: 0px">
@@ -68,7 +80,12 @@
                             </div>
                             <div class="row" style="margin: 0px">
                                 <div class="form-group col-md-6 col-xs-12" style="margin: 1px">
-                                    Telefono Altero :<strong> {{terceroDetalles.celular}}</strong>
+                                    Telefono Alterno :<strong> {{terceroDetalles.celular}}</strong>
+                                </div>
+                            </div>
+                            <div class="row" style="margin: 0px">
+                                <div class="form-group col-md-6 col-xs-12" style="margin: 1px">
+                                    Correo :<strong> {{terceroDetalles.email}}</strong>
                                 </div>
                             </div>
                         </form>
