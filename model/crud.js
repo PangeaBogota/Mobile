@@ -39,6 +39,8 @@ app_angular.service('Conexion', ['Factory',function (Factory) {
     CRUD.Update = function(tabla,elem, callback) {
         db.update(tabla, elem, callback);
     }
-
+    CRUD.Updatedynamic = function(query, callback) {
+        db.updateDynamic(query, callback);
+    }
     return CRUD;
 }]);

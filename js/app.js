@@ -43,26 +43,38 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
     $scope.datosSubir=function(){
         $scope.pedidos=[];
         $scope.actividades=[];
+        $scope.detalle_pedidos=[];
         console.log('entro'); 
         CRUD.select('select *from crm_actividades where usuario_modificacion="MOBILE"',function(elem){$scope.actividades.push(elem)})
-        CRUD.select('select *from t_pedidos where modulo_creacion="MOBILE"',function(elem){$scope.actividades.push(elem)})
+        CRUD.select('select *from t_pedidos where usuariomod="MOBILE"',function(elem){$scope.pedidos.push(elem)})
+        CRUD.select('select *from t_pedidos_detalle where usuariomod="MOBILE"',function(elem){$scope.detalle_pedidos.push(elem)})
         window.setTimeout(function(){
+            ALMACENARDATOS[0]=$scope.actividades;
+            ALMACENARDATOS[1]=$scope.pedidos;
+            ALMACENARDATOS[2]=$scope.detalle_pedidos;
             for (var i =0;i< STEP_SUBIRDATOS.length ; i++) {
-                STEP_SUBIRDATOS[i]=$scope.actividades;
-                for (var j =0;j< STEP_SUBIRDATOS[i].length ;j++) {
-                    if (i==0) {
+                
+                for (var j =0;j< ALMACENARDATOS[i].length ;j++) {
+                    if (STEP_SUBIRDATOS[i]==ENTIDAD_ACTIVIDADES) {
                         $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
-                        $scope.objeto=STEP_SUBIRDATOS[i][j];
+                        $scope.objeto=ALMACENARDATOS[i][j];
                         SubirDatos('ACTIVIDADES',$scope.objeto,$scope.codigoempresa) 
-                        $scope.objeto.usuario_modificacion='SINCRONIZADO'
-                        CRUD.Update('crm_actividades',$scope.objeto);
+                        CRUD.Updatedynamic("update crm_actividades set usuario_modificacion='SINCRONIZADO' where rowid="+$scope.objeto.rowid+"");
                     } 
-                    if (i==1) {
+                    if (STEP_SUBIRDATOS[i]==ENTIDAD_PEDIDOS) {
                         $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
-                        $scope.objeto=STEP_SUBIRDATOS[i][j];
+                        $scope.objeto=ALMACENARDATOS[i][j];
                         SubirDatos('PEDIDOS',$scope.objeto,$scope.codigoempresa) 
-                        CRUD.Update('crm_actividades',$scope.objeto);
-                    }    
+                        CRUD.Updatedynamic("update t_pedidos set usuariomod='SINCRONIZADO' where rowid="+$scope.objeto.rowid+"");
+                    }
+                    if (STEP_SUBIRDATOS[i]==ENTIDAD_PEDIDOS_DETALLE) {
+                        debugger
+                        $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
+                        $scope.objeto=ALMACENARDATOS[i][j];
+                        SubirDatos('PEDIDO_DETALLE',$scope.objeto,$scope.codigoempresa) 
+                        CRUD.Updatedynamic("update t_pedidos_detalle set usuariomod='SINCRONIZADO' where rowid="+$scope.objeto.rowid+"");
+                        
+                    }  
                 }
             } 
         },2000)

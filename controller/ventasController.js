@@ -152,19 +152,33 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			return
 		}
 		angular.forEach($scope.itemsAgregadosPedido,function(value,key){
-			$scope.detalle=[];
-			$scope.detalle.rowid_item=value.rowid_item;
-			$scope.detalle.rowid_pedido=$scope.pedidos.rowid;
-			$scope.detalle.linea_descripcion=value.descripcion;
-			$scope.detalle.id_unidad=value.id_unidad;
-			$scope.detalle.cantidad=value.cantidad;
-			$scope.detalle.factor=0;
-			$scope.detalle.usuariomod='MOBILE';
-			$scope.detalle.precio_unitario=value.precio;
-			$scope.detalle.valor_base=value.precio*value.cantidad;
-			$scope.detalle.usuariocreacion=$scope.sessiondate.nombre_usuario;
-			$scope.detalle.fechacreacion=$scope.CurrentDate();
-			CRUD.insert('t_pedidos_detalle',$scope.detalle);
+			CRUD.select('select max(rowid) as rowid from t_pedidos',function(elem){
+				$scope.p1=[];
+				$scope.p1.push(elem);
+				$scope.ultimoseleccionado=[];
+				$scope.ultimoseleccionado=$scope.p1[0];
+				$scope.detalle=[];
+				$scope.detalle.rowid=$scope.ultimoseleccionado.rowid+1;
+				$scope.detalle.rowid_item=value.rowid_item;
+				$scope.detalle.rowid_pedido=$scope.pedidos.rowid;
+				$scope.detalle.linea_descripcion=value.descripcion;
+				$scope.detalle.id_unidad=value.id_unidad;
+				$scope.detalle.cantidad=value.cantidad;
+				$scope.detalle.factor=0;
+				$scope.detalle.cantidad_base=value.cantidad;
+				$scope.detalle.usuariomod='MOBILE';
+				$scope.detalle.stock=0;
+				$scope.detalle.porcen_descuento=0;
+				$scope.detalle.valor_impuesto=0;
+				$scope.detalle.valor_descuento=0;
+				$scope.detalle.valor_total_linea=0;
+				$scope.detalle.precio_unitario=value.precio;
+				$scope.detalle.valor_base=value.precio*value.cantidad;
+				$scope.detalle.usuariocreacion=$scope.sessiondate.nombre_usuario;
+				$scope.detalle.fechacreacion=$scope.CurrentDate();
+				CRUD.insert('t_pedidos_detalle',$scope.detalle);
+			})
+			
 		})
 		
 		CRUD.select('SELECT  SUM (valor_base)  as total,SUM (cantidad)  as cantidad FROM  t_pedidos_detalle  where rowid_pedido='+$scope.pedidos.rowid+'',function(elem){$scope.pedidoDetalles.push(elem)});
@@ -178,7 +192,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			$scope.pedidos.rowid=$scope.ultimoRegistroseleccionado.rowid+1;
 			$scope.pedido_detalle.rowid_pedido=$scope.pedidos.rowid;
 			$scope.pedidos.modulo_creacion='MOBILE';
-			$scope.pedidos.valor_total=$scope.pedidoDetalles.total;
+			$scope.pedidos.valor_total=0;
+			$scope.pedidos.valor_base=$scope.pedidoDetalles.total;
 			$scope.pedidos.usuariocreacion=$scope.sessiondate.nombre_usuario;
 			$scope.pedidos.rowid_empresa=4;
 			$scope.pedidos.id_cia=1;
@@ -186,9 +201,11 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			$scope.pedidos.fecha_entrega=$scope.pedidos.fecha_solicitud;
 			$scope.pedidos.valor_impuesto=0;
 			$scope.pedidos.valor_descuento=0;
-			$scope.pedidosid_estado=101;
-			$scope.ind_estado_erp=0;
-			$scope.valor_facturado=0;
+			$scope.pedidos.id_estado=101;
+			$scope.pedidos.ind_estado_erp=0;
+			$scope.pedidos.valor_facturado=0;
+			$scope.pedidos.usuariomod='MOBILE';
+			
 			CRUD.insert('t_pedidos',$scope.pedidos)
 		})
 	}
