@@ -44,6 +44,7 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
     $scope.pedidos=[];
     $scope.actividades=[];
     $scope.datosSubir=function(){
+        ProcesadoShow();
         $scope.pedidos=[];
         $scope.actividades=[];
         $scope.detalle_pedidos=[];
@@ -55,6 +56,16 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
             ALMACENARDATOS[0]=$scope.actividades;
             ALMACENARDATOS[1]=$scope.pedidos;
             ALMACENARDATOS[2]=$scope.detalle_pedidos;
+            if (ALMACENARDATOS[0].length==0) {
+                if (ALMACENARDATOS[1].length==0) {
+                    if (ALMACENARDATOS[2].length==0) {
+                        Mensajes('No hay Datos que Subir','error','') 
+                        ProcesadoHiden();
+                        return;
+                    }
+                }
+            }
+            debugger
             for (var i =0;i< STEP_SUBIRDATOS.length ; i++) {
                 
                 for (var j =0;j< ALMACENARDATOS[i].length ;j++) {
@@ -73,7 +84,6 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                         CRUD.Updatedynamic("update t_pedidos set usuariomod='SINCRONIZADO' where rowid="+$scope.objeto.rowid+"");
                     }
                     if (STEP_SUBIRDATOS[i]==ENTIDAD_PEDIDOS_DETALLE) {
-                        debugger
                         $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
                         $scope.usuario=$scope.sessiondate.nombre_usuario;
                         $scope.objeto=ALMACENARDATOS[i][j];
@@ -84,6 +94,7 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 }
             }
             Mensajes('Sincronizado Con Exito','success','') 
+            ProcesadoHiden();
         },2000)
         
         
@@ -91,6 +102,7 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
     }
     $scope.sincronizar=function(){
         console.log('sincronizo')
+        ProcesadoShow();
         for(var i=0; i < STEP_SINCRONIZACION.length; i++)
         {
             DATOS_ENTIDADES_SINCRONIZACION[i]=localStorage.getItem(STEP_SINCRONIZACION[i].toString());
@@ -142,7 +154,8 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
         
         window.setTimeout(function(){
             Mensajes('Sincronizado Con Exito','success','')
-        },5000)
+            ProcesadoHiden();
+        },8000)
     }
 
 }]);
