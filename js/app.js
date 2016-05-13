@@ -155,7 +155,7 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
         window.setTimeout(function(){
             Mensajes('Sincronizado Con Exito','success','')
             ProcesadoHiden();
-        },8000)
+        },5000)
     }
 
 }]);
