@@ -42,7 +42,7 @@ var STEP_SUBIRDATOS=
     ENTIDAD_PEDIDOS,
     ENTIDAD_PEDIDOS_DETALLE
     ];
-var DATABASE='PedidosOnlineAndres57';
+var DATABASE='PedidosOnlineAndres60';
 var DATOS_ENTIDADES_SINCRONIZACION = [];
 var CUR_USER=[];
 var ALMACENARDATOS=[];
