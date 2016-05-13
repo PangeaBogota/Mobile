@@ -20,20 +20,22 @@ var STEP_SINCRONIZACION=
         //                    ENTIDAD_MODULOS_CONFIG,
         //                    ENTIDAD_OPCIONES_MENU,
         //                    ENTIDAD_PARAMETROS,
-                            ENTIDAD_METACLASS,
-        //                    ENTIDAD_LOCALIZACION,
-        
-        ENTIDAD_ESTADOS,
-        ENTIDAD_ACTIVIDADES,
-        ENTIDAD_ITEMS,
-        ENTIDAD_ITEMS_PRECIOS,
-        //ENTIDAD_PEDIDOS,
-        //ENTIDAD_PEDIDOS_DETALLE,
         ENTIDAD_TERCEROS,
         ENTIDAD_SUCURSALES,
         ENTIDAD_MAESTROS,
         ENTIDAD_PUNTOS_ENVIO,
-        ENTIDAD_CONTACTOS
+        ENTIDAD_CONTACTOS,
+                            ENTIDAD_METACLASS,
+        //                    ENTIDAD_LOCALIZACION,
+        ENTIDAD_ITEMS,
+        ENTIDAD_ITEMS_PRECIOS,
+        
+        ENTIDAD_ESTADOS,
+        ENTIDAD_ACTIVIDADES
+        
+        //ENTIDAD_PEDIDOS,
+        //ENTIDAD_PEDIDOS_DETALLE,
+        
 ];
 
 var STEP_SUBIRDATOS=
@@ -42,7 +44,7 @@ var STEP_SUBIRDATOS=
     ENTIDAD_PEDIDOS,
     ENTIDAD_PEDIDOS_DETALLE
     ];
-var DATABASE='PedidosOnlineAndres60';
+var DATABASE='PedidosOnlineAndres78';
 var DATOS_ENTIDADES_SINCRONIZACION = [];
 var CUR_USER=[];
 var ALMACENARDATOS=[];

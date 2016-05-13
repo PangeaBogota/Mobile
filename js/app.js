@@ -145,17 +145,19 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_CONTACTOS) {
                     CRUD.insert('crm_contactos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+
                 }
 
                 
                 
             }
+
         }
         
         window.setTimeout(function(){
             Mensajes('Sincronizado Con Exito','success','')
             ProcesadoHiden();
-        },5000)
+        },257000)
     }
 
 }]);
