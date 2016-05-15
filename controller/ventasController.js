@@ -30,19 +30,19 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.pedido_detalle=[];
 	$scope.list_pedidos_detalles=[];
 	$scope.valorTotal;
-	var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
-	var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item and item.id_unidad=precios.id_unidad ";
-	CRUD.select(query,function(elem){$scope.list_items.push(elem);});
+	//var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
+	//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item ";
+	//CRUD.select(query,function(elem){$scope.list_items.push(elem);});
     
 	CRUD.selectAll('erp_terceros',function(elem){$scope.list_tercero.push(elem);});
 	
 	
 	$scope.onChangeListaPrecios=function(){
 		if ($scope.pedidos.rowid_lista_precios==undefined) {$scope.list_items=[];return}
-		//$scope.list_items=[];
-		//var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
-		//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item and item.id_unidad=precios.id_unidad inner join erp_entidades_master maestro on maestro.erp_id_maestro=precios.id_lista_precios  WHERE  maestro.rowid="+$scope.pedidos.rowid_lista_precios+"";
-		//CRUD.select(query,function(elem){$scope.list_items.push(elem);});
+		$scope.list_items=[];
+		var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
+		var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item  inner join erp_entidades_master maestro on maestro.erp_id_maestro=precios.id_lista_precios  WHERE  maestro.rowid="+$scope.pedidos.rowid_lista_precios+"";
+		CRUD.select(query,function(elem){$scope.list_items.push(elem);});
 	}
 	$scope.onChangeFiltro=function()
 	{
