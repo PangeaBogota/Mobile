@@ -102,62 +102,449 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
     }
     $scope.sincronizar=function(){
         console.log('sincronizo')
-        ProcesadoShow();
+        Sincronizar($scope.sessiondate.nombre_usuario,$scope.sessiondate.codigo_empresa);
+        var  stringSentencia='';
+        var NewQuery=true;
         for(var i=0; i < STEP_SINCRONIZACION.length; i++)
         {
-            DATOS_ENTIDADES_SINCRONIZACION[i]=localStorage.getItem(STEP_SINCRONIZACION[i].toString());
-            DATOS_ENTIDADES_SINCRONIZACION[i] = JSON.parse(DATOS_ENTIDADES_SINCRONIZACION[i]);
-    
+            NewQuery=true;
+            stringSentencia='';
+            //DATOS_ENTIDADES_SINCRONIZACION[i]=localStorage.getItem(STEP_SINCRONIZACION[i].toString());
+            //DATOS_ENTIDADES_SINCRONIZACION[i] = JSON.parse(DATOS_ENTIDADES_SINCRONIZACION[i]);
+            debugger
             for(var j=0; j < DATOS_ENTIDADES_SINCRONIZACION[i].length; j++) {
                 if (STEP_SINCRONIZACION[i] == ENTIDAD_PEDIDOS) {
-                    CRUD.insert('t_pedidos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('t_pedidos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into t_pedidos  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_empresa+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_cia+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_cliente_facturacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_cliente_despacho+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_lista_precios+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_bodega+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_pedido+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_entrega+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_solicitud+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_punto_envio+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].observaciones+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].observaciones2+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].orden_compra+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].referencia+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_base+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_descuento+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_impuesto+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_total+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_estado+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].numpedido_erp+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_facturado+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_cond_especial+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_doc+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_vendedor+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_cond_pago+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].numremision_erp+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_co+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].transporte_conductor_cc+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].transporte_conductor_nombre+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].transporte_placa+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_anulacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_anulacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_nota+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].criterio_clasificacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_estado_erp+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].modulo_creacion+"' "; 
+                    if (j==399) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_PEDIDOS_DETALLE) {
-                    
-                    CRUD.insert('t_pedidos_detalle',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('t_pedidos_detalle',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into t_pedidos_detalle  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_pedido+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_bodega+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_item+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].linea_descripcion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_unidad+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].cantidad+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].factor+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].cantidad_base+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].precio_unitario+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_motivo+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].stock+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_base+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_impuesto+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].porcen_descuento+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_porcen_descuento+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_descuento+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_total_linea+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_item_ext+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].item_ext1+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].item_ext2+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].num_lote+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_anulacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_anulacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].flete+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].porcen_descuento2+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_porcen_descuento2+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].porcen_descuento3+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].valor_porcen_descuento3+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].unidad_medida+"' "; 
+                    if (j==399) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_TERCEROS) {
-                    CRUD.insert('erp_terceros',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('erp_terceros',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into erp_terceros  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_empresa+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_cia+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_interno+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].identificacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_identificacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].razonsocial+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombre_comercial+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].codigo_erp+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_activo+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].es_vendedor+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].es_cliente+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].es_proveedor+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].es_accionista+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].industria+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_industria+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].clasificacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_impuesto+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].descripcion+"' "; 
+                    if (j==399) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
+
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_SUCURSALES) {
-                    CRUD.insert('erp_terceros_sucursales',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('erp_terceros_sucursales',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into erp_terceros_sucursales  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_empresa+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_tercero+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_sucursal+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombre_sucursal+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].codigo_sucursal+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].direccion1+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].direccion2+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].direccion3+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].telefono1+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].telefono2+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].codigo_postal+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_ciudad+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_depto+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_pais+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_lista_precios+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombre_contacto+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].email_contacto+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].centro_operacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_condicion_pago+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_vendedor+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_unidad_negocio+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_grupo_descuento+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_zona+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].porcen_descuento+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_bloqueo_cupo+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_bloqueo_mora+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].cupo_credito+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_tipo_cliente+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_estado+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].clave+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_bodega+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_division+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_canal+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_principal+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_criterio_clasificacion+"' "; 
+                    if (j==199) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_MAESTROS) {
-                    CRUD.insert('erp_entidades_master',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('erp_entidades_master',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into erp_entidades_master  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_tipo_maestro+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_empresa+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].erp_id_cia+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].erp_rowid_maestro+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].erp_id_maestro+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].erp_descripcion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].custom1+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].email+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_disabled+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].custom2+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].custom3+"' "; 
+                    if (j==199) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_PUNTOS_ENVIO) {
-                    CRUD.insert('erp_terceros_punto_envio',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('erp_terceros_punto_envio',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into erp_terceros_punto_envio  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_empresa+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_tercero+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].codigo_sucursal+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_punto_envio+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombre_punto_envio+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_vendedor+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_estado+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+"' "; 
+                    if (j==199) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_ITEMS) {
-                    CRUD.insert('erp_items',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('erp_items',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into erp_items  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_empresa+"', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_cia+"', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_item_erp+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_item_ext+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_item+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].item_referencia+"', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].item_codigo+"', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].item_descripcion+"', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].item_linea+"', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].item_ext1+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].item_ext2+"', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_unidad+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_unidad_venta+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_estado+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].descripcion_extensa+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+"', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].item_custom1+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].impuesto_id+"', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].impuesto_porcentaje+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].descripcion_adicional+"','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].cantidad_embalaje+"' "; 
+                    if (j==199) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_ITEMS_PRECIOS) {
-                    CRUD.insert('erp_items_precios',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('erp_items_precios',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into erp_items_precios  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_empresa+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_cia+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_lista_precios+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_item+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_item_ext+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_unidad+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].precio_lista+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_activacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_inactivacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].estado_item+"' "; 
+                    if (j==199) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_ACTIVIDADES) {
-                    CRUD.insert('crm_actividades',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('crm_actividades',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into crm_actividades  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tema+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_prioridad+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_estado+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].descripcion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_relacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].relacionado_a+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_relacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_inicial+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_final+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_creacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_creacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_modificacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_modificacion+"' "; 
+                    if (j==199) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_METACLASS) {
-                    CRUD.insert('m_metaclass',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('m_metaclass',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into m_metaclass  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].class_code+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_reg_codigo+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_reg_nombre+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_activo+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].CreatedBy+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].CreationDate+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ModifiedBy+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ModDate+"' "; 
+                    if (j==199) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_ESTADOS) {
-                    CRUD.insert('m_estados',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('m_estados',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into m_estados  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].id_estado+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_estado+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombre_estado+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_editar+"' "; 
+                    if (j==399) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
                 }
                 else if (STEP_SINCRONIZACION[i] == ENTIDAD_CONTACTOS) {
-                    CRUD.insert('crm_contactos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    //CRUD.insert('crm_contactos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                    if (NewQuery) {
+                        stringSentencia=" insert into crm_contactos  ";
+                        NewQuery=false;
+                    }
+                    else{
+                        stringSentencia+= "   UNION   ";
+                    }
+                    stringSentencia+=  "  SELECT  '"+
+                    DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_sucursal+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].identificacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombres+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].apellidos+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].email+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].telefono+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].skype+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].descripcion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ruta_imagen+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].celular+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].cargo+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].area+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_principal+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_creacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_creacion+
+                    "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_modificacion+
+                    "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_modificacion+"' "; 
+                    if (j==199) {
+                        CRUD.Updatedynamic(stringSentencia)
+                        NewQuery=true;
+                        stringSentencia="";
+                    }
 
-                }
-
-                
-                
+                } 
             }
-
+            CRUD.Updatedynamic(stringSentencia)
+            NewQuery=true;
+            
         }
         
         window.setTimeout(function(){
             Mensajes('Sincronizado Con Exito','success','')
             ProcesadoHiden();
-        },257000)
+        },10000)
     }
 
 }]);

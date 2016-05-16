@@ -209,9 +209,25 @@
                 return confirmed;
             });
         }
+        function Sincronizar(username,codigo_empresa){
+            ProcesadoShow();
+            for(var i=0; i < STEP_SINCRONIZACION.length; i++)
+            {
+                $.ajax({
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                type: 'get',
+                url: 'http://demos.pedidosonline.co/Mobile/Instalacion?step=2&username='+username+'&codigo_empresa=' + codigo_empresa+ '&entidad=' + STEP_SINCRONIZACION[i],
+                crossDomain: true,
+                async: false,
+                success: function (data) {
+                        DATOS_ENTIDADES_SINCRONIZACION[i]=STEP_SINCRONIZACION[i].toString();
+                        DATOS_ENTIDADES_SINCRONIZACION[i] = data;
+                }
+                });
+            }
+        }
         
-        
-    <!-- /datepicker -->
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
