@@ -719,7 +719,7 @@ app_angular.service('Factory', function ($webSql) {
         "rowid": {
             "type": "INTEGER",
             "null": "NULL"
-         },
+        },
         "rowid_empresa": {
             "type": "INTEGER",
             "null": "NULL"
@@ -1179,7 +1179,6 @@ app_angular.service('Factory', function ($webSql) {
             "type": "TEXT",
             "null": "NULL"
         },
-		
 		"id_vendedor": {
             "type": "TEXT",
             "null": "NULL"

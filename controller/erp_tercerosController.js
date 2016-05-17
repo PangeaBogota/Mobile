@@ -19,6 +19,9 @@ app_angular.controller("TercerosController",['Conexion','$scope',function (Conex
 		$('#terceroOpenModal').click();
 		$scope.ConsultarDatos(tercero);
 	}
+	$scope.abrirModalEmail=function(){
+		$('#terceroOpenModalEmail').click();
+	}
 	$scope.Refrescar =function(){
     	CRUD.selectAll('erp_terceros',function(elem) {$scope.terceros.push(elem)});
 		$scope.Search = '';

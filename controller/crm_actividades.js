@@ -36,7 +36,7 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 		}
 	},2000)
 
-
+	
 	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
 	
 	$scope.list_tercero=[];

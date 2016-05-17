@@ -166,9 +166,8 @@
                 contentType: "application/json; charset=utf-8",
                 type: 'get',
                 url: 'http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+usuario+'&entidad='+entidad+'&codigo_empresa=' + codigo_empresa + '&datos=' + JSON.stringify(objeto),
-                
                 success: function (data) {
-                    return
+                    
                 }
             });
         }
@@ -353,15 +352,11 @@
                                     <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
                                         
                                         <li>
-                                            <a  ng-click="sincronizar()">
+                                            <a  ng-click="sincronizar()" ng-show="online">
                                                 <span>Sincronizar</span>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a  ng-click="datosSubir()">
-                                                <span>Subir Datos</span>
-                                            </a>
-                                        </li>
+                                        
                                         <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a>
                                         </li>
                                     </ul>
