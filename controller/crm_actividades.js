@@ -4,7 +4,7 @@
 var app_angular= angular.module('PedidosOnline');
 
 app_angular.controller("actividadesController",['Conexion','$scope', '$routeParams',function (Conexion,$scope,$routeParams) {
-	
+	$scope.Search;
 	$scope.registro=[];
 	$scope.registro.rowid=1000;
 	$scope.registro.tipo='Cobro';
@@ -17,24 +17,21 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 	$scope.registro.fecha_final='//Date1462992485000';
 	//CRUD.insert('crm_actividades',$scope.registro);
 
-	$scope.terceroSelected=[];
-	CRUD.select('select * from erp_terceros ',function(elem){$scope.list_tercero.push(elem);});
+	$scope.terceroSelected;
 	$scope.terceroDeTercero=$routeParams.personId;
-	window.setTimeout(function(){
-		if ($scope.terceroDeTercero!=undefined) 
+	CRUD.select('select * from erp_terceros ',
+		function(elem)
 		{
-			debugger
-			$scope.tercero1=[];
-			CRUD.select('select * from erp_terceros where rowid='+$scope.terceroDeTercero+'',
-				function(elem)
-				{
-					$scope.tercero1.push(elem);
-					$scope.terceroSelected=elem;
-					$('#fc_create').click();
-				}
-			)
-		}
-	},2000)
+			$scope.list_tercero.push(elem);
+			if ($scope.terceroDeTercero!=undefined   && elem.rowid==$scope.terceroDeTercero) 
+			{
+				$scope.terceroSelected=elem
+				//$scope.Search=$scope.terceroSelected.razonsocial;
+				$('#fc_create').click();
+			}
+		})
+	
+	
 
 	
 	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));

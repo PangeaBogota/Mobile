@@ -43,4 +43,3 @@ app_angular.run(function($window, $rootScope) {
       }, false);
 });
 
-

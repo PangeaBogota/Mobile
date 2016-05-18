@@ -116,7 +116,8 @@
 	<!-- PEDIDOS ONLINE  ANGULARJS -->
     <script type="text/javascript" src="js/constantes.js"></script>
 
-    <script type="text/javascript" src="libs/angular.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
     <script type="text/javascript" src="libs/angular-chart.js"></script>
     <script type="text/javascript"></script>
     <script type="text/javascript" src="libs/autocomplete/jquery.autocomplete.js"></script>
@@ -160,17 +161,23 @@
             $("#ModalProcessing").modal('show')
         }
         function SubirDatos(usuario,entidad,objeto,codigo_empresa){
-            console.log(objeto)
-            console.log(JSON.stringify(objeto))
+            debugger
             $.ajax({
+                dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 type: 'get',
                 url: 'http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+usuario+'&entidad='+entidad+'&codigo_empresa=' + codigo_empresa + '&datos=' + JSON.stringify(objeto),
+                crossDomain: true,
+                async: false,
                 success: function (data) {
-                    
+                        debugger
                 }
             });
         }
+        
+
+
+
         // Oculta Modal de procesando
         function ProcesadoHiden() {
             $("#ModalProcessing").modal('hide');

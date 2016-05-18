@@ -60,12 +60,12 @@
                             </div>
                             <div class="row" style="margin: 0px">
                                 <div class="form-group col-md-12" style="margin: 1px">
-                                    Telefono : <strong>{{terceroSeleccionado.identificacion}}</strong> 
+                                    Telefono : <a href="tel:+{{terceroSeleccionado.telefono1}}"><strong>{{terceroDetalles.telefono1}}</strong> </a>
                                 </div>
                             </div>
                             <div class="row" style="margin: 0px">
                                 <div class="form-group col-md-12" style="margin: 1px">
-                                    Direccion : <strong>{{terceroSeleccionado.identificacion}}</strong> 
+                                    Direccion : <strong>{{terceroDetalles.direccion1}}</strong> 
                                 </div>
                             </div>
                             <h3>Informacion Contacto</h3>
@@ -76,17 +76,17 @@
                             </div>
                             <div class="row" style="margin: 0px">
                                 <div class="form-group col-md-12 col-xs-12" style="margin: 1px">
-                                    Telefono Pricipal :<strong> {{terceroDetalles.telefono}}</strong>
+                                    Telefono Pricipal :<a href="tel:+{{terceroDetalles.telefono}}"><strong> {{terceroDetalles.telefono}}</strong></a>
                                 </div>
                             </div>
                             <div class="row" style="margin: 0px">
                                 <div class="form-group col-md-6 col-xs-12" style="margin: 1px">
-                                    Telefono Alterno :<strong> {{terceroDetalles.celular}}</strong>
+                                    Telefono Alterno :<a href="tel:+{{terceroDetalles.celular}}"><strong> {{terceroDetalles.celular}}</strong></a>
                                 </div>
                             </div>
                             <div class="row" style="margin: 0px">
                                 <div class="form-group col-md-6 col-xs-12" style="margin: 1px">
-                                    Correo :<strong> {{terceroDetalles.email}}</strong>
+                                    Correo :<a href="mailto:{{terceroDetalles.email}}"><strong> {{terceroDetalles.email}}</strong></a>
                                 </div>
                             </div>
                         </form>
@@ -122,15 +122,25 @@
                                     <label class="control-label ">Asunto:</label>
                                 </div>
                                 
-                                <div class="col-sm-8 col-md-8 col-xs-8">
-                                    <input class="form-control"></input>
+                                <div class="col-sm-8 col-md-12 col-xs-12">
+                                    <input class="form-control" ng-model="correoDescripcion.asunto"></input>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-4 col-sm-3 " style="padding: 0px">
+                                    <label class="control-label ">Descripcion:</label>
+                                </div>
+                                
+                                <div class="col-sm-8 col-md-12 col-xs-12">
+                                    <textarea class="form-control" ng-model="correoDescripcion.body"></textarea>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal"  >Close</button>
+                    <button type="button" class="btn btn-success antoclose" data-dismiss="modal"  ng-click="enviarCorreo()">Enviar Correo</button>
                 </div>
             </div>
         </div>

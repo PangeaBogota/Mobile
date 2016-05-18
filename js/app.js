@@ -61,18 +61,19 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 if (ALMACENARDATOS[1].length==0) {
                     if (ALMACENARDATOS[2].length==0) {
                         Mensajes('No hay Datos que Subir','error','') 
-                        ProcesadoHiden();
                         return;
                     }
                 }
             }
             $scope.usuario=$scope.sessiondate.nombre_usuario;
             $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
-            for (var i =0;i< STEP_SUBIRDATOS[i].length;i++) {
+            for (var i =0;i< STEP_SUBIRDATOS.length;i++) {
                 //ACTIVIDADES 
                 if (STEP_SUBIRDATOS[i]==ENTIDAD_ACTIVIDADES && ALMACENARDATOS[i].length!=0) {
                     for (var j =0;j< ALMACENARDATOS[i].length ; j++) {
                         $scope.objeto=ALMACENARDATOS[i][j];
+                        debugger
+                        //SubirDatos($scope.usuario,'PEDIDOS',$scope.objeto,$scope.codigoempresa);
                         $http({
                           method: 'GET',
                           url: 'http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+$scope.usuario+'&entidad=ACTIVIDADES&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify($scope.objeto),
@@ -86,34 +87,17 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                 if (STEP_SUBIRDATOS[i]==ENTIDAD_PEDIDOS && ALMACENARDATOS[i].length!=0) {
                     for (var j =0;j< ALMACENARDATOS[i].length ; j++) {
                         $scope.objeto=ALMACENARDATOS[i][j];
-                        $http({
-                          method: 'GET',
-                          url: 'http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+$scope.usuario+'&entidad=PEDIDOS&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify($scope.objeto),
-                        })
-                        .then(
-                            function success(data) 
-                            {
-                                debugger
-                                $scope.pedido.rowid=data.data.rowid
-                                angular.forEach($scope.detalle_pedidos,function(event){
-                                    if (event.rowid_pedido==$scope.objeto.rowid) {
-                                        //Enviar Detalle del Pedido
-                                        debugger
-                                        $scope.detalle=event;
-                                        $scope.detalle.rowid_pedido=$scope.pedido.rowid;
-                                        $http({
-                                          method: 'GET',
-                                          url: 'http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+$scope.usuario+'&entidad=PEDIDO_DETALLE&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify($scope.detalle),
-                                        })
-                                        .then(
-                                            function success(data) {}, 
-                                            function error(err) {Mensajes('Error al Subir El Pedido','error','');return }
-                                        ); 
-                                    }
-                                });
-                            }, 
-                            function error(err) {Mensajes('Error al Subir El  Pedido','error','');return  }
-                        ); 
+                        $scope.url='http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+$scope.usuario+'&entidad=PEDIDOS&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify($scope.objeto);
+                        
+                        //SubirDatos($scope.usuario,'PEDIDOS',$scope.objeto,$scope.codigoempresa);
+                        //var promise=myService.getData($scope.url);
+                        //promise.then(
+                        //    function(data){
+                        //        debugger
+                        //        $scope.data=d;
+                        //})
+                        $scope.Request($scope.url);
+                        
                         
                     }  
                 }
@@ -121,7 +105,31 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
             Mensajes('Datos Subidos Correctamente','success','') 
         },3000)
     }
-
+    $scope.Request=function(url){
+        
+        var responsePromise =$http.get(url);
+        responsePromise.success(function(data) {
+            $scope.pedidorowid=data.rowid
+            angular.forEach($scope.detalle_pedidos,function(event){
+                if (event.rowid_pedido==data.rowidInicial) {
+                    //Enviar Detalle del Pedido
+                    $scope.detalle=event;
+                    $scope.detalle.rowid_pedido=$scope.pedidorowid;
+                    $http({
+                      method: 'GET',
+                      url: 'http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+$scope.usuario+'&entidad=PEDIDO_DETALLE&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify($scope.detalle),
+                    })
+                    .then(
+                        function success(data) {}, 
+                        function error(err) {Mensajes('Error al Subir items del Pedido','error','');return }
+                    ); 
+                }
+            });
+        });
+        responsePromise.error(function() {
+            function error(err) {Mensajes('Error al Subir El Pedido','error','');return }
+        });
+    }
     $scope.sincronizar=function(){
         ProcesadoShow();
         $scope.datosSubir();
@@ -630,11 +638,14 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                     NewQuery=true;
                 }
             }
-            ProcesadoHiden();
-            $route.reload();
-            Mensajes('Sincronizado Con Exito','success','')
+            window.setTimeout(function(){
+                ProcesadoHiden();
+                $route.reload();
+                Mensajes('Sincronizado Con Exito','success','')
+            },5000)
             
-        },5000)
+            
+        },7000)
         //Traer Nuevos Datos
         
         

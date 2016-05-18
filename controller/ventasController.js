@@ -5,7 +5,7 @@ var app_angular = angular.module('PedidosOnline');
 
 
 //CONTROLADOR DEL MOULO DE VENTAS
-app_angular.controller("pedidoController",['Conexion','$scope','$location','$http',function (Conexion,$scope,$location,$http) {
+app_angular.controller("pedidoController",['Conexion','$scope','$location','$http','$routeParams',function (Conexion,$scope,$location,$http,$routeParams) {
 	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
 	$scope.validacion=0;
 	$scope.item;
@@ -33,8 +33,18 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	//var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
 	//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item ";
 	//CRUD.select(query,function(elem){$scope.list_items.push(elem);});
-    
-	CRUD.selectAll('erp_terceros',function(elem){$scope.list_tercero.push(elem);});
+    $scope.terceroDeTercero=$routeParams.personId;
+	CRUD.select('select*from erp_terceros',
+		function(elem)
+		{
+			$scope.list_tercero.push(elem);
+			if ($scope.terceroDeTercero!=undefined   && elem.rowid==$scope.terceroDeTercero) 
+			{
+				$scope.terceroSelected=elem
+				//$scope.Search=$scope.terceroSelected.razonsocial;
+				
+			}
+		});
 	
 	
 	$scope.onChangeListaPrecios=function(){
@@ -260,7 +270,7 @@ app_angular.controller("PedidosController",['Conexion','$scope',function (Conexi
 	$scope.pedidos = [];
 	$scope.pedidoSeleccionado=[];
 	$scope.detallespedido=[];
-    CRUD.select('select distinct pedidos.fecha_solicitud, pedidos.rowid as rowidpedido,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total,detalle.rowid_pedido,count(detalle.rowid_pedido) cantidaddetalles,sum(detalle.cantidad) as cantidadproductos from  t_pedidos pedidos inner join erp_terceros_sucursales sucursal on sucursal.rowid=pedidos.rowid_cliente_facturacion  inner join erp_terceros terceros on terceros.rowid=sucursal.rowid_tercero  left  join t_pedidos_detalle detalle on detalle.rowid_pedido=pedidos.rowid left join erp_terceros_punto_envio punto_envio on punto_envio.rowid=pedidos.id_punto_envio group by  pedidos.fecha_solicitud,detalle.rowid_pedido,pedidos.rowid,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total order by pedidos.fecha_solicitud desc',function(elem) {$scope.pedidos.push(elem)});
+    CRUD.select('select distinct pedidos.fecha_solicitud,pedidos.usuariomod, pedidos.rowid as rowidpedido,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total,detalle.rowid_pedido,count(detalle.rowid_pedido) cantidaddetalles,sum(detalle.cantidad) as cantidadproductos from  t_pedidos pedidos inner join erp_terceros_sucursales sucursal on sucursal.rowid=pedidos.rowid_cliente_facturacion  inner join erp_terceros terceros on terceros.rowid=sucursal.rowid_tercero  left  join t_pedidos_detalle detalle on detalle.rowid_pedido=pedidos.rowid left join erp_terceros_punto_envio punto_envio on punto_envio.rowid=pedidos.id_punto_envio group by  pedidos.fecha_solicitud,detalle.rowid_pedido,pedidos.rowid,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total order by pedidos.fecha_solicitud desc',function(elem) {$scope.pedidos.push(elem)});
     
 	$scope.ConsultarDatos =function(pedido){
 		$scope.detallespedido=[];
