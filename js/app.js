@@ -714,14 +714,14 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
     $scope.validacion='';
     CRUD.select('SELECT COUNT(*) as cantidad FROM erp_terceros',function(elem){$scope.cantidadTerceros.push(elem);$scope.cantidadTerceros1=$scope.cantidadTerceros[0];})
     CRUD.select('SELECT COUNT(*) as cantidad FROM t_pedidos',function(elem){$scope.cantidadPedidos.push(elem);$scope.cantidadPedidos1=$scope.cantidadPedidos[0];})
-    CRUD.select("select strftime('%m', fecha_solicitud) as mes,count(strftime('%m', fecha_solicitud)) as cantidad from t_pedidos group by mes ",
+    CRUD.select("select strftime('%m', fechacreacion) as mes,count(strftime('%m', fechacreacion)) as cantidad,sum(valor_total) as valor_total from t_pedidos group by mes",
         function(elem){$scope.estadisticagrafica.push(elem);
-            if (elem.mes=='01') {$scope.enero=elem.cantidad};
-            if (elem.mes=='02') {$scope.febrero=elem.cantidad};
-            if (elem.mes=='03') {$scope.marzo=elem.cantidad};
-            if (elem.mes=='04') {$scope.abril=elem.cantidad};
-            if (elem.mes=='05') {$scope.mayo=elem.cantidad};
-            if (elem.mes=='06') {$scope.junio=elem.cantidad};
+            if (elem.mes=='01') {$scope.enero=elem.valor_total};
+            if (elem.mes=='02') {$scope.febrero=elem.valor_total};
+            if (elem.mes=='03') {$scope.marzo=elem.valor_total};
+            if (elem.mes=='04') {$scope.abril=elem.valor_total};
+            if (elem.mes=='05') {$scope.mayo=elem.valor_total};
+            if (elem.mes=='06') {$scope.junio=elem.valor_total};
             $scope.registros=[[$scope.enero,$scope.febrero,$scope.marzo,$scope.abril,$scope.mayo,$scope.junio]];
             
     })
