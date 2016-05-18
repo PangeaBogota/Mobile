@@ -11,6 +11,7 @@
                 <div class="x_content x_panel" style="margin: 0px">
                     <br />
                     <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                            <div ng-show="validacion"><h3>“No hay pedidos Ingresados por este usuario” </h3></div>
                             <div class="x_content" ng-repeat='pedidos in pedidos' style="padding: 0px" >
                                 <a ng-click="abrirModal(pedidos)">
                                     <div class="row pull-right" style="margin: 1px">
