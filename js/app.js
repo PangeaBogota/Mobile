@@ -43,7 +43,7 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
     $scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
     $scope.pedidos=[];
     $scope.actividades=[];
-    $scope.$watch('online', function(newStatus) {  });
+    //$scope.$watch('online', function(newStatus) {  });
     $scope.datosSubir=function(){
         $scope.pedidos=[];
         $scope.actividades=[];
@@ -650,9 +650,6 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
             
         },7000)
         //Traer Nuevos Datos
-        
-        
-        
     }
 
 }]);
