@@ -85,6 +85,8 @@
     <script type="text/javascript" src="cssjs/flot/jquery.flot.stack.js"></script>
     <script type="text/javascript" src="cssjs/flot/curvedLines.js"></script>
     <script type="text/javascript" src="cssjs/flot/jquery.flot.resize.js"></script>
+
+    <script type="text/javascript" src="libs/jquery.vibrate.min.js"></script>
 <!-- select2 -->
     <script src="cssjs/select/select2.full.js"></script>
     <!-- form validation -->
@@ -199,7 +201,7 @@
                 timeout: 10000,
                 modal: self.data('modal')
             });
-
+            self.vibrate("long"); 
             return false;
         }
 
