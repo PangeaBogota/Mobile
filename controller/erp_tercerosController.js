@@ -5,7 +5,7 @@ app_angular.controller("TercerosController",['Conexion','$scope','$http',functio
 	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
 	$scope.usuario=$scope.sessiondate.nombre_usuario;
     $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
-
+    $scope.direccionMaps;
 	$scope.correoDescripcion=[];
 	$scope.terceros = [];
 	$scope.terceroSeleccionado=[];
@@ -31,7 +31,7 @@ app_angular.controller("TercerosController",['Conexion','$scope','$http',functio
     	CRUD.selectAll('erp_terceros',function(elem) {$scope.terceros.push(elem)});
 		$scope.Search = '';
 	}
-
+	
 	$scope.enviarCorreo=function(){
 		$scope.correoDescripcion.para=$scope.terceroDetalles.email;
 		$scope.url='http://demos.pedidosonline.co/Mobile/enviarCorreo?usuario='+$scope.usuario+'&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify($scope.correoDescripcion);
