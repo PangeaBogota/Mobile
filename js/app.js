@@ -49,9 +49,9 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
         $scope.actividades=[];
         $scope.detalle_pedidos=[];
         $scope.pedido=[];
-        CRUD.select('select *from crm_actividades where usuario_modificacion="MOBILE"',function(elem){$scope.actividades.push(elem)})
-        CRUD.select('select *from t_pedidos where usuariomod="MOBILE"',function(elem){$scope.pedidos.push(elem)})
-        CRUD.select('select *from t_pedidos_detalle where usuariomod="MOBILE"',function(elem){$scope.detalle_pedidos.push(elem)})
+        CRUD.select('select *from crm_actividades where sincronizado="false"',function(elem){$scope.actividades.push(elem)})
+        CRUD.select('select *from t_pedidos where sincronizado="false"',function(elem){$scope.pedidos.push(elem)})
+        CRUD.select('select *from t_pedidos_detalle where rowid_pedido in (select rowid from t_pedidos where sincronizado="false")',function(elem){$scope.detalle_pedidos.push(elem)})
         window.setTimeout(function(){
             ALMACENARDATOS[2]=$scope.actividades;
             ALMACENARDATOS[0]=$scope.pedidos;
@@ -216,7 +216,9 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_nota+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].criterio_clasificacion+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_estado_erp+
-                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].modulo_creacion+"' "; 
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].modulo_creacion+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].sincronizado+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].key_mobile+"' "; 
                         if (contador==499) {
                             CRUD.Updatedynamic(stringSentencia)
                             NewQuery=true;
@@ -541,7 +543,8 @@ app_angular.controller('sessionController',['Conexion','$scope','$location','$ht
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_creacion+
                         "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_modificacion+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_modificacion+
-                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_relacion+"' "; 
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_relacion+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].sincronizado+"' "; 
                         if (contador==499) {
                             CRUD.Updatedynamic(stringSentencia)
                             NewQuery=true;

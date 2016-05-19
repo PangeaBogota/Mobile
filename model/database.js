@@ -197,6 +197,10 @@ app_angular.service('Factory', function ($webSql) {
         "rowid_relacion": {
             "type": "INTEGER",
             "null": "NULL"
+        },
+        "sincronizado": {
+            "type": "text",
+            "null": "NULL"
         }
 
     })
@@ -475,6 +479,14 @@ app_angular.service('Factory', function ($webSql) {
             "null": "NULL"
         },
         "modulo_creacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "sincronizado": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "key_mobile": {
             "type": "TEXT",
             "null": "NULL"
         }

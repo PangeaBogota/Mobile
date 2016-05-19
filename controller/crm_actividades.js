@@ -134,7 +134,7 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 		$scope.NuevoEvento.rowid=$scope.ultimoRegistroseleccionado.rowid+1;
 		$scope.NuevoEvento.usuario_creacion=$scope.sessiondate.nombre_usuario;
 		$scope.NuevoEvento.relacionado_a=$scope.terceroSelected.razonsocial;
-		$scope.NuevoEvento.usuario_modificacion='MOBILE';
+		$scope.NuevoEvento.sincronizado='false';
 		$scope.NuevoEvento.fecha_inicial=$scope.selectedDate($scope.horario.fechaInicial)+' '+$scope.getHour($scope.horario.horaInicial) ;
 		$scope.NuevoEvento.fecha_final=$scope.selectedDate($scope.horario.fechaFinal)+' '+$scope.getHour($scope.horario.horaFinal) ;
 		$scope.NuevoEvento.fecha_creacion=$scope.CurrentDate();

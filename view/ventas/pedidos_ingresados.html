@@ -15,8 +15,8 @@
                             <div class="x_content" ng-repeat='pedidos in pedidos' style="padding: 0px" >
                                 <a ng-click="abrirModal(pedidos)">
                                     <div class="row pull-right" style="margin: 1px">
-                                        <span class="fa fa-exclamation-triangle" ng-show="pedidos.usuariomod=='MOBILE'"></span>
-                                        <span class="fa fa-check-circle" ng-hide="pedidos.usuariomod=='MOBILE'"></span>
+                                        <span class="fa fa-exclamation-triangle" ng-show="pedidos.sincronizado=='false'"></span>
+                                        <span class="fa fa-check-circle" ng-hide="pedidos.sincronizado=='false'"></span>
                                     </div>
                                     <div class="row" style="margin: 0px">
                                         <div class="form-group col-md-4" style="margin: 1px">
