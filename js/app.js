@@ -1,7 +1,7 @@
 /**
  * Created by dev10 on 12/23/2015.
  */
-var app_angular = angular.module('PedidosOnline', ['chart.js','ui.calendar','angular-websql', 'ngResource', 'ngRoute']);
+var app_angular = angular.module('PedidosOnline', ['chart.js','ui.calendar','angular-websql', 'ngResource', 'ngRoute','angular-bootbox']);
 
 app_angular.config(['$routeProvider',//'$locationProvider',
     function ($routeProvider) {
@@ -39,11 +39,14 @@ app_angular.config(['$routeProvider',//'$locationProvider',
 ]);
 
 //CONTROLADOR DE GENERAL
-app_angular.controller('sessionController',['Conexion','$scope','$location','$http','$route', '$routeParams', 'Factory' ,function (Conexion, $scope, $location, $http,$route, $routeParams, Factory) {
+app_angular.controller('sessionController',['bootbox','Conexion','$scope','$location','$http','$route', '$routeParams', 'Factory' ,function (bootbox,Conexion, $scope, $location, $http,$route, $routeParams, Factory) {
     $scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
     $scope.pedidos=[];
     $scope.actividades=[];
     //$scope.$watch('online', function(newStatus) {  });
+    $scope.confirmarSincronizacion=function(){
+        $('#openConfirmacion').click();
+    }
     $scope.datosSubir=function(){
         $scope.pedidos=[];
         $scope.actividades=[];

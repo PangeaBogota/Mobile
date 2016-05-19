@@ -112,7 +112,7 @@
     <script type="text/javascript" src="cssjs/noty/layouts/bottom.js"></script>
     <script type="text/javascript" src="cssjs/noty/themes/default.js"></script>
     <script src="cssjs/nprogress.js"></script>
-    
+
     <script src="cssjs/moment.min.js"></script>
     <script src="cssjs/calendar/fullcalendar.min.js"></script>
      <!-- form wizard -->
@@ -122,6 +122,8 @@
 
     
     <script src="libs/ajax-angularjs.js"></script>
+    <script type="text/javascript" src="libs/bootbox.min.js"></script>
+    <script type="text/javascript" src="libs/angular-bootbox.js"></script>
     <script type="text/javascript" src="libs/angular-chart.js"></script>
     <script type="text/javascript"></script>
     <script type="text/javascript" src="libs/autocomplete/jquery.autocomplete.js"></script>
@@ -144,6 +146,7 @@
     <script type="text/javascript" src="controller/ventasController.js"></script>
     <script type="text/javascript" src="controller/t_pedidosController.js"></script>
     <script type="text/javascript" src="controller/t_pedidos_detalleController.js"></script>
+    
     <script type="text/javascript">
         $(document).ready(function () {
             $(".itemNav").on("click", function () {
@@ -201,7 +204,7 @@
                 timeout: 10000,
                 modal: self.data('modal')
             });
-            self.vibrate("long"); 
+            navigator.vibrate("long"); 
             return false;
         }
 
@@ -213,7 +216,7 @@
         }
 
         // Genera mensajes de confirmacion con el estilo de la plantilla
-        function Confirmar(msj) {
+        function confirmar(msj) {
             bootbox.confirm(msj, function (confirmed) {
                 //console.log("Confirmed: " + confirmed);
                 return confirmed;
@@ -349,6 +352,35 @@
             <!-- top navigation -->
 			<div class="top_nav">
                 <div ng-controller="sessionController">
+                    <div id="modalConfirmacion" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">Confirmar Sincronizacion</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div id="testmodal" style="padding: 0px;">
+                                        <form id="antoform" class="form-horizontal calender form-label-left" role="form">
+                                            <div class="row form-group">
+                                                
+                                                
+                                                <div class="col-md-12">
+                                                     Esta seguro de realizar la Sincronizacion asumiendo el posible  consumo de datos elevado?
+                                                </div>
+                                            </div>
+                                            
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="modal-footer" >
+                                    <button type="button" class="btn btn-danger antoclose" data-dismiss="modal" style="margin:5px"  >Cancelar</button>
+                                    <button type="button" class="btn btn-primary antoclose " ng-click="sincronizar()" data-dismiss="modal" style="margin:5px" >Aceptar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="openConfirmacion" data-toggle="modal" data-target="#modalConfirmacion"></div>
                     <div class="nav_menu">
                         <nav class="" role="navigation">
                             <div class="nav toggle">
@@ -363,7 +395,7 @@
                                     <ul class="dropdown-menu dropdown-usermenu animated fadeInDown pull-right">
                                         
                                         <li>
-                                            <a  ng-click="sincronizar()" >
+                                            <a  ng-click="confirmarSincronizacion()" >
                                                 <span>Sincronizar</span>
                                             </a>
                                         </li>
@@ -403,6 +435,8 @@
                 <!-- /footer content -->
             </div>
             <!-- /page content -->
+            
+
 		</div>
 	</div>
 
