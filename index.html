@@ -189,7 +189,9 @@
         function ProcesadoHiden() {
             $("#ModalProcessing").modal('hide');
         }
-
+        
+        $(" .inputVibrate").vibrate("long");
+        $(" .inputVibrat").vibrate("long"); 
         // Genera Los Mensajes de Alertas
         function Mensajes(text, type, layot) {
             if (layot == '' || layot == null)
@@ -204,7 +206,7 @@
                 timeout: 10000,
                 modal: self.data('modal')
             });
-            navigator.vibrate("long"); 
+            $('.inputVibrate').trigger('click');
             return false;
         }
 
@@ -397,9 +399,14 @@
                                         <li>
                                             <a  ng-click="confirmarSincronizacion()" >
                                                 <span>Sincronizar</span>
+                                                <button type="hidden" class="inputVibrate"></button>
                                             </a>
                                         </li>
-                                        
+                                        <li>
+                                            <a    class="inputVibrat">
+                                                <span>Vibrar</span>
+                                            </a>
+                                        </li>
                                         <li><a href="login.html"><i class="fa fa-sign-out pull-right"></i>Cerrar Sesion</a>
                                         </li>
                                     </ul>
