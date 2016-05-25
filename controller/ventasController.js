@@ -101,7 +101,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.onChangeSucursal=function(){
 		if ($scope.sucursal==undefined) {$scope.pedidos.rowid_lista_precios='';$scope.list_items=[];return}
 		$scope.list_precios=[];
-		CRUD.selectParametro('erp_entidades_master','erp_id_maestro',$scope.sucursal.id_lista_precios,function(elem){$scope.list_precios.push(elem)});
+		CRUD.select("select *from erp_entidades_master where erp_id_maestro = '"+$scope.sucursal.id_lista_precios+"'",function(elem){$scope.list_precios.push(elem)});
+		//CRUD.selectParametro('erp_entidades_master','erp_id_maestro',$scope.sucursal.id_lista_precios,function(elem){$scope.list_precios.push(elem)});
 		$scope.pedidos.rowid_cliente_facturacion=$scope.sucursal.rowid;
 	}
 	$scope.finalizarPedido=function(){
