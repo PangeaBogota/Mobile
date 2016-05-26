@@ -143,9 +143,9 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Facturacion<span class="required">*</span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <select  id="rowid_cliente_facturacion" required
-                                                        ng-model="sucursal"  ng-options="sucursal as sucursal.nombre_sucursal 
-                                                        for sucursal in list_Sucursales " class="form-control" ng-change="onChangeSucursal()" >
-                                                    </select>
+                                                ng-model="sucursal"  ng-options="sucursal as sucursal.nombre_sucursal 
+                                                for sucursal in list_Sucursales " class="form-control" ng-change="onChangeSucursal()" >
+                                            </select>
                                         </div>
                                     </div>
                                     
@@ -153,11 +153,55 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Despacho<span class="required">*</span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <select  id="rowid_cliente_despacho" required
-                                                        ng-model="pedidos.rowid_cliente_despacho"  ng-options="sucursal.rowid as sucursal.nombre_sucursal 
-                                                        for sucursal in list_Sucursales " class="form-control"  >
+                                                        ng-model="sucursalDespacho"  ng-options="sucursal as sucursal.nombre_sucursal 
+                                                        for sucursal in list_Sucursales " class="form-control"  ng-change="onChangeSucursalDespacho()" >
                                             </select>
                                         </div>
                                     </div>
+
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Ciudad<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  placeholder="Orden Compra" id="orden_compra" type="text" ng-model="pedidos.orden_compra" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Direccion<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input   type="text" ng-model="sucursalDespacho.direccion1" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Contacto<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  type="text" ng-model="pedidos.orden_compra" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Email<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input   type="text" ng-model="pedidos.orden_compra" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Telefono<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input   type="text" ng-model="sucursalDespacho.telefono1" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Condicion de Pago<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input   type="text" ng-model="sucursalDespacho.id_condicion_pago" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Orden Compra<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  placeholder="Orden Compra" id="orden_compra" type="text" ng-model="pedidos.orden_compra" class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+
 
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Lista Precio<span class="required">*</span></label>
@@ -178,14 +222,12 @@
                                             </select>
                                         </div>
                                     </div>
-
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Orden Compra<span class="required"></span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input  placeholder="Orden Compra" id="orden_compra" type="text" ng-model="pedidos.orden_compra" class="form-control col-md-7 col-xs-12"  ></input>
                                         </div>
                                     </div>
-                                    
                                     <div class="form-group">
 
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Solicitud <span class="required">*</span>
@@ -194,13 +236,19 @@
                                             <input type="date" id="fecha_solicitud" name="fecha_solicitud" class="form-control"  ng-model="date"  ng-change="fechasolicitud()" required>
                                         </div>
                                     </div>
-
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Entrega <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="date" id="fecha_solicitud" name="fecha_solicitud" class="form-control"  ng-model="dateEntrega"  ng-change="fechaentrega()" required>
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         
                                     </div>
                                 </div>
                                 <div class="form-actions ">
-                                    <button type="submit" class="btn btn-success pull-right" ng-disabled="form_encabezado.$invalid"  ng-click="CambiarTab('3','atras')">Continuar</button>
+                                    <button type="submit" class="btn btn-success pull-right" ng-disabled="form_encabezado.$invalid"  ng-click="focusInput=true;CambiarTab('3','atras')">Continuar</button>
                                 </div>
                             </form>
                         </div>
@@ -209,7 +257,7 @@
                                 <div class="form-group">
                                     <label for="rowid_item" class="control-label">Items<span class="required">*</span>
                                     </label>
-                                    <input type="text" ng-model="SearchItem"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"/>
+                                    <input type="text" ng-model="SearchItem"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
                                     <select  id="rowid_item" ng-model="item"  ng-options="item as item.producto 
                                         for item in list_items  |filter:SearchItem" class="form-control" required >
                                     </select>

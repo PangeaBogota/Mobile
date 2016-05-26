@@ -28,6 +28,21 @@ app_angular.directive("myAutocomplete",function () {
         link:link
     };
 })
+app_angular.directive('focusMe', function($timeout) {
+  return {
+    link: function(scope, element, attrs) {
+      scope.$watch(attrs.focusMe, function(value) {
+        if(value === true) { 
+          console.log('value=',value);
+          //$timeout(function() {
+            element[0].focus();
+            scope[attrs.focusMe] = false;
+          //});
+        }
+      });
+    }
+  };
+})
 //app_angular.run(function($window, $rootScope) {
 //      $rootScope.online = navigator.onLine;
 //      $window.addEventListener("offline", function() {
