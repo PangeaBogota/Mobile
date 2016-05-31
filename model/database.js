@@ -1280,4 +1280,55 @@ app_angular.service('Factory', function ($webSql) {
         }
 	});
 
+    db.createTable('m_localizacion',{
+        "rowid": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "id_tipo_erp": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "tipo_localizacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "id_pais": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "id_depto": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "id_ciudad": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "nombre": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "codigo_alterno": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "fechacreacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "usuariocreacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "fechamod": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "usuariomod": {
+            "type": "TEXT",
+            "null": "NULL"
+        }
+    });
+
 });

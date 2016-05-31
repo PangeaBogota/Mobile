@@ -9,6 +9,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
 	$scope.validacion=0;
 	$scope.item;
+	$scope.listaPrecios=[];
 	$scope.pedidoDetalles=[];
 	$scope.date;
 	$scope.dateEntrega;
@@ -32,6 +33,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.list_pedidos_detalles=[];
 	$scope.valorTotal;
 	$scope.sucursalDespacho=[];
+	$scope.ciudadSucursal=[];
+	$scope.puntoEnvio=[];
 	//var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
 	//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item ";
 	//CRUD.select(query,function(elem){$scope.list_items.push(elem);});
@@ -99,21 +102,31 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.onChangeTercero=function(){
 		$scope.list_Sucursales=[];
 		$scope.list_puntoEnvio=[];
-		CRUD.selectParametro('erp_terceros_sucursales','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_Sucursales.push(elem)});
-		CRUD.selectParametro('erp_terceros_punto_envio','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_puntoEnvio.push(elem)});	
+		CRUD.select("select  codigo_sucursal||'-'||nombre_sucursal as sucursal,*from erp_terceros_sucursales where rowid_tercero = '"+$scope.terceroSelected.rowid+"' ",function(elem){$scope.list_Sucursales.push(elem)})
+
+		//CRUD.selectParametro('erp_terceros_sucursales','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_Sucursales.push(elem)});
+		//CRUD.selectParametro('erp_terceros_punto_envio','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_puntoEnvio.push(elem)});	''
+		$scope.pedidos.rowid_tercero=$scope.terceroSelected.rowid
 	}
 	
 	$scope.onChangeSucursal=function(){
 		if ($scope.sucursal==undefined) {$scope.pedidos.rowid_lista_precios='';$scope.list_items=[];return}
 		$scope.list_precios=[];
-		CRUD.select("select *from erp_entidades_master where erp_id_maestro = '"+$scope.sucursal.id_lista_precios+"'",function(elem){$scope.list_precios.push(elem)});
+		CRUD.select("select  *from erp_entidades_master where erp_id_maestro = '"+$scope.sucursal.id_lista_precios+"'  order by rowid LIMIT 1",
+			function(elem){$scope.list_precios.push(elem);$scope.listaPrecios=$scope.list_precios[0];$scope.pedidos.rowid_lista_precios=$scope.listaPrecios.rowid;$scope.onChangeListaPrecios();});
 		//CRUD.selectParametro('erp_entidades_master','erp_id_maestro',$scope.sucursal.id_lista_precios,function(elem){$scope.list_precios.push(elem)});
 		$scope.pedidos.rowid_cliente_facturacion=$scope.sucursal.rowid;
 	}
+
 	$scope.onChangeSucursalDespacho=function()
 	{
-		$scope.pedido.rowid_cliente_despacho=$scope.sucursalDespacho.rowid;
+		//console.log("select  *from erp_terceros_punto_envio where rowid_tercero = '"+$scope.pedidos.rowid_tercero+"'  and  codigo_sucursal = '"+$scope.sucursalDespacho.codigo_sucursal+"'   order by rowid  LIMIT 1  ");
+		$scope.pedidos.rowid_cliente_despacho=$scope.sucursalDespacho.rowid;
+		CRUD.select("select pais.nombre||'-'||ciudad.nombre as nombre from m_localizacion  pais inner join m_localizacion ciudad  on ciudad.id_pais=pais.id_pais and pais.id_depto='' and pais.id_ciudad=''  where ciudad.id_ciudad='"+$scope.sucursalDespacho.id_ciudad+"' and ciudad.id_depto='"+$scope.sucursalDespacho.id_depto+"' and ciudad.id_pais='"+$scope.sucursalDespacho.id_pais+"'",function(elem){$scope.ciudadSucursal=elem});
+		CRUD.select("select  *from erp_terceros_punto_envio where rowid_tercero = '"+$scope.pedidos.rowid_tercero+"'  and  codigo_sucursal = '"+$scope.sucursalDespacho.codigo_sucursal+"'   order by rowid  LIMIT 1  ",
+			function(elem){$scope.list_puntoEnvio.push(elem);$scope.pedidos.id_punto_envio=elem.rowid;$scope.puntoEnvio=elem});
 	}
+
 	$scope.finalizarPedido=function(){
 		if($scope.itemsAgregadosPedido.length==0)
 		{

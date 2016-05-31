@@ -26,7 +26,7 @@ var STEP_SINCRONIZACION=
         ENTIDAD_PUNTOS_ENVIO,
         ENTIDAD_CONTACTOS,
                             ENTIDAD_METACLASS,
-        //                    ENTIDAD_LOCALIZACION,
+                            ENTIDAD_LOCALIZACION,
         ENTIDAD_ITEMS,
         ENTIDAD_ITEMS_PRECIOS,
         ENTIDAD_ESTADOS,
@@ -42,7 +42,7 @@ var STEP_SUBIRDATOS=
     ENTIDAD_ACTIVIDADES
     
     ];
-var DATABASE='PedidosOnline156';
+var DATABASE='PedidosOnline159';
 var DATOS_ENTIDADES_SINCRONIZACION = [];
 var CUR_USER=[];
 var ALMACENARDATOS=[];

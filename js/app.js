@@ -63,7 +63,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
             if (ALMACENARDATOS[0].length==0) {
                 if (ALMACENARDATOS[1].length==0) {
                     if (ALMACENARDATOS[2].length==0) {
-                        Mensajes('No hay Datos que Subir','error','') 
+                        Mensajes('No hay Datos Creados Recientemente en  el Dispositivo','success','') 
                         return;
                     }
                 }
@@ -630,6 +630,36 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                         "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_creacion+
                         "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_modificacion+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_modificacion+"' "; 
+                        if (contador==499) {
+                            CRUD.Updatedynamic(stringSentencia)
+                            NewQuery=true;
+                            stringSentencia="";
+                            contador=0;
+                        }
+
+                    } 
+                    else if (STEP_SINCRONIZACION[i] == ENTIDAD_LOCALIZACION  && DATOS_ENTIDADES_SINCRONIZACION[i].length!=0) {
+                        //CRUD.insert('crm_contactos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                        if (NewQuery) {
+                            stringSentencia=" insert into m_localizacion  ";
+                            NewQuery=false;
+                        }
+                        else{
+                            stringSentencia+= "   UNION   ";
+                        }
+                        stringSentencia+=  "  SELECT  '"+
+                        DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_tipo_erp+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_localizacion+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_pais+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_depto+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_ciudad+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombre+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].codigo_alterno+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+"' "; 
                         if (contador==499) {
                             CRUD.Updatedynamic(stringSentencia)
                             NewQuery=true;
