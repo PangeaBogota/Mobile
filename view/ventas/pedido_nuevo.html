@@ -294,7 +294,7 @@
                                 </div>
 
                                 <div class="form-actions">
-                                    <button class="btn btn-success pull-right" type="submit" ng-click="CambiarTab('2','siguiente')" >Continuar</button>
+                                    <button class="btn btn-success pull-right" type="submit" ng-click="focusInputHide=true;CambiarTab('2','siguiente')" >Continuar</button>
                                     <button class="btn btn-primary pull-right" type="submit" ng-click="CambiarTab('2','atras');">Atras</button>
                                 </div>
                             </form>
@@ -302,6 +302,7 @@
                         <div class="tab-pane" id="tab_3">
                             <div class="rows">
                                 <div class="col-md-12">
+                                    <input type="hidden" focus-me="focusInputHide"></input>
                                     <form class="form-inline">
                                         <div class="form-group">
                                             <table class="table table-hover table-striped">

@@ -106,7 +106,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 
 		//CRUD.selectParametro('erp_terceros_sucursales','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_Sucursales.push(elem)});
 		//CRUD.selectParametro('erp_terceros_punto_envio','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_puntoEnvio.push(elem)});	''
-		$scope.pedidos.rowid_tercero=$scope.terceroSelected.rowid
+		//$scope.pedidos.rowid_tercero=$scope.terceroSelected.rowid
 	}
 	
 	$scope.onChangeSucursal=function(){
@@ -120,10 +120,10 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 
 	$scope.onChangeSucursalDespacho=function()
 	{
-		//console.log("select  *from erp_terceros_punto_envio where rowid_tercero = '"+$scope.pedidos.rowid_tercero+"'  and  codigo_sucursal = '"+$scope.sucursalDespacho.codigo_sucursal+"'   order by rowid  LIMIT 1  ");
+		//console.log("select  *from erp_terceros_punto_envio where rowid_tercero = '"+$scope.terceroSelected.rowid+"'  and  codigo_sucursal = '"+$scope.sucursalDespacho.codigo_sucursal+"'   order by rowid  LIMIT 1  ");
 		$scope.pedidos.rowid_cliente_despacho=$scope.sucursalDespacho.rowid;
 		CRUD.select("select pais.nombre||'-'||ciudad.nombre as nombre from m_localizacion  pais inner join m_localizacion ciudad  on ciudad.id_pais=pais.id_pais and pais.id_depto='' and pais.id_ciudad=''  where ciudad.id_ciudad='"+$scope.sucursalDespacho.id_ciudad+"' and ciudad.id_depto='"+$scope.sucursalDespacho.id_depto+"' and ciudad.id_pais='"+$scope.sucursalDespacho.id_pais+"'",function(elem){$scope.ciudadSucursal=elem});
-		CRUD.select("select  *from erp_terceros_punto_envio where rowid_tercero = '"+$scope.pedidos.rowid_tercero+"'  and  codigo_sucursal = '"+$scope.sucursalDespacho.codigo_sucursal+"'   order by rowid  LIMIT 1  ",
+		CRUD.select("select  *from erp_terceros_punto_envio where rowid_tercero = '"+$scope.terceroSelected.rowid+"'  and  codigo_sucursal = '"+$scope.sucursalDespacho.codigo_sucursal+"'   order by rowid  LIMIT 1  ",
 			function(elem){$scope.list_puntoEnvio.push(elem);$scope.pedidos.id_punto_envio=elem.rowid;$scope.puntoEnvio=elem});
 	}
 
