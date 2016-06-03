@@ -1,5 +1,6 @@
 <!-- select2 -->
         <script>
+
             $(document).ready(function () {
                 $(".select2_single").select2({
                     placeholder: "Select a state",
@@ -11,7 +12,13 @@
                     placeholder: "With Max Selection limit 4",
                     allowClear: true
                 });
+
+                
+
+                
             });
+
+
         </script>
         <!-- /select2 -->
         
@@ -123,11 +130,13 @@
                         <li data-tab="tab_2"><a data-tab="tab_2" data-toggle="tab">2. Detalle</a></li>
                         <li data-tab="tab_3"><a data-tab="tab_3" data-toggle="tab">3. Balance</a></li>
                     </ul>   
-                    <div class="tab-content">
+                    <div class="tab-content ">
                         <div id="tab_1" class="tab-pane active">
                             <form id="form_encabezado" data-parsley-validate class="form-horizontal form-label-left" name="form_encabezado"  novalidate>
                             </br>
                                 <div class="row">
+                                    <div class="x_content ">
+                                    </br>
                                     <div class="form-group">
                                         <label for="rowid_tercero" class="control-label col-md-3 col-sm-3 col-xs-12">Tercero<span class="required">*</span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
@@ -235,13 +244,12 @@
                                             <input type="date" id="fecha_solicitud" name="fecha_solicitud" class="form-control"  ng-model="dateEntrega"  ng-change="fechaentrega()" required>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        
-                                    </div>
                                 </div>
                                 <div class="form-actions ">
                                     <button type="submit" class="btn btn-success pull-right" ng-disabled="form_encabezado.$invalid"  ng-click="focusInput=true;CambiarTab('3','atras')">Continuar</button>
                                 </div>
+                                </div>
+                                
                             </form>
                         </div>
                         <div id="tab_2" class="tab-pane">
@@ -249,6 +257,8 @@
                                 <div class="form-group">
                                     <label for="rowid_item" class="control-label">Items<span class="required">*</span>
                                     </label>
+                                    <input type="text"   class="form-control"  id="autocomplete-custom-append"  />
+                                    <div  id="#autocomplete-container"></div>
                                     <input type="text" ng-model="SearchItem"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
                                     <select  id="rowid_item" ng-model="item"  ng-options="item as item.producto 
                                         for item in list_items  |filter:SearchItem" class="form-control" required >
@@ -294,7 +304,7 @@
                                 </div>
 
                                 <div class="form-actions">
-                                    <button class="btn btn-success pull-right" type="submit" ng-click="focusInputHide=true;CambiarTab('2','siguiente')" >Continuar</button>
+                                    <button class="btn btn-success pull-right" type="submit" ng-click="CambiarTab('2','siguiente')" >Continuar</button>
                                     <button class="btn btn-primary pull-right" type="submit" ng-click="CambiarTab('2','atras');">Atras</button>
                                 </div>
                             </form>

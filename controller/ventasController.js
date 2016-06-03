@@ -6,6 +6,12 @@ var app_angular = angular.module('PedidosOnline');
 
 //CONTROLADOR DEL MOULO DE VENTAS
 app_angular.controller("pedidoController",['Conexion','$scope','$location','$http','$routeParams',function (Conexion,$scope,$location,$http,$routeParams) {
+	$scope.ejemplovista=[];
+	var vista="select rowid  from erp_items "
+	console.log(vista);
+	var vistaArray=[];
+	CRUD.select(vista,function(elem){vistaArray.push(elem);});
+	//CRUD.select(vista2,function(elem){$scope.ejemplovista.push(elem)});
 	$scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
 	$scope.validacion=0;
 	$scope.item;

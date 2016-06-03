@@ -4,7 +4,9 @@ app_angular.service('Factory', function ($webSql) {
 
     db = $webSql.openDatabase(DATABASE, '1.0', 'Test DB', 200000);
 
-    db.createTable('crm_contactos',{
+
+
+     db.createTable('crm_contactos',{
         "rowid": {
             "type": "INTEGER",
             "null": "NULL"
@@ -1330,5 +1332,19 @@ app_angular.service('Factory', function ($webSql) {
             "null": "NULL"
         }
     });
+    db.select("create view if not exists  vw_items_precios "+
+    " as  "+ 
+    "select    "+
+    "  a.item_codigo||'-'||a.item_referencia||'-'||a.item_descripcion||'-'||a.id_unidad||'-'||CAST(b.precio_lista as text)  as producto,a.id_unidad,a.rowid as rowid_item,a.item_descripcion as descripcion,b.rowid as rowid_listaprecios,b.precio_lista as precio "+
+    " FROM erp_items a "  +
+        " INNER JOIN erp_items_precios b "+
+            " ON b.rowid_item = a.rowid "+
+        " INNER JOIN erp_entidades_master "+
+            " ON erp_entidades_master.erp_id_maestro=b.id_lista_precios "+
+                " AND erp_entidades_master.id_tipo_maestro='LISTA_PRECIOS' "+
+    " WHERE item_referencia NOT LIKE '%*DESC*%' and b.estado_item=1 "+
+    "AND strftime('%Y%m%d')>=strftime('%Y%m%d',b.fecha_activacion) and  (strftime('%Y%m%d')<=strftime('%Y%m%d',b.fecha_inactivacion ) or  b.fecha_inactivacion='null'  )   "+
+    "");
+    
 
 });
