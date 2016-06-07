@@ -56,9 +56,10 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
         CRUD.select('select *from t_pedidos where sincronizado="false"',function(elem){$scope.pedidos.push(elem)})
         CRUD.select('select *from t_pedidos_detalle where rowid_pedido in (select rowid from t_pedidos where sincronizado="false")',function(elem){$scope.detalle_pedidos.push(elem)})
         window.setTimeout(function(){
-            ALMACENARDATOS[2]=$scope.actividades;
             ALMACENARDATOS[0]=$scope.pedidos;
             ALMACENARDATOS[1]=$scope.detalle_pedidos;
+            ALMACENARDATOS[2]=$scope.actividades;
+            
             //Validacion de que lo que se va a subir contega datos 
             if (ALMACENARDATOS[0].length==0) {
                 if (ALMACENARDATOS[1].length==0) {
@@ -68,8 +69,11 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                     }
                 }
             }
+
             $scope.usuario=$scope.sessiondate.nombre_usuario;
             $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
+            //$scope.usuario=$scope.sessiondate.nombre_usuario;
+            //$scope.codigoempresa=$scope.sessiondate.codigo_empresa;
             for (var i =0;i< STEP_SUBIRDATOS.length;i++) {
                 //ACTIVIDADES 
                 if (STEP_SUBIRDATOS[i]==ENTIDAD_ACTIVIDADES && ALMACENARDATOS[i].length!=0) {
