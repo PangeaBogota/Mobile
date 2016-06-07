@@ -257,8 +257,6 @@
                                 <div class="form-group">
                                     <label for="rowid_item" class="control-label">Items<span class="required">*</span>
                                     </label>
-                                    <input type="text"   class="form-control"  id="autocomplete-custom-append"  />
-                                    <div  id="#autocomplete-container"></div>
                                     <input type="text" ng-model="SearchItem"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
                                     <select  id="rowid_item" ng-model="item"  ng-options="item as item.producto 
                                         for item in list_items  |filter:SearchItem" class="form-control" required >
