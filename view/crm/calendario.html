@@ -148,8 +148,8 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default antoclose"  data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary " ng-click="guardarActividad()" ng-disabled="formNuevaActividad.$invalid" >Save changes</button>
+                                <button type="button" class="btn btn-default antoclose"  data-dismiss="modal">Cerrar</button>
+                                <button type="button" class="btn btn-primary " ng-click="guardarActividad()" ng-disabled="formNuevaActividad.$invalid" >Guardar</button>
                             </div>
                         </div>
                     </div>
@@ -168,6 +168,18 @@
                                         <div class="x_content">
                                             <div class="row " ng-repeat='actividad in actividadesDia' style="padding: 4px" >
                                                 <a >
+                                                    <div ng-show="actividad.condicion" class="row" style="margin: 0px">
+                                                        <div class="form-group col-md-12" style="margin: 1px">
+                                                            Canal: {{actividad.canal}}
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="row" style="margin: 0px">
+                                                        <div class="form-group col-md-12" style="margin: 1px">
+                                                            Usuario: {{actividad.usuario}}
+                                                        </div>
+                                                        
+                                                    </div>
                                                     <div class="row" style="margin: 0px">
                                                         <div class="form-group col-md-12" style="margin: 1px">
                                                             Asunto: {{actividad.tema}}
@@ -196,7 +208,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default antoclose3" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-default antoclose3" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>
@@ -217,6 +229,18 @@
                                         <div class="x_content">
                                             <div class="row "  style="padding: 4px" >
                                                 <a >
+                                                    <div class="row" ng-show="actividad.condicion" style="margin: 0px">
+                                                        <div class="form-group col-md-12" style="margin: 1px">
+                                                            Canal: {{actividad.canal}}
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="row" style="margin: 0px">
+                                                        <div class="form-group col-md-12" style="margin: 1px">
+                                                            Usuario: {{actividad.usuario}}
+                                                        </div>
+                                                        
+                                                    </div>
                                                     <div class="row" style="margin: 0px">
                                                         <div class="form-group col-md-12" style="margin: 1px">
                                                             Asunto: {{actividad.tema}}
@@ -244,7 +268,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-default antoclose2" data-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
                     </div>

@@ -4,8 +4,128 @@ app_angular.service('Factory', function ($webSql) {
 
     db = $webSql.openDatabase(DATABASE, '1.0', 'Test DB', 200000);
 
+    db.createTable('s_usuarios',{
+        "rowid": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_empresa": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "identificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "erp_codigo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombre_usuario": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombre_completo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "mail": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "clave": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_cambiarclave": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "acepto_condiciones": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_activo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "id_cia": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "descripcion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "idioma": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tipo_usuario": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "coordinador_canal_deault": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "superior_rowid": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_canal_superior": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fechacreacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuariocreacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fechamod": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuariomod": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "id_canal_vendedor": {
+            "type": "text",
+            "null": "NULL"
+        }
+    })
 
+    db.createTable('s_canales_usuario',{
+        "rowid": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_usuario": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "id_canal": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombre_canal": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuario_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_creacion": {
+            "type": "text",
+            "null": "NULL"
+        }
 
+    })
      db.createTable('crm_contactos',{
         "rowid": {
             "type": "INTEGER",
@@ -1335,7 +1455,8 @@ app_angular.service('Factory', function ($webSql) {
     db.select("create view if not exists  vw_items_precios "+
     " as  "+ 
     "select    "+
-    "  a.item_codigo||'-'||a.item_referencia||'-'||a.item_descripcion||'-'||a.id_unidad||'-'||CAST(b.precio_lista as text)  as producto,a.id_unidad,a.rowid as rowid_item,a.item_descripcion as descripcion,b.rowid as rowid_listaprecios,b.precio_lista as precio,erp_entidades_master.rowid "+
+    "  a.item_codigo||'-'||a.item_referencia||'-'||a.item_descripcion||'-'||a.id_unidad||'-'||CAST(b.precio_lista as text)  as producto, "+
+    "a.id_unidad,a.rowid as rowid_item,a.item_descripcion as descripcion,b.rowid as rowid_listaprecios,b.precio_lista as precio,erp_entidades_master.rowid "+
     " FROM erp_items a "  +
         " INNER JOIN erp_items_precios b "+
             " ON b.rowid_item = a.rowid "+
@@ -1345,6 +1466,24 @@ app_angular.service('Factory', function ($webSql) {
     " WHERE item_referencia NOT LIKE '%*DESC*%' and b.estado_item=1 "+
     "AND strftime('%Y%m%d')>=strftime('%Y%m%d',b.fecha_activacion) and  (strftime('%Y%m%d')<=strftime('%Y%m%d',b.fecha_inactivacion ) or  b.fecha_inactivacion='null'  )   "+
     "");
-    
-
+    db.select("create view if not exists vw_actividades_usuario "+
+        " as "  +
+        " select  "+
+        " usu.id_canal_vendedor as canal,act.tipo,act.tema,  " +
+        " act.ind_prioridad,act.descripcion, " +
+        " act.fecha_inicial,act.fecha_final,act.rowid," +
+        " usu.nombre_completo  as usuario , "+
+        " case when usu.id_canal_vendedor=null  then  'false'  else  'true' end as cond " +
+        " from " +
+        " crm_actividades  act  inner join   s_usuarios usu  on " +
+        " usu.nombre_usuario=act.usuario_creacion " +
+        " ")
+    db.select("create view if not exists vw_actividades_dia  " + 
+        " as "  +
+        " select  usu.id_canal_vendedor as canal,usu.nombre_completo as usuario, act.tema,act.descripcion,act.fecha_inicial,"+
+        " case when usu.id_canal_vendedor=null  then  'false'  else  'true' end as cond  , " +
+        " act.fecha_final ,replace(act.fecha_inicial,'-','') as fecha_inicialF,replace(act.fecha_final,'-','') as fecha_finalF from crm_actividades  act "  +
+        "   inner join   s_usuarios usu  on " +
+        " usu.nombre_usuario=act.usuario_creacion " +
+        "" )
 });

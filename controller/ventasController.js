@@ -38,6 +38,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.sucursalDespacho=[];
 	$scope.ciudadSucursal=[];
 	$scope.puntoEnvio=[];
+	$scope.hasfocus;
+	$scope.cantidadBase;
 	//var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
 	//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item ";
 	//CRUD.select(query,function(elem){$scope.list_items.push(elem);});
@@ -79,7 +81,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.HourS=$scope.DayNow.getHours();
 		$scope.MinuteS=$scope.DayNow.getMinutes();
 		if ($scope.DayS<10) {$scope.DayS='0'+$scope.DayS}
-		$scope.day=$scope.YearS+'/'+$scope.MonthS+'/'+$scope.DayS;
+		$scope.day=$scope.YearS+'-'+$scope.MonthS+'-'+$scope.DayS;
 		return $scope.day;
 	}
 	$scope.SelectedDate=function(daySelected){
@@ -162,14 +164,26 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			Mensajes('Seleccione un item de la lista','error','');
 			return
 		}
+		console.log($scope.cantidadBase)
+		if($scope.cantidadBase==undefined)
+		{
+			Mensajes('Agrege una Cantidad al item','error','');
+			return
+		}
+		if($scope.cantidadBase=='')
+		{
+			Mensajes('Agrege una Cantidad al item','error','');
+			return
+		}
 		if ($scope.itemsAgregadosPedido.indexOf($scope.item) == -1) {
-			$scope.item.cantidad=1;
+			$scope.item.cantidad=$scope.cantidadBase;
 			$scope.item.iva=$scope.item.precio*16/100;
 			$scope.item.valorTotal=0;
-			$scope.itemsAgregadosPedido.push($scope.item);
+			$scope.itemsAgregadosPedido.unshift($scope.item);
 			Mensajes('Item Agregado','success','');
 			$scope.item=[];
 			$scope.SearchItem='';
+			$scope.cantidadBase='';
 			$scope.CalcularCantidadValorTotal();
 		}
 		else
@@ -194,6 +208,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.pedidoDetalles.total=$scope.valortotal+$scope.ivatotal;
 	}
 	$scope.delete = function (index) {
+		console.log(index)
     	$scope.itemsAgregadosPedido.splice(index, 1);
     	$scope.CalcularCantidadValorTotal();
 	}
@@ -260,6 +275,25 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			CRUD.insert('t_pedidos',$scope.pedidos)
 		})
 	}
+	$scope.ValidacionCabezera=function()
+    {
+    	var FechaSolicitud=$scope.pedidos.fecha_solicitud.replace('-','');
+    	var FechaCreacion=$scope.pedidos.fechacreacion.replace('/','');
+    	var FechaEntrega=$scope.pedidos.fecha_entrega.replace('-','');
+    	 FechaSolicitud=FechaSolicitud.replace('-','');
+    	 FechaCreacion=FechaCreacion.replace('/','');
+    	 FechaEntrega=FechaEntrega.replace('-','');
+    	if (FechaSolicitud<FechaCreacion) {
+    		Mensajes('Fecha Solicitud No puede ser Menor que La Fecha creacion del pedido','error','');
+    		return;
+    	}
+    	if (FechaEntrega<FechaCreacion) {
+    		Mensajes('Fecha Entrega No puede ser Menor que La Fecha creacion del pedido','error','');
+    		return;
+    	}
+    	$scope.CambiarTab('3','atras');
+    	$scope.hasfocus=true;
+    }
 	$scope.modulo=MODULO_PEDIDO_NUEVO;
     angular.element('ul.tabs li').click(function () {
 
@@ -288,6 +322,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
     angular.element('#ui-id-1').mouseover(function (){
         angular.element('#ui-id-1').show();
     });
+
+
 	
 
 }]);

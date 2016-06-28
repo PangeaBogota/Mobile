@@ -170,7 +170,14 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
             $('#fc_ViewEvent').click();
             $scope.actividadesDia=[];
 			$scope.actividad=[];
-            CRUD.selectParametro('crm_actividades','rowid',calEvent.id,function(elem){$scope.actividadSelected.push(elem);$scope.actividad=$scope.actividadSelected[0]});
+			CRUD.select("select * from vw_actividades_usuario1 where rowid= '"+calEvent.id+"' ",function(elem){
+				if (elem.canal=='null') 
+				{
+					elem.condicion=false;
+				}
+				$scope.actividad=elem;
+			});
+            //CRUD.selectParametro('crm_actividades','rowid',calEvent.id,function(elem){$scope.actividadSelected.push(elem);$scope.actividad=$scope.actividadSelected[0]});
 
 
         }
@@ -185,15 +192,18 @@ app_angular.controller("actividadesController",['Conexion','$scope', '$routePara
 		
 		day=YearS+''+MonthS+''+DayS;
 		$scope.actividadesDia=[];
-		var query="select  tema,descripcion,fecha_inicial,fecha_final ,replace(fecha_inicial,'-','') as fecha_inicialF,replace(fecha_final,'-','') as fecha_finalF from crm_actividades ";
-		
-		CRUD.select(query,function(elem){
+		//var query="select  tema,descripcion,fecha_inicial,fecha_final ,replace(fecha_inicial,'-','') as fecha_inicialF,replace(fecha_final,'-','') as fecha_finalF from crm_actividades ";
+		CRUD.select("select*from vw_actividades_dia",function(elem){
 			var f1 = elem.fecha_inicialF.slice(0,8);
 			var f2 = elem.fecha_finalF.slice(0,8);
 			f1.replace(' ','');
 			f2.replace(' ','');
 			if (f1<=day) {
 				if (f2>=day) {
+					if (elem.canal=='null') 
+					{
+						elem.condicion=false;
+					}
 					$scope.actividadesDia.push(elem);
 				}
 			}

@@ -154,6 +154,8 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
             CRUD.Updatedynamic("delete from m_estados");
             CRUD.Updatedynamic("delete from m_metaclass");
             CRUD.Updatedynamic("delete from crm_contactos");
+            CRUD.Updatedynamic("delete from s_usuarios");
+            CRUD.Updatedynamic("delete from s_canales_usuario");
             
             //
             Sincronizar($scope.sessiondate.nombre_usuario,$scope.sessiondate.codigo_empresa);
@@ -671,6 +673,73 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                             contador=0;
                         }
 
+                    }
+                    else if (STEP_SINCRONIZACION[i] == ENTIDAD_USUARIOS  && DATOS_ENTIDADES_SINCRONIZACION[i].length!=0) {
+                        //CRUD.insert('crm_contactos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                        
+                        if (NewQuery) {
+                            stringSentencia=" insert into s_usuarios  ";
+                            NewQuery=false;
+                        }
+                        else{
+                            stringSentencia+= "   UNION   ";
+                        }
+                        stringSentencia+=  "  SELECT  '"+
+                        DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_empresa+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].identificacion+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].erp_codigo+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombre_usuario+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombre_completo+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].email+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].clave+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_cambiarclave+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].acepto_condiciones+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].ind_activo+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_cia+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].descripcion+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].idioma+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].tipo_usuario+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].coordinador_canal_deault+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].superior_rowid+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_canal_superior+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechacreacion+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariocreacion+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fechamod+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuariomod+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_canal_vendedor+"' "; 
+                        if (contador==499) {
+                            CRUD.Updatedynamic(stringSentencia)
+                            NewQuery=true;
+                            stringSentencia="";
+                            contador=0;
+                        }
+
+                    }
+                    else if (STEP_SINCRONIZACION[i] == ENTIDAD_CANALES  && DATOS_ENTIDADES_SINCRONIZACION[i].length!=0) {
+                        //CRUD.insert('crm_contactos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
+                        
+                        if (NewQuery) {
+                            stringSentencia=" insert into s_canales_usuario  ";
+                            NewQuery=false;
+                        }
+                        else{
+                            stringSentencia+= "   UNION   ";
+                        }
+                        stringSentencia+=  "  SELECT  '"+
+                        DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].rowid_usuario+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_canal+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].nombre_canal+
+                        "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].usuario_creacion+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].fecha_creacion+"' "; 
+                        if (contador==499) {
+                            CRUD.Updatedynamic(stringSentencia)
+                            NewQuery=true;
+                            stringSentencia="";
+                            contador=0;
+                        }
+
                     } 
                 }
                 if (stringSentencia!='') {
@@ -682,10 +751,10 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                 ProcesadoHiden();
                 $route.reload();
                 Mensajes('Sincronizado Con Exito','success','')
-            },5000)
+            },7000)
             
             
-        },7000)
+        },8000)
         //Traer Nuevos Datos
     }
 
@@ -719,7 +788,45 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
         $scope.day=$scope.YearS+''+$scope.MonthS+''+$scope.DayS;
         return $scope.day;
     }
-
+    $scope.GetMonth=function(){
+        $scope.day;
+        $scope.DayNow=Date.now();
+        $scope.YearS=$scope.DayNow.getFullYear();
+        $scope.MonthS=$scope.DayNow.getMonth()+1;
+        if ($scope.MonthS<10) {$scope.MonthS='0'+$scope.MonthS}
+        $scope.DayS=$scope.DayNow.getDate();
+        $scope.HourS=$scope.DayNow.getHours();
+        $scope.MinuteS=$scope.DayNow.getMinutes();
+        if ($scope.DayS<10) {$scope.DayS='0'+$scope.DayS}
+        $scope.day=$scope.YearS+''+$scope.MonthS+''+$scope.DayS;
+        return $scope.MonthS;
+    }
+    $scope.SelectedDate=function(daySelected){
+        $scope.day;
+        $scope.DayNow=new Date(daySelected);
+        $scope.YearS=$scope.DayNow.getFullYear();
+        $scope.MonthS=$scope.DayNow.getMonth()+1;
+        if ($scope.MonthS<10) {$scope.MonthS='0'+$scope.MonthS}
+        $scope.DayS=$scope.DayNow.getDate();
+        $scope.HourS=$scope.DayNow.getHours();
+        $scope.MinuteS=$scope.DayNow.getMinutes();
+        if ($scope.DayS<10) {$scope.DayS='0'+$scope.DayS}
+        $scope.day=$scope.YearS+'-'+$scope.MonthS;
+        return $scope.day;
+    }
+    $scope.RequestDate=function(day){
+        $scope.day;
+        $scope.DayNow=new Date(day);
+        $scope.YearS=$scope.DayNow.getFullYear();
+        $scope.MonthS=$scope.DayNow.getMonth()+1;
+        if ($scope.MonthS<10) {$scope.MonthS='0'+$scope.MonthS}
+        $scope.DayS=$scope.DayNow.getDate();
+        $scope.HourS=$scope.DayNow.getHours();
+        $scope.MinuteS=$scope.DayNow.getMinutes();
+        if ($scope.DayS<10) {$scope.DayS='0'+$scope.DayS}
+        $scope.day=$scope.YearS+'-'+$scope.MonthS+'-'+$scope.DayS;
+        return $scope.day;
+    }
     $scope.actividadesToday=[];
 
     var query="select  tema,descripcion,fecha_inicial,fecha_final ,replace(fecha_inicial,'-','') as fecha_inicialF,replace(fecha_final,'-','') as fecha_finalF from crm_actividades ";
@@ -741,36 +848,120 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
     $scope.cantidadPedidos=[];
     $scope.cantidadPedidos1=[];
     $scope.estadisticagrafica=[];
-    $scope.enero=0;
-    $scope.febrero=0;
-    $scope.marzo=0;
-    $scope.abril=0;
-    $scope.mayo=0;
-    $scope.junio=0;
+    $scope.mes1=0;
+    $scope.mes2=0;
+    $scope.mes3=0;
+    $scope.mes4=0;
+    $scope.mes5=0;
+    $scope.mes6=0;
+    $scope.mes11=0;
+    $scope.mes22=0;
+    $scope.mes33=0;
+    $scope.mes44=0;
+    $scope.mes55=0;
+    $scope.mes66=0;
     $scope.registros=[];
     $scope.validacion='';
+    $scope.mesActual=$scope.GetMonth();
+    $scope.labels=[];
     CRUD.select('SELECT COUNT(*) as cantidad FROM erp_terceros',function(elem){$scope.cantidadTerceros.push(elem);$scope.cantidadTerceros1=$scope.cantidadTerceros[0];})
+
     CRUD.select('SELECT COUNT(*) as cantidad FROM t_pedidos',function(elem){$scope.cantidadPedidos.push(elem);$scope.cantidadPedidos1=$scope.cantidadPedidos[0];})
-    CRUD.select("select strftime('%m', fechacreacion) as mes,count(strftime('%m', fechacreacion)) as cantidad,sum(valor_total) as valor_total from t_pedidos group by mes",
+    var Count1=6;
+    var cont=6;
+    for (var i=1; i<Count1+1;i++) {
+        //console.log(i)
+        var dt = new Date();
+        dt=dt.setMonth(dt.getMonth()+1 - i);
+
+        var dt1=new Date(dt);
+        dt1=$scope.SelectedDate(dt1)
+
+        CRUD.select("select "+cont+" as cont,  '"+dt1+"' as f1,    strftime('%Y-%m', fechacreacion) as date,strftime('%m', fechacreacion) as mes,count(strftime('%m', fechacreacion)) as cantidad,sum(valor_total) as valor_total from t_pedidos  where   strftime('%Y-%m', fechacreacion) = '"+dt1+"' ",
         function(elem){$scope.estadisticagrafica.push(elem);
-            if (elem.mes=='01') {$scope.enero=elem.valor_total};
-            if (elem.mes=='02') {$scope.febrero=elem.valor_total};
-            if (elem.mes=='03') {$scope.marzo=elem.valor_total};
-            if (elem.mes=='04') {$scope.abril=elem.valor_total};
-            if (elem.mes=='05') {$scope.mayo=elem.valor_total};
-            if (elem.mes=='06') {$scope.junio=elem.valor_total};
-            $scope.registros=[[$scope.enero,$scope.febrero,$scope.marzo,$scope.abril,$scope.mayo,$scope.junio]];
             
-    })
+            if (elem.cont==1) {$scope.mes1=elem.valor_total;$scope.mes11=elem.f1;console.log(elem.date)};
+            if (elem.cont==2) {$scope.mes2=elem.valor_total;$scope.mes22=elem.f1;console.log(elem.date)};
+            if (elem.cont==3) {$scope.mes3=elem.valor_total;$scope.mes33=elem.f1};
+            if (elem.cont==4) {$scope.mes4=elem.valor_total;$scope.mes44=elem.f1};
+            if (elem.cont==5) {$scope.mes5=elem.valor_total;$scope.mes55=elem.f1};
+            if (elem.cont==6) {$scope.mes6=elem.valor_total;$scope.mes66=elem.f1};
+            $scope.registros=[[$scope.mes1,$scope.mes2,$scope.mes3,$scope.mes4,$scope.mes5,$scope.mes6]];
+            $scope.labels = [$scope.mes11,$scope.mes22,$scope.mes33,$scope.mes44,$scope.mes55,$scope.mes66]; 
+        })
+        cont--
+    }
+    
     window.setTimeout(function(){
         if ($scope.estadisticagrafica.length==0) {$scope.validacion='No fue encontrado Ningun  Pedido'}
     },2000);
+    $scope.estadisiticaGraficaDiaria=[];
+    $scope.variables=[];
+    $scope.dataGD=[[0,0,0,0,0,0,0,0,0,0]];
+    $scope.labelsGD=[0,0,0,0,0,0,0,0,0,0];
+    var p2=10;
+    for (var i=1;i<11;i++) {
+        var v1 = new Date();
+        var dayOfMonth = v1.getDate();
+        v1=v1.setDate(dayOfMonth +1 - i);
+        dayOfMonth=dayOfMonth+1-i;
+        v1=new Date(v1);
+        v1=$scope.RequestDate(v1)
+        console.log(v1);
+
+        CRUD.select("select "+p2+" as cont,  '"+v1+"' as f1,   '"+dayOfMonth+"' as date,strftime('%m', fechacreacion) as mes,count(strftime('%m', fechacreacion)) as cantidad,sum(valor_total) as valor_total,count(rowid) as dataCount from t_pedidos  where   strftime('%Y-%m-%d', fechacreacion) = '"+v1+"' ",function(elem){
+            $scope.estadisiticaGraficaDiaria.push(elem);
+            if (elem.cont==1) {$scope.variables.dia1=elem.dataCount;$scope.variables.name1=elem.date};
+            if (elem.cont==2) {$scope.variables.dia2=elem.dataCount;$scope.variables.name2=elem.date};
+            if (elem.cont==3) {$scope.variables.dia3=elem.dataCount;$scope.variables.name3=elem.date};
+            if (elem.cont==4) {$scope.variables.dia4=elem.dataCount;$scope.variables.name4=elem.date};
+            if (elem.cont==5) {$scope.variables.dia5=elem.dataCount;$scope.variables.name5=elem.date};
+            if (elem.cont==6) {$scope.variables.dia6=elem.dataCount;$scope.variables.name6=elem.date};
+            if (elem.cont==7) {$scope.variables.dia7=elem.dataCount;$scope.variables.name7=elem.date};
+            if (elem.cont==8) {$scope.variables.dia8=elem.dataCount;$scope.variables.name8=elem.date};
+            if (elem.cont==9) {$scope.variables.dia9=elem.dataCount;$scope.variables.name9=elem.date};
+            if (elem.cont==10) {$scope.variables.dia10=elem.dataCount;$scope.variables.name10=elem.date};
+            $scope.dataGD=
+            [[
+                $scope.variables.dia1,
+                $scope.variables.dia2,
+                $scope.variables.dia3,
+                $scope.variables.dia4,
+                $scope.variables.dia5,
+                $scope.variables.dia6,
+                $scope.variables.dia7,
+                $scope.variables.dia8,
+                $scope.variables.dia9
+                ,$scope.variables.dia10
+            ]]
+            $scope.labelsGD=
+            [
+                $scope.variables.name1,
+                $scope.variables.name2,
+                $scope.variables.name3,
+                $scope.variables.name4,
+                $scope.variables.name5,
+                $scope.variables.name6,
+                $scope.variables.name7,
+                $scope.variables.name8,
+                $scope.variables.name9
+                ,$scope.variables.name10
+            ]
+        })   
+        p2--; 
+    }
     
-    $scope.labels = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio"];
+
     $scope.data = [ [65, 59, 80, 81, 56, 55] ];
     $scope.colours=["#26B99A"];
     
-    
+   $scope.labels1 = ['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
+    $scope.series1 = ['Pedidos'];
+
+      $scope.data1 = [
+        [65, 59, 80, 81, 56, 55, 40],
+        [28, 48, 40, 19, 86, 27, 90]
+      ];
     
 }]);
 

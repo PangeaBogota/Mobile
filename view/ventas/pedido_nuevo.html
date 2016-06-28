@@ -126,9 +126,9 @@
         <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="tabbable tabbable-custom">
                     <ul class="nav nav-tabs tabs">
-                        <li data-tab="tab_1" class="active"><a data-tab="tab_1" data-toggle="tab">1. Encabezado</a></li>
-                        <li data-tab="tab_2"><a data-tab="tab_2" data-toggle="tab">2. Detalle</a></li>
-                        <li data-tab="tab_3"><a data-tab="tab_3" data-toggle="tab">3. Balance</a></li>
+                        <li data-tab="tab_1" class="active"><a data-tab="tab_1" data-toggle="tab">Encabezado</a></li>
+                        <li data-tab="tab_2"><a data-tab="tab_2" data-toggle="tab">Detalle</a></li>
+                        <li data-tab="tab_3"><a data-tab="tab_3" data-toggle="tab">Balance</a></li>
                     </ul>   
                     <div class="tab-content ">
                         <div id="tab_1" class="tab-pane active">
@@ -246,7 +246,7 @@
                                     </div>
                                 </div>
                                 <div class="form-actions ">
-                                    <button type="submit" class="btn btn-success pull-right" ng-disabled="form_encabezado.$invalid"  ng-click="focusInput=true;CambiarTab('3','atras')">Continuar</button>
+                                    <button type="submit" class="btn btn-success pull-right" ng-disabled="form_encabezado.$invalid"  ng-click="ValidacionCabezera();focusInput=true;">Continuar</button>
                                 </div>
                                 </div>
                                 
@@ -255,17 +255,42 @@
                         <div id="tab_2" class="tab-pane">
                             <form class="form-horizontal form-label-left" name="form_detalle" >
                                 <div class="form-group">
-                                    <label for="rowid_item" class="control-label">Items<span class="required">*</span>
-                                    </label>
-                                    <input type="text" ng-model="SearchItem"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
-                                    <select  id="rowid_item" ng-model="item"  ng-options="item as item.producto 
-                                        for item in list_items  |filter:SearchItem" class="form-control" required >
-                                    </select>
                                     </br>
-                                    <button type="button" class="btn btn-success"  ng-click="adicionaritem()" data-toggle="dropdown">
-                                        <span class="icon-ok control-label" ng-disabled"form_detalle.$invalid"></span>
-                                        <span class="control-label">Agregar Item</span>
-                                    </button>
+                                    <label for="rowid_item" class="control-label">Items<span class="required">*</span></label>
+                                        <div class="form-group">
+                                            <div class="row ">
+                                            <div class="col-md-8">
+                                                <input type="text" ng-model="SearchItem"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button class="btn btn-success"> <span class="fa fa-search"></span></button>
+                                            </div>
+                                        </div>  
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <select  id="rowid_item" ng-model="item"  ng-options="item as item.producto 
+                                        for item in list_items  |filter:SearchItem"   ng-change="hasFocus1=true" class="form-control" required >
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label for="rowid_item" class="control-label">Cantidad:</label>
+                                                 
+                                        </div>
+                                         <div class="col-md-2">  
+                                                 <input type="number" class="form-control "  set-focus-if="hasFocus1" ng-model="cantidadBase" value="1" min="1" style=" height: 34px;width: 51px;" />
+                                        </div>
+                                       <div class="col-md-2 pull-right">
+                                            <button type="button" class="btn btn-success"  ng-click="adicionaritem()" data-toggle="dropdown">
+                                                <span class="icon-ok control-label" ng-disabled"form_detalle.$invalid"></span>
+                                            </button> 
+                                        </div>
+                                    
+                                    
+                                    </div>
+                                    
                                 </div>
                                 <label class="control-label">Valor Total  Parcial:{{pedidoDetalles.total|currency}}</label>
                                 </br>
@@ -274,28 +299,30 @@
                                     
                                 </div>
                                 <label for="rowid_item" class="control-label">Listado de items agregados:</label>
-        
-                                <div class="form-group" ng-repeat="itemsAgregadoPedido in itemsAgregadosPedido  | orderBy:'':reverse">
+                                <!--| orderBy:'':reverse"  -->
+                                <div class="form-group" ng-repeat="itemsAgregadoPedido in itemsAgregadosPedido " >
                                     <div class="row">
                                         <div class="col-md-8 col-sm-8 col-xs-8 form-group">
                                             {{itemsAgregadoPedido.producto}}
                                         </div>
                                         <div class="  col-xs-3 form-group pull-right">
-                                            <input type="number" class="form-control " ng-model="itemsAgregadoPedido.cantidad" ng-change="actualizarPrecio()" value="1" min="1" style=" height: 34px;width: 51px;padding: 0px" />
+                                            <input type="number" class="form-control " ng-model="itemsAgregadoPedido.cantidad" ng-change="actualizarPrecio()" value="1" min="1" style=" height: 34px;width: 51px;" />
                                         </div>
                                         <div class="col-md-2 col-sm-13 col-xs-12 form-group">
-                                            <span class="badge">IVA :{{itemsAgregadoPedido.iva  | currency}}</span>
-                                            
-                                            <span class="badge">V/U :{{itemsAgregadoPedido.precio  | currency}}</span>
-                                            <span class="badge">V+IVA :{{itemsAgregadoPedido.precio + itemsAgregadoPedido.iva  | currency}}</span>
-                                            <span class="badge">V/T :{{(itemsAgregadoPedido.precio+ itemsAgregadoPedido.iva)*itemsAgregadoPedido.cantidad  | currency}}</span>
+                                            <span class="badge">V/U :{{itemsAgregadoPedido.precio + itemsAgregadoPedido.iva    | currency}}</span>
+                                            <span class="badge">V/N :{{itemsAgregadoPedido.precio*itemsAgregadoPedido.cantidad  | currency}}</span>
+                                            <span class="badge">IVA :{{itemsAgregadoPedido.iva* itemsAgregadoPedido.cantidad | currency}}</span>
+                                            <span class="badge">T/N :{{itemsAgregadoPedido.precio * itemsAgregadoPedido.cantidad  | currency}}</span>
+                                            <span class="badge">T/ITEM :{{(itemsAgregadoPedido.precio+itemsAgregadoPedido.iva)*itemsAgregadoPedido.cantidad  | currency}}</span>
+                                           
                                             
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-3 col-sm-12 col-xs-8 form-group">        
-                                           <button type="button" class="btn btn-danger" 
-                                                ng-click="delete($index)" value="Eliminar" data-toggle="dropdown">Eliminar
+                                        <div class="col-xs-3 form-group pull-right ">        
+                                           <button type="button" class="btn btn-danger " 
+                                                ng-click="delete($index)" value="Eliminar" data-toggle="dropdown">
+                                                <span class="fa fa-trash-o"></span>
                                             </button> 
                                         </div>
                                     </div>
@@ -308,9 +335,8 @@
                             </form>
                         </div>
                         <div class="tab-pane" id="tab_3">
-                            <div class="rows">
+                            <div class="row">
                                 <div class="col-md-12">
-                                    <input type="hidden" focus-me="focusInputHide"></input>
                                     <form class="form-inline">
                                         <div class="form-group">
                                             <table class="table table-hover table-striped">
@@ -325,7 +351,7 @@
                                                         V. Total
                                                     </td>
                                                 </tr>
-                                                <tr ng-repeat="itemsAgregadoPedido in itemsAgregadosPedido" >
+                                                <tr ng-repeat="itemsAgregadoPedido in itemsAgregadosPedido  | orderBy:'':reverse" >
                                                     <td>{{itemsAgregadoPedido.producto}} </td>
                                                     <td>{{itemsAgregadoPedido.cantidad}}</td>
                                                     <td>{{itemsAgregadoPedido.precio*itemsAgregadoPedido.cantidad| currency}}</td>
