@@ -1455,7 +1455,7 @@ app_angular.service('Factory', function ($webSql) {
     db.select("create view if not exists  vw_items_precios "+
     " as  "+ 
     "select    "+
-    "  a.item_codigo||'-'||a.item_referencia||'-'||a.item_descripcion||'-'||a.id_unidad||'-'||CAST(b.precio_lista as text)  as producto, "+
+    "  a.item_codigo||'-'||a.item_referencia||'-'||a.item_descripcion||'-'||a.id_unidad||'-'||CAST(b.precio_lista as text)  as producto, a.impuesto_porcentaje  , "+
     "a.id_unidad,a.rowid as rowid_item,a.item_descripcion as descripcion,b.rowid as rowid_listaprecios,b.precio_lista as precio,erp_entidades_master.rowid "+
     " FROM erp_items a "  +
         " INNER JOIN erp_items_precios b "+

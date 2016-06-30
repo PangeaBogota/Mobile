@@ -40,6 +40,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.puntoEnvio=[];
 	$scope.hasfocus;
 	$scope.cantidadBase;
+	$scope.dataFiltro;
+	$scope.SearchItem;
 	//var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
 	//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item ";
 	//CRUD.select(query,function(elem){$scope.list_items.push(elem);});
@@ -70,7 +72,11 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	{
 		if ($scope.SearchItem=='') {$scope.item=[]}
 	}
-	
+	$scope.onGetFiltro=function()
+	{
+		$scope.SearchItem=$scope.dataFiltro;
+		console.log($scope.SearchItem);
+	}
 	$scope.CurrentDate=function(){
 		$scope.day;
 		$scope.DayNow=Date.now();
@@ -177,7 +183,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		}
 		if ($scope.itemsAgregadosPedido.indexOf($scope.item) == -1) {
 			$scope.item.cantidad=$scope.cantidadBase;
-			$scope.item.iva=$scope.item.precio*16/100;
+			$scope.item.iva=$scope.item.precio*$scope.item.impuesto_porcentaje/100;
 			$scope.item.valorTotal=0;
 			$scope.itemsAgregadosPedido.unshift($scope.item);
 			Mensajes('Item Agregado','success','');
@@ -197,12 +203,16 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.iva=0;
 		$scope.cantidad=0;
 		$scope.ivatotal=0;
+		$scope.precioEstandar=0;
+		$scope.precioEstandar1=0;
 		angular.forEach($scope.itemsAgregadosPedido,function(value,key){
+			$scope.precioEstandar1+=value.precio*value.cantidad;
 			$scope.precioEstandar=value.precio*value.cantidad;
 			$scope.valortotal+=$scope.precioEstandar;
 			$scope.cantidad+=value.cantidad;
 			$scope.ivatotal+=value.iva*value.cantidad;
 		})
+		$scope.pedidoDetalles.neto=$scope.precioEstandar1;
 		$scope.pedidoDetalles.iva=$scope.ivatotal;
 		$scope.pedidoDetalles.cantidad=$scope.cantidad;
 		$scope.pedidoDetalles.total=$scope.valortotal+$scope.ivatotal;
@@ -234,10 +244,10 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 				$scope.detalle.factor=0;
 				$scope.detalle.cantidad_base=value.cantidad;
 				$scope.detalle.stock=0;
-				$scope.detalle.porcen_descuento=0;
-				$scope.detalle.valor_impuesto=0;
+				$scope.detalle.porcen_descuento=value.impuesto_porcentaje;
+				$scope.detalle.valor_impuesto=value.iva*value.cantidad;
 				$scope.detalle.valor_descuento=0;
-				$scope.detalle.valor_total_linea=0;
+				$scope.detalle.valor_total_linea=(value.precio*value.cantidad)+$scope.detalle.valor_impuesto;
 				$scope.detalle.precio_unitario=value.precio;
 				$scope.detalle.valor_base=value.precio*value.cantidad;
 				$scope.detalle.usuariocreacion=$scope.sessiondate.nombre_usuario;
@@ -259,7 +269,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			$scope.pedido_detalle.rowid_pedido=$scope.pedidos.rowid;
 			$scope.pedidos.modulo_creacion='MOBILE';
 			$scope.pedidos.valor_total=$scope.pedidoDetalles.total;
-			$scope.pedidos.valor_base=$scope.pedidoDetalles.total;
+			$scope.pedidos.valor_base=$scope.pedidoDetalles.neto;
 			$scope.pedidos.usuariocreacion=$scope.sessiondate.nombre_usuario;
 			$scope.pedidos.rowid_empresa=4;
 			$scope.pedidos.id_cia=1;

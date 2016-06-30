@@ -260,10 +260,10 @@
                                         <div class="form-group">
                                             <div class="row ">
                                             <div class="col-md-8">
-                                                <input type="text" ng-model="SearchItem"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
+                                                <input type="text" ng-model="dataFiltro"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
                                             </div>
-                                            <div class="col-md-2">
-                                                <button class="btn btn-success"> <span class="fa fa-search"></span></button>
+                                            <div class="col-md-4">
+                                                <button class="btn btn-success" ng-click="onGetFiltro()"> <span class="fa fa-search"></span></button>
                                             </div>
                                         </div>  
                                     </div>
@@ -312,8 +312,7 @@
                                             <span class="badge">V/U :{{itemsAgregadoPedido.precio + itemsAgregadoPedido.iva    | currency}}</span>
                                             <span class="badge">V/N :{{itemsAgregadoPedido.precio*itemsAgregadoPedido.cantidad  | currency}}</span>
                                             <span class="badge">IVA :{{itemsAgregadoPedido.iva* itemsAgregadoPedido.cantidad | currency}}</span>
-                                            <span class="badge">T/N :{{itemsAgregadoPedido.precio * itemsAgregadoPedido.cantidad  | currency}}</span>
-                                            <span class="badge">T/ITEM :{{(itemsAgregadoPedido.precio+itemsAgregadoPedido.iva)*itemsAgregadoPedido.cantidad  | currency}}</span>
+                                            <span class="badge">V/T :{{(itemsAgregadoPedido.precio+itemsAgregadoPedido.iva)*itemsAgregadoPedido.cantidad  | currency}}</span>
                                            
                                             
                                         </div>
@@ -360,6 +359,11 @@
                                                     <td>Cantidad</td>
                                                     <td></td>
                                                     <td>{{pedidoDetalles.cantidad}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Valor Neto</td>
+                                                    <td></td>
+                                                    <td>{{pedidoDetalles.neto| currency}}</td>
                                                 </tr>
                                                 <tr>
                                                     <td>IVA</td>
