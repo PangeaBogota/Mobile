@@ -79,7 +79,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                 if (STEP_SUBIRDATOS[i]==ENTIDAD_ACTIVIDADES && ALMACENARDATOS[i].length!=0) {
                     for (var j =0;j< ALMACENARDATOS[i].length ; j++) {
                         $scope.objeto=ALMACENARDATOS[i][j];
-                        debugger
+                        
                         //SubirDatos($scope.usuario,'PEDIDOS',$scope.objeto,$scope.codigoempresa);
                         $http({
                           method: 'GET',
@@ -95,7 +95,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                     for (var j =0;j< ALMACENARDATOS[i].length ; j++) {
                         $scope.objeto=ALMACENARDATOS[i][j];
                         $scope.url='http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+$scope.usuario+'&entidad=PEDIDOS&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify($scope.objeto);
-                        debugger
+                        
                         //SubirDatos($scope.usuario,'PEDIDOS',$scope.objeto,$scope.codigoempresa);
                         //var promise=myService.getData($scope.url);
                         //promise.then(
@@ -113,7 +113,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
         },3000)
     }
     $scope.Request=function(url){
-        debugger
+        
         var responsePromise =$http.get(url);
         responsePromise.success(function(data) {
             $scope.pedidorowid=data.rowid
@@ -174,7 +174,8 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                     contador++;
                     if (STEP_SINCRONIZACION[i] == ENTIDAD_PEDIDOS  && DATOS_ENTIDADES_SINCRONIZACION[i].length!=0 ) {
                         //CRUD.insert('t_pedidos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
-                        //debugger
+                        //
+
                         if (NewQuery) {
                             stringSentencia=" insert into t_pedidos  ";
                             NewQuery=false;
@@ -827,6 +828,19 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
         $scope.day=$scope.YearS+'-'+$scope.MonthS+'-'+$scope.DayS;
         return $scope.day;
     }
+    $scope.RequestDay=function(day){
+        $scope.day;
+        $scope.DayNow=new Date(day);
+        $scope.YearS=$scope.DayNow.getFullYear();
+        $scope.MonthS=$scope.DayNow.getMonth()+1;
+        if ($scope.MonthS<10) {$scope.MonthS='0'+$scope.MonthS}
+        $scope.DayS=$scope.DayNow.getDate();
+        $scope.HourS=$scope.DayNow.getHours();
+        $scope.MinuteS=$scope.DayNow.getMinutes();
+        if ($scope.DayS<10) {$scope.DayS='0'+$scope.DayS}
+        $scope.day=$scope.DayS;
+        return $scope.day;
+    }
     $scope.actividadesToday=[];
 
     var query="select  tema,descripcion,fecha_inicial,fecha_final ,replace(fecha_inicial,'-','') as fecha_inicialF,replace(fecha_final,'-','') as fecha_finalF from crm_actividades ";
@@ -906,12 +920,16 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
         var v1 = new Date();
         var dayOfMonth = v1.getDate();
         v1=v1.setDate(dayOfMonth +1 - i);
+        
         dayOfMonth=dayOfMonth+1-i;
         v1=new Date(v1);
         v1=$scope.RequestDate(v1)
+        v2=$scope.RequestDay(v1)
         console.log(v1);
-
-        CRUD.select("select "+p2+" as cont,  '"+v1+"' as f1,   '"+dayOfMonth+"' as date,strftime('%m', fechacreacion) as mes,count(strftime('%m', fechacreacion)) as cantidad,sum(valor_total) as valor_total,count(rowid) as dataCount from t_pedidos  where   strftime('%Y-%m-%d', fechacreacion) = '"+v1+"' ",function(elem){
+        var dataprueba="select "+p2+" as cont,  '"+v1+"' as f1,   '"+v2+"' as date,strftime('%m', fechacreacion) as mes,count(strftime('%m', fechacreacion)) as cantidad,sum(valor_total) as valor_total,count(rowid) as dataCount from t_pedidos  where   strftime('%Y-%m-%d', fechacreacion) = '"+v1+"'" ;
+        
+        CRUD.select("select "+p2+" as cont,  '"+v1+"' as f1,   '"+v2+"' as date,strftime('%m', fechacreacion) as mes,count(strftime('%m', fechacreacion)) as cantidad,sum(valor_total) as valor_total,count(rowid) as dataCount from t_pedidos  where   strftime('%Y-%m-%d', fechacreacion) = '"+v1+"' ",function(elem){
+            
             $scope.estadisiticaGraficaDiaria.push(elem);
             if (elem.cont==1) {$scope.variables.dia1=elem.dataCount;$scope.variables.name1=elem.date};
             if (elem.cont==2) {$scope.variables.dia2=elem.dataCount;$scope.variables.name2=elem.date};
@@ -1001,10 +1019,9 @@ app_angular.controller('loginController', function ($scope, Factory, $location, 
 
     $scope.Login=function(){
 
-        //debugger;
         $http.get("https://api.github.com/users/codigofacilito/repos")
             .success(function (data) {
-                //debugger;
+                
             })
             .error(function (err) {
                 console.log("Error" + err);
