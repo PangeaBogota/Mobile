@@ -913,6 +913,16 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
     })
     $scope.estadisiticaGraficaDiaria=[];
     $scope.variables=[];
+    $scope.variables.name1=0;
+    $scope.variables.name2=0;
+    $scope.variables.name3=0;
+    $scope.variables.name4=0;
+    $scope.variables.name5=0;
+    $scope.variables.name6=0;
+    $scope.variables.name7=0;
+    $scope.variables.name8=0;
+    $scope.variables.name9=0;
+    $scope.variables.name10=0;
     $scope.dataGD=[[0,0,0,0,0,0,0,0,0,0]];
     $scope.labelsGD=[0,0,0,0,0,0,0,0,0,0];
     var p2=10;
