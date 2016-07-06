@@ -128,10 +128,10 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		CRUD.select("select count(*) as dataValidacion, *from erp_entidades_master where erp_id_maestro = '"+$scope.sucursal.id_lista_precios+"'  order by rowid LIMIT 1",
 			
 			function(elem){
-				debugger
+				
 				if (elem.dataValidacion==0) {
 					CRUD.select("select  * from erp_entidades_master where erp_id_maestro = '001' and id_tipo_maestro='LISTA_PRECIOS'",function(elem){
-						debugger
+						
 						$scope.list_precios.push(elem);$scope.listaPrecios=$scope.list_precios[0];$scope.pedidos.rowid_lista_precios=$scope.listaPrecios.rowid;$scope.onChangeListaPrecios();
 					})
 				}
@@ -359,7 +359,7 @@ app_angular.controller("PedidosController",['Conexion','$scope',function (Conexi
 	$scope.detallespedido=[];
     CRUD.select('select distinct pedidos.valor_impuesto,pedidos.fecha_solicitud,pedidos.sincronizado, pedidos.rowid as rowidpedido,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total,detalle.rowid_pedido,count(detalle.rowid_pedido) cantidaddetalles,sum(detalle.cantidad) as cantidadproductos from  t_pedidos pedidos inner join erp_terceros_sucursales sucursal on sucursal.rowid=pedidos.rowid_cliente_facturacion  inner join erp_terceros terceros on terceros.rowid=sucursal.rowid_tercero  left  join t_pedidos_detalle detalle on detalle.rowid_pedido=pedidos.rowid left join erp_terceros_punto_envio punto_envio on punto_envio.rowid=pedidos.id_punto_envio group by  pedidos.fecha_solicitud,detalle.rowid_pedido,pedidos.rowid,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total order by pedidos.fecha_solicitud desc',function(elem) {$scope.pedidos.push(elem)});
     CRUD.select("select count(*) as cantidad",function(elem){
-    	debugger
+    	
     	if (elem.cantidad==0) {
     		$scope.validacion=true;
     	}
