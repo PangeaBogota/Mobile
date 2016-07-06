@@ -13,7 +13,7 @@
                     allowClear: true
                 });
 
-                
+               
 
                 
             });
@@ -263,13 +263,13 @@
                                                 <input type="text" ng-model="dataFiltro"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
                                             </div>
                                             <div class="col-md-4">
-                                                <button class="btn btn-success" ng-click="onGetFiltro()"> <span class="fa fa-search"></span></button>
+                                                <button class="btn btn-success"  id="rowid_item" ng-click="onGetFiltro()"> <span class="fa fa-search"></span></button>
                                             </div>
                                         </div>  
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <select  id="rowid_item" ng-model="item"  ng-options="item as item.producto 
+                                    <select   ng-model="item" id="dataFiltered"  ng-options="item as item.producto 
                                         for item in list_items  |filter:SearchItem"   ng-change="hasFocus1=true" class="form-control" required >
                                     </select>
                                 </div>

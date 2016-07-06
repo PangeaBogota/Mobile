@@ -95,7 +95,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                     for (var j =0;j< ALMACENARDATOS[i].length ; j++) {
                         $scope.objeto=ALMACENARDATOS[i][j];
                         $scope.url='http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+$scope.usuario+'&entidad=PEDIDOS&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify($scope.objeto);
-                        
+                        debugger
                         //SubirDatos($scope.usuario,'PEDIDOS',$scope.objeto,$scope.codigoempresa);
                         //var promise=myService.getData($scope.url);
                         //promise.then(
@@ -113,7 +113,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
         },3000)
     }
     $scope.Request=function(url){
-        
+        debugger
         var responsePromise =$http.get(url);
         responsePromise.success(function(data) {
             $scope.pedidorowid=data.rowid
@@ -892,9 +892,11 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
         cont--
     }
     
-    window.setTimeout(function(){
-        if ($scope.estadisticagrafica.length==0) {$scope.validacion='No fue encontrado Ningun  Pedido'}
-    },2000);
+    CRUD.select("select count(*) as cantidad",function(elem){
+        if (elem.cantidad==0) {
+            $scope.validacion='No fue encontrado Ningun  Pedido'
+        }
+    })
     $scope.estadisiticaGraficaDiaria=[];
     $scope.variables=[];
     $scope.dataGD=[[0,0,0,0,0,0,0,0,0,0]];
