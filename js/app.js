@@ -165,12 +165,14 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
             //Guardar Nuevos Datos
             for(var i=0; i < STEP_SINCRONIZACION.length; i++)
             {
+                var contador1=0;
                 contador=0;
                 NewQuery=true;
                 stringSentencia='';
                 //DATOS_ENTIDADES_SINCRONIZACION[i]=localStorage.getItem(STEP_SINCRONIZACION[i].toString());
                 //DATOS_ENTIDADES_SINCRONIZACION[i] = JSON.parse(DATOS_ENTIDADES_SINCRONIZACION[i]);
                 for(var j=0; j < DATOS_ENTIDADES_SINCRONIZACION[i].length; j++) {
+                    contador1++;
                     contador++;
                     if (STEP_SINCRONIZACION[i] == ENTIDAD_PEDIDOS  && DATOS_ENTIDADES_SINCRONIZACION[i].length!=0 ) {
                         //CRUD.insert('t_pedidos',DATOS_ENTIDADES_SINCRONIZACION[i][j]);
@@ -229,8 +231,9 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].modulo_creacion+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].sincronizado+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].key_mobile+"' "; 
-                        if (contador==499) {
+                        if (contador==50) {
                             CRUD.Updatedynamic(stringSentencia)
+                            console.log(contador1)
                             NewQuery=true;
                             stringSentencia="";
                             contador=0;
@@ -878,8 +881,8 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
     $scope.validacion='';
     $scope.mesActual=$scope.GetMonth();
     $scope.labels=[];
-    CRUD.select('SELECT COUNT(*) as cantidad FROM erp_terceros',function(elem){$scope.cantidadTerceros.push(elem);$scope.cantidadTerceros1=$scope.cantidadTerceros[0];})
-
+    //CRUD.select('SELECT COUNT(*) as cantidad FROM erp_terceros',function(elem){$scope.cantidadTerceros.push(elem);$scope.cantidadTerceros1=$scope.cantidadTerceros[0];})
+    CRUD.select("select count(*) as cantidad from erp_items ",function(elem){console.log(elem.cantidad)})
     CRUD.select('SELECT COUNT(*) as cantidad FROM t_pedidos',function(elem){$scope.cantidadPedidos.push(elem);$scope.cantidadPedidos1=$scope.cantidadPedidos[0];})
     var Count1=6;
     var cont=6;
@@ -906,7 +909,7 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
         cont--
     }
     
-    CRUD.select("select count(*) as cantidad",function(elem){
+    CRUD.select("select count(*) as cantidad from t_pedidos",function(elem){
         if (elem.cantidad==0) {
             $scope.validacion='No fue encontrado Ningun  Pedido'
         }

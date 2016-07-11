@@ -125,10 +125,9 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.onChangeSucursal=function(){
 		if ($scope.sucursal==undefined) {$scope.pedidos.rowid_lista_precios='';$scope.list_items=[];return}
 		$scope.list_precios=[];
-		CRUD.select("select count(*) as dataValidacion, *from erp_entidades_master where erp_id_maestro = '"+$scope.sucursal.id_lista_precios+"'  order by rowid LIMIT 1",
+		CRUD.select("select count(*) as dataValidacion, *from erp_entidades_master where erp_id_maestro = '"+$scope.sucursal.id_lista_precios+"'  and id_tipo_maestro='LISTA_PRECIOS' order by rowid LIMIT 1",
 			
 			function(elem){
-				
 				if (elem.dataValidacion==0) {
 					CRUD.select("select  * from erp_entidades_master where erp_id_maestro = '001' and id_tipo_maestro='LISTA_PRECIOS'",function(elem){
 						
