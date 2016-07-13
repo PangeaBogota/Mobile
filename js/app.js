@@ -43,9 +43,25 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
     $scope.sessiondate=JSON.parse(window.localStorage.getItem("CUR_USER"));
     $scope.pedidos=[];
     $scope.actividades=[];
-    //$scope.$watch('online', function(newStatus) {  });
+    $scope.status=[];
+    $scope.alerta=[];
+    $scope.$watch('online', function(newStatus) 
+        {$scope.status.connextionstate=newStatus;  
+            if ($scope.status.connextionstate==false) {
+            $scope.alerta.message='Verifique su conexion a Internet ';
+            $scope.alerta.disableBtnAceptar=false;
+            $scope.alerta.header='Conexion Internet'
+        }
+        else
+        {
+            $scope.alerta.header='Confirmar Sincronizacion'
+            $scope.alerta.disableBtnAceptar=true;
+            $scope.alerta.message='Esta seguro de realizar la Sincronizacion asumiendo el posible  consumo de datos elevado?';
+        }
+        });
     $scope.confirmarSincronizacion=function(){
         $('#openConfirmacion').click();
+        
     }
     $scope.datosSubir=function(){
         $scope.pedidos=[];
@@ -231,9 +247,8 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].modulo_creacion+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].sincronizado+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].key_mobile+"' "; 
-                        if (contador==50) {
+                        if (contador==499) {
                             CRUD.Updatedynamic(stringSentencia)
-                            console.log(contador1)
                             NewQuery=true;
                             stringSentencia="";
                             contador=0;
@@ -745,12 +760,32 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                         }
 
                     } 
+                    else if (STEP_SINCRONIZACION[i] == ENTIDAD_GRAFICA_DIARIO  && DATOS_ENTIDADES_SINCRONIZACION[i].length!=0) {
+                        
+                        GRAFICA_DIA_LABEL[j]=DATOS_ENTIDADES_SINCRONIZACION[i][j].dia;
+                        GRAFICA_DIA_CANTIDAD[j]=DATOS_ENTIDADES_SINCRONIZACION[i][j].cantidad;
+
+                    }
+                    else if (STEP_SINCRONIZACION[i] == ENTIDAD_GRAFICA_MENSUAL  && DATOS_ENTIDADES_SINCRONIZACION[i].length!=0) {
+                        
+                        GRAFICA_MES_LABEL[j]=DATOS_ENTIDADES_SINCRONIZACION[i][j].mes;
+                        GRAFICA_MES_CANTIDAD[j]=DATOS_ENTIDADES_SINCRONIZACION[i][j].cantidad;
+
+                    } 
                 }
                 if (stringSentencia!='') {
                     CRUD.Updatedynamic(stringSentencia)
                     NewQuery=true;
                 }
             }
+            localStorage.removeItem('GRAFICA_MES_CANTIDAD'); 
+            localStorage.setItem('GRAFICA_MES_CANTIDAD',JSON.stringify(GRAFICA_MES_CANTIDAD));
+            localStorage.removeItem('GRAFICA_MES_LABEL');
+            localStorage.setItem('GRAFICA_MES_LABEL',JSON.stringify( GRAFICA_MES_LABEL));
+            localStorage.removeItem('GRAFICA_DIA_LABEL');
+            localStorage.setItem('GRAFICA_DIA_LABEL',JSON.stringify( GRAFICA_DIA_LABEL));
+            localStorage.removeItem('GRAFICA_DIA_CANTIDAD');
+            localStorage.setItem('GRAFICA_DIA_CANTIDAD',JSON.stringify(GRAFICA_DIA_CANTIDAD));
             window.setTimeout(function(){
                 ProcesadoHiden();
                 $route.reload();
@@ -860,7 +895,7 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
         }
     })
 
-    $scope.cantidadTerceros=[];
+    /*$scope.cantidadTerceros=[];
     $scope.cantidadTerceros1=[];
     $scope.cantidadPedidos=[];
     $scope.cantidadPedidos1=[];
@@ -982,9 +1017,16 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
             ]
         })   
         p2--; 
-    }
-    
+    }*/
 
+    var GRAFICA_DIA_CANTIDAD=JSON.parse(window.localStorage.getItem("GRAFICA_DIA_CANTIDAD"));
+    var GRAFICA_DIA_LABEL=JSON.parse(window.localStorage.getItem("GRAFICA_DIA_LABEL"));
+    var GRAFICA_MES_CANTIDAD=JSON.parse(window.localStorage.getItem("GRAFICA_MES_CANTIDAD"));
+    var GRAFICA_MES_LABEL=JSON.parse(window.localStorage.getItem("GRAFICA_MES_LABEL"));
+    $scope.registros=[GRAFICA_MES_CANTIDAD];
+    $scope.labels=GRAFICA_MES_LABEL;
+    $scope.dataGD=[GRAFICA_DIA_CANTIDAD];
+    $scope.labelsGD=GRAFICA_DIA_LABEL;
     $scope.data = [ [65, 59, 80, 81, 56, 55] ];
     $scope.colours=["#26B99A"];
     
@@ -995,7 +1037,6 @@ app_angular.controller('appController',['Conexion','$scope','$location','$http',
         [65, 59, 80, 81, 56, 55, 40],
         [28, 48, 40, 19, 86, 27, 90]
       ];
-    
 }]);
 
 

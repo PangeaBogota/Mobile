@@ -42,6 +42,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.cantidadBase;
 	$scope.dataFiltro;
 	$scope.SearchItem;
+	$scope.filter=[];
+	$scope.criterio=[];
 	//var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
 	//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item ";
 	//CRUD.select(query,function(elem){$scope.list_items.push(elem);});
@@ -62,7 +64,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.onChangeListaPrecios=function(){
 		if ($scope.pedidos.rowid_lista_precios==undefined) {$scope.list_items=[];return}
 		$scope.list_items=[];
-		var vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+" ";
+		var vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  and   (   item_referencia1 like '%"+$scope.filter.descripcionitem+"%'   or descripcion like '%"+$scope.filter.descripcionitem+"%'   or item_codigo1 like '%"+$scope.filter.codigoitem+"%' )";
 		CRUD.select(vista,function(elem){$scope.list_items.push(elem)});
 		//var query1="select item.item_codigo||'-'||item.item_referencia||'-'||item.item_descripcion||'-'||item.id_unidad||'-'||CAST(precios.precio_lista as text)  as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
 		//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item  inner join erp_entidades_master maestro on maestro.erp_id_maestro=precios.id_lista_precios  WHERE  maestro.rowid="+$scope.pedidos.rowid_lista_precios+"    order by item.item_descripcion";
@@ -74,8 +76,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	}
 	$scope.onGetFiltro=function()
 	{
-		$scope.SearchItem=$scope.dataFiltro;
-		console.log($scope.SearchItem);
+		$scope.onChangeListaPrecios();		
 	}
 	$scope.CurrentDate=function(){
 		$scope.day;
@@ -108,35 +109,63 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.datenow=new Date();
 		$scope.pedidos.fechacreacion=$scope.CurrentDate();
 		$scope.pedidos.fecha_pedido=$scope.CurrentDate();
+		var FechaCreacion=$scope.pedidos.fechacreacion.replace('-','');
+		var FechaSolicitud=$scope.pedidos.fecha_solicitud.replace('-','');
+		FechaCreacion=FechaCreacion.replace('-','');
+    	 FechaSolicitud=FechaSolicitud.replace('-','');
+    	if (FechaSolicitud<FechaCreacion) {
+    		$scope.pedidos.fecha_solicitud='';
+    		document.getElementById("fecha_solicitud").valueAsDate = null;
+    		Mensajes('Fecha Solicitud No puede ser Menor que La Fecha creacion del pedido','error','');
+    		return;
+    	}
 	}
 	$scope.fechaentrega=function(){
 		$scope.pedidos.fecha_entrega=$scope.SelectedDate($scope.dateEntrega);
+		$scope.pedidos.fecha_pedido=$scope.CurrentDate();
+    	var FechaCreacion=$scope.pedidos.fechacreacion.replace('-','');
+    	var FechaEntrega=$scope.pedidos.fecha_entrega.replace('-','');
+    	 FechaCreacion=FechaCreacion.replace('-','');
+    	 FechaEntrega=FechaEntrega.replace('-','');
+    	if (FechaEntrega<FechaCreacion) {
+    		Mensajes('Fecha Entrega No puede ser Menor que La Fecha creacion del pedido','error','');
+    		$scope.pedidos.fecha_entrega='';
+    		document.getElementById("fecha_entrega").valueAsDate = null;
+    		return;
+    	}
 	}
 	$scope.onChangeTercero=function(){
 		$scope.list_Sucursales=[];
 		$scope.list_puntoEnvio=[];
+		$scope.sucursalDespacho=[];
+		$scope.ciudad='';
+		$scope.ciudadSucursal=[];
 		CRUD.select("select  codigo_sucursal||'-'||nombre_sucursal as sucursal,*from erp_terceros_sucursales where rowid_tercero = '"+$scope.terceroSelected.rowid+"' ",function(elem){$scope.list_Sucursales.push(elem)})
 
 		//CRUD.selectParametro('erp_terceros_sucursales','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_Sucursales.push(elem)});
 		//CRUD.selectParametro('erp_terceros_punto_envio','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_puntoEnvio.push(elem)});	''
 		//$scope.pedidos.rowid_tercero=$scope.terceroSelected.rowid
 	}
-	
+	CRUD.select("select count(*) as cantidad from erp_entidades_master ",function(elem){console.log(elem.cantidad)})
 	$scope.onChangeSucursal=function(){
 		if ($scope.sucursal==undefined) {$scope.pedidos.rowid_lista_precios='';$scope.list_items=[];return}
 		$scope.list_precios=[];
-		CRUD.select("select count(*) as dataValidacion, *from erp_entidades_master where erp_id_maestro = '"+$scope.sucursal.id_lista_precios+"'  and id_tipo_maestro='LISTA_PRECIOS' order by rowid LIMIT 1",
+		var consultacriterio="select*from erp_entidades_master where id_tipo_maestro='CRITERIO_CLASIFICACION' and erp_id_maestro='"+$scope.sucursal.id_criterio_clasificacion.trim()+"'"
+		CRUD.select(consultacriterio,function(elem){
+			$scope.criterio=elem;
+		})
+		CRUD.select("select count(*) as dataValidacion,erp_id_maestro||'-'||erp_descripcion as concatenado ,*from erp_entidades_master where erp_id_maestro = '"+$scope.sucursal.id_lista_precios+"'  and id_tipo_maestro='LISTA_PRECIOS' order by rowid LIMIT 1",
 			
 			function(elem){
 				if (elem.dataValidacion==0) {
-					CRUD.select("select  * from erp_entidades_master where erp_id_maestro = '001' and id_tipo_maestro='LISTA_PRECIOS'",function(elem){
+					CRUD.select("select erp_id_maestro||'-'||erp_descripcion as concatenado , * from erp_entidades_master where erp_id_maestro = '001' and id_tipo_maestro='LISTA_PRECIOS'",function(elem){
 						
-						$scope.list_precios.push(elem);$scope.listaPrecios=$scope.list_precios[0];$scope.pedidos.rowid_lista_precios=$scope.listaPrecios.rowid;$scope.onChangeListaPrecios();
+						$scope.list_precios.push(elem);$scope.listaPrecios=$scope.list_precios[0];$scope.pedidos.rowid_lista_precios=$scope.listaPrecios.rowid;//$scope.onChangeListaPrecios();
 					})
 				}
 				else
 				{
-					$scope.list_precios.push(elem);$scope.listaPrecios=$scope.list_precios[0];$scope.pedidos.rowid_lista_precios=$scope.listaPrecios.rowid;$scope.onChangeListaPrecios();		
+					$scope.list_precios.push(elem);$scope.listaPrecios=$scope.list_precios[0];$scope.pedidos.rowid_lista_precios=$scope.listaPrecios.rowid;//$scope.onChangeListaPrecios();		
 				}
 				
 			});
@@ -148,8 +177,9 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	{
 		//console.log("select  *from erp_terceros_punto_envio where rowid_tercero = '"+$scope.terceroSelected.rowid+"'  and  codigo_sucursal = '"+$scope.sucursalDespacho.codigo_sucursal+"'   order by rowid  LIMIT 1  ");
 		$scope.pedidos.rowid_cliente_despacho=$scope.sucursalDespacho.rowid;
-		CRUD.select("select pais.nombre||'-'||ciudad.nombre as nombre from m_localizacion  pais inner join m_localizacion ciudad  on ciudad.id_pais=pais.id_pais and pais.id_depto='' and pais.id_ciudad=''  where ciudad.id_ciudad='"+$scope.sucursalDespacho.id_ciudad+"' and ciudad.id_depto='"+$scope.sucursalDespacho.id_depto+"' and ciudad.id_pais='"+$scope.sucursalDespacho.id_pais+"'",function(elem){$scope.ciudadSucursal=elem});
-		CRUD.select("select  *from erp_terceros_punto_envio where rowid_tercero = '"+$scope.terceroSelected.rowid+"'  and  codigo_sucursal = '"+$scope.sucursalDespacho.codigo_sucursal+"'   order by rowid  LIMIT 1  ",
+		CRUD.select("select pais.nombre||'-'||ciudad.nombre as nombre from m_localizacion  pais inner join m_localizacion ciudad  on ciudad.id_pais=pais.id_pais and pais.id_depto='' and pais.id_ciudad=''  where ciudad.id_ciudad='"+$scope.sucursalDespacho.id_ciudad+"' and ciudad.id_depto='"+$scope.sucursalDespacho.id_depto+"' and ciudad.id_pais='"+$scope.sucursalDespacho.id_pais+"'",
+			function(elem){$scope.ciudadSucursal=elem});
+		CRUD.select("select id_punto_envio||'-'||nombre_punto_envio as concatenado, *from erp_terceros_punto_envio where rowid_tercero = '"+$scope.terceroSelected.rowid+"'  and  codigo_sucursal = '"+$scope.sucursalDespacho.codigo_sucursal+"'   order by rowid  LIMIT 1  ",
 			function(elem){$scope.list_puntoEnvio.push(elem);$scope.pedidos.id_punto_envio=elem.rowid;$scope.puntoEnvio=elem});
 	}
 
@@ -204,6 +234,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			$scope.SearchItem='';
 			$scope.cantidadBase='';
 			$scope.CalcularCantidadValorTotal();
+			$scope.filter=[];
+			$scope.list_items=[];
 		}
 		else
 		{
@@ -298,22 +330,9 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			CRUD.insert('t_pedidos',$scope.pedidos)
 		})
 	}
+
 	$scope.ValidacionCabezera=function()
     {
-    	var FechaSolicitud=$scope.pedidos.fecha_solicitud.replace('-','');
-    	var FechaCreacion=$scope.pedidos.fechacreacion.replace('/','');
-    	var FechaEntrega=$scope.pedidos.fecha_entrega.replace('-','');
-    	 FechaSolicitud=FechaSolicitud.replace('-','');
-    	 FechaCreacion=FechaCreacion.replace('/','');
-    	 FechaEntrega=FechaEntrega.replace('-','');
-    	if (FechaSolicitud<FechaCreacion) {
-    		Mensajes('Fecha Solicitud No puede ser Menor que La Fecha creacion del pedido','error','');
-    		return;
-    	}
-    	if (FechaEntrega<FechaCreacion) {
-    		Mensajes('Fecha Entrega No puede ser Menor que La Fecha creacion del pedido','error','');
-    		return;
-    	}
     	$scope.CambiarTab('3','atras');
     	$scope.hasfocus=true;
     }
@@ -367,7 +386,7 @@ app_angular.controller("PedidosController",['Conexion','$scope',function (Conexi
 		$scope.detallespedido=[];
 		$scope.pedidoSeleccionado=pedido;
 
-		CRUD.select('select items.item_referencia, items.item_descripcion, detalle.cantidad, detalle.precio_unitario, detalle.valor_base from t_pedidos pedido left join t_pedidos_detalle detalle on pedido.rowid = detalle.rowid_pedido inner join erp_items items on Detalle.rowid_item = items.rowid where pedido.rowid='+pedido.rowidpedido+'',
+		CRUD.select('select items.item_referencia, items.item_descripcion, detalle.cantidad, detalle.precio_unitario, detalle.valor_base,detalle.valor_total_linea,detalle.valor_impuesto from t_pedidos pedido left join t_pedidos_detalle detalle on pedido.rowid = detalle.rowid_pedido inner join erp_items items on Detalle.rowid_item = items.rowid where pedido.rowid='+pedido.rowidpedido+'',
 		function(ele){$scope.detallespedido.push(ele);})
 		
 	}

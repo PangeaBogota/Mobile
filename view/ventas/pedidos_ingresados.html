@@ -112,15 +112,21 @@
                                                 Descripcion: <strong>{{detallespedido.item_descripcion}}</strong> 
                                             </div>   
                                         </div>
+                                        <div class="row" style="margin:0px">
+                                            <div class="form-group col-md-6 " style="margin: 1px">
+                                                V/I : <strong>  {{detallespedido.valor_impuesto| currency}}   </strong>
+                                            </div>
+                                            <div class="form-group col-md-6 " style="margin: 1px">
+                                                V/U : <strong>  {{detallespedido.valor_base| currency}}   </strong>
+                                            </div>
+                                        </div>
                                         <div class="row" style="margin: 0px">
                                             
-                                            <div class="form-group col-md-4 pull-right" style="margin: 1px">
-                                                V. Total :<strong> {{detallespedido.valor_base| currency}}</strong>
+                                            <div class="form-group col-md-6 " style="margin: 1px">
+                                                V/T :<strong> {{detallespedido.valor_total_linea| currency}}</strong>
                                               
                                             </div>
-                                            <div class="form-group col-md-4 pull-right" style="margin: 1px">
-                                                V. Unitario : <strong>  {{detallespedido.precio_unitario| currency}}   </strong>
-                                            </div>
+                                            
                                         </div>
                                     </a>
                                     <div class="separator"></div>
@@ -131,7 +137,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>

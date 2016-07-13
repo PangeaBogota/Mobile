@@ -179,38 +179,38 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Direccion<span class="required"></span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input   type="text" ng-model="sucursalDespacho.direccion1" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                            <input  placeholder="Direccion"  type="text" ng-model="sucursalDespacho.direccion1" readonly class="form-control col-md-7 col-xs-12"  ></input>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Contacto<span class="required"></span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input ng-model="sucursalDespacho.nombre_contacto"  type="text"  readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                            <input placeholder="Contacto" ng-model="sucursalDespacho.nombre_contacto"  type="text"  readonly class="form-control col-md-7 col-xs-12"  ></input>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Email<span class="required"></span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input ng-model="sucursalDespacho.email_contacto"   type="text"  readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                            <input placeholder="Email" ng-model="sucursalDespacho.email_contacto"   type="text"  readonly class="form-control col-md-7 col-xs-12"  ></input>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Telefono<span class="required"></span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input   type="text" ng-model="sucursalDespacho.telefono1" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                            <input  placeholder="Telefono"  type="text" ng-model="sucursalDespacho.telefono1" readonly class="form-control col-md-7 col-xs-12"  ></input>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Condicion de Pago<span class="required"></span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input   type="text" ng-model="sucursalDespacho.id_condicion_pago" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                            <input  placeholder="Condicion Pago"  type="text" ng-model="sucursalDespacho.id_condicion_pago" readonly class="form-control col-md-7 col-xs-12"  ></input>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Lista Precio<span class="required">*</span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <select  id="rowid_lista_precios" 
-                                                        ng-model="listaPrecios"  ng-options="listprecios as listprecios.erp_descripcion 
+                                                        ng-model="listaPrecios"  ng-options="listprecios as listprecios.concatenado 
                                                         for listprecios in list_precios " class="form-control"  required>
                                             </select>
                                         </div>
@@ -220,7 +220,7 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Punto Envio<span class="required">*</span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <select id="id_punto_envio"  required
-                                                        ng-model="puntoEnvio"  ng-options="puntoenvio as puntoenvio.Nombre_punto_envio 
+                                                        ng-model="puntoEnvio"  ng-options="puntoenvio as puntoenvio.concatenado 
                                                         for puntoenvio in list_puntoEnvio " class="form-control" >
                                             </select>
                                         </div>
@@ -243,7 +243,7 @@
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Entrega <span class="required">*</span>
                                         </label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <input type="date" id="fecha_solicitud" name="fecha_solicitud" class="form-control"  ng-model="dateEntrega"  ng-change="fechaentrega()" required>
+                                            <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control"  ng-model="dateEntrega"  ng-change="fechaentrega()" required>
                                         </div>
                                     </div>
                                 </div>
@@ -261,13 +261,21 @@
                                     <label for="rowid_item" class="control-label">Items<span class="required">*</span></label>
                                         <div class="form-group">
                                             <div class="row ">
-                                            <div class="col-md-8">
-                                                <input type="text" ng-model="dataFiltro"  placeholder="Buscar Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
+                                                <div class="form-group">
+                                                    <input type="text" ng-model="filter.codigoitem"  placeholder="Codigo Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
+                                                </div>
+                                                
+                                            </div>  
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <input type="text" ng-model="filter.descripcionitem"  placeholder="Referencia-Descripcion Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
+                                                </div>
                                             </div>
-                                            <div class="col-md-4">
-                                                <button class="btn btn-success"  id="rowid_item" ng-click="onGetFiltro()"> <span class="fa fa-search"></span></button>
+                                            <div class="row">
+                                                <div class="col-md-2 pull-right">
+                                                    <button class="btn btn-success"  id="rowid_item" ng-click="onGetFiltro()"> <span class="fa fa-search"></span></button>
+                                                </div>
                                             </div>
-                                        </div>  
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -311,10 +319,10 @@
                                             <input type="number" class="form-control " ng-model="itemsAgregadoPedido.cantidad" ng-change="actualizarPrecio()" value="1" min="1" style=" height: 34px;width: 51px;" />
                                         </div>
                                         <div class="col-md-2 col-sm-13 col-xs-12 form-group">
-                                            <span class="badge">V/U :{{itemsAgregadoPedido.precio + itemsAgregadoPedido.iva    | currency}}</span>
-                                            <span class="badge">V/N :{{itemsAgregadoPedido.precio*itemsAgregadoPedido.cantidad  | currency}}</span>
-                                            <span class="badge">IVA :{{itemsAgregadoPedido.iva* itemsAgregadoPedido.cantidad | currency}}</span>
-                                            <span class="badge">V/T :{{(itemsAgregadoPedido.precio+itemsAgregadoPedido.iva)*itemsAgregadoPedido.cantidad  | currency}}</span>
+                                            <span style="background:#333" class="badge">V/U :{{itemsAgregadoPedido.precio + itemsAgregadoPedido.iva    | currency}}</span>
+                                            <span  style="background:#455A64" class="badge">V/N :{{itemsAgregadoPedido.precio*itemsAgregadoPedido.cantidad  | currency}}</span>
+                                            <span  style="background:#607D8B" class="badge">IVA :{{itemsAgregadoPedido.iva* itemsAgregadoPedido.cantidad | currency}}</span>
+                                            <span  style="background: rgba(96,125,139,.6)" class="badge">V/T :{{(itemsAgregadoPedido.precio+itemsAgregadoPedido.iva)*itemsAgregadoPedido.cantidad  | currency}}</span>
                                            
                                             
                                         </div>
@@ -340,6 +348,22 @@
                                 <div class="col-md-12">
                                     <form class="form-inline">
                                         <div class="form-group">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Criterio Clasificacion <span ></span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="form-control" type="text" ng-model="criterio.erp_descripcion" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Observaciones <span ></span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <textarea class="form-control" ng-model="pedidos.observaciones">
+                                                        
+                                                    </textarea>
+                                                </div>
+                                            </div>
                                             <table class="table table-hover table-striped">
                                                 <tr>
                                                     <td>
