@@ -62,9 +62,27 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	
 	
 	$scope.onChangeListaPrecios=function(){
+
 		if ($scope.pedidos.rowid_lista_precios==undefined) {$scope.list_items=[];return}
 		$scope.list_items=[];
-		var vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  and   (   item_referencia1 like '%"+$scope.filter.descripcionitem+"%'   or descripcion like '%"+$scope.filter.descripcionitem+"%'   or item_codigo1 like '%"+$scope.filter.codigoitem+"%' )";
+		var count='';
+		var vista='';
+		if ($scope.filter.codigoitem!=''  && $scope.filter.codigoitem!=undefined   &&  ( $scope.filter.descripcionitem==''   || $scope.filter.descripcionitem==undefined)){//  && $scope.filter.descripcionitem=='' || $scope.filter.descripcionitem==undefined ) {
+			vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  and    item_codigo1 like '%"+$scope.filter.codigoitem+"%'  order by rowid LIMIT 100 ";
+			count="select count(*) as cantidad from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  and    item_codigo1 like '%"+$scope.filter.codigoitem+"%'  order by rowid LIMIT 100 ";
+		}
+		else if ($scope.filter.descripcionitem!='' && $scope.filter.descripcionitem!=undefined && ( $scope.filter.codigoitem=='' || $scope.filter.codigoitem==undefined   )) {
+			vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  and   (   item_referencia1 like '%"+$scope.filter.descripcionitem+"%'   or descripcion like '%"+$scope.filter.descripcionitem+"%' )   order by rowid LIMIT 100";
+			count="select count(*) from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  and   (   item_referencia1 like '%"+$scope.filter.descripcionitem+"%'   or descripcion like '%"+$scope.filter.descripcionitem+"%' )   order by rowid LIMIT 100";
+		}
+		else if ($scope.filter.descripcionitem!='' && $scope.filter.descripcionitem!=undefined && $scope.filter.codigoitem!='' && $scope.filter.codigoitem!=undefined   ) {
+			vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  and  item_codigo1 like '%"+$scope.filter.codigoitem+"%' and   (   item_referencia1 like '%"+$scope.filter.descripcionitem+"%'   or descripcion like '%"+$scope.filter.descripcionitem+"%' )    order by rowid LIMIT 200";
+			count="select count(*) as cantidadfrom vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  and  item_codigo1 like '%"+$scope.filter.codigoitem+"%' and   (   item_referencia1 like '%"+$scope.filter.descripcionitem+"%'   or descripcion like '%"+$scope.filter.descripcionitem+"%' )    order by rowid LIMIT 200";
+		}
+		else {
+			vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  order by rowid LIMIT 100 ";
+			count="select 100 as cantidad ";
+		}
 		CRUD.select(vista,function(elem){$scope.list_items.push(elem)});
 		//var query1="select item.item_codigo||'-'||item.item_referencia||'-'||item.item_descripcion||'-'||item.id_unidad||'-'||CAST(precios.precio_lista as text)  as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
 		//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item  inner join erp_entidades_master maestro on maestro.erp_id_maestro=precios.id_lista_precios  WHERE  maestro.rowid="+$scope.pedidos.rowid_lista_precios+"    order by item.item_descripcion";
@@ -140,6 +158,9 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.sucursalDespacho=[];
 		$scope.ciudad='';
 		$scope.ciudadSucursal=[];
+		$scope.list_items=[];
+		$scope.filter=[];
+		$scope.list_precios=[];
 		CRUD.select("select  codigo_sucursal||'-'||nombre_sucursal as sucursal,*from erp_terceros_sucursales where rowid_tercero = '"+$scope.terceroSelected.rowid+"' ",function(elem){$scope.list_Sucursales.push(elem)})
 
 		//CRUD.selectParametro('erp_terceros_sucursales','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_Sucursales.push(elem)});
@@ -268,11 +289,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
     	$scope.CalcularCantidadValorTotal();
 	}
 	$scope.guardarDetalle=function(){
-		if($scope.itemsAgregadosPedido.length==0)
-		{
-			Mensajes('Debe Seleccionar al menos un item de la lista','error','');
-			return
-		}
+		
 		angular.forEach($scope.itemsAgregadosPedido,function(value,key){
 			CRUD.select('select max(rowid) as rowid from t_pedidos',function(elem){
 				$scope.p1=[];
@@ -309,6 +326,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	}
 	$scope.guardarCabezera=function(){
 		CRUD.select('select max(rowid) as rowid from t_pedidos',function(elem){$scope.ultimoRegistro.push(elem);
+
 			$scope.ultimoRegistroseleccionado=$scope.ultimoRegistro[0];
 			$scope.pedidos.rowid=$scope.ultimoRegistroseleccionado.rowid+1;
 			$scope.pedido_detalle.rowid_pedido=$scope.pedidos.rowid;
@@ -330,7 +348,36 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			CRUD.insert('t_pedidos',$scope.pedidos)
 		})
 	}
+	$scope.validacionInsert=function()
+	{
 
+		if ($scope.pedidos.rowid_cliente_facturacion =='' || $scope.pedidos.rowid_cliente_facturacion==undefined) {
+			Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
+			return
+		}
+		if ($scope.pedidos.rowid_cliente_despacho =='' || $scope.pedidos.rowid_cliente_despacho==undefined) {
+			Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
+			return
+		}
+		if ($scope.pedidos.rowid_lista_precios =='' || $scope.pedidos.rowid_lista_precios==undefined) {
+			Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
+			return
+		}
+		if ($scope.pedidos.fecha_solicitud =='' || $scope.pedidos.fecha_solicitud==undefined) {
+			Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
+			return
+		}
+		if ($scope.pedidos.fecha_entrega =='' || $scope.pedidos.fecha_entrega==undefined) {
+			Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
+			return
+		}
+		if($scope.itemsAgregadosPedido.length==0)
+		{
+			Mensajes('Debe Seleccionar al menos un item de la lista','error','');
+			return
+		}
+		$scope.finalizarPedido()
+	}
 	$scope.ValidacionCabezera=function()
     {
     	$scope.CambiarTab('3','atras');
@@ -375,7 +422,7 @@ app_angular.controller("PedidosController",['Conexion','$scope',function (Conexi
 	$scope.pedidos = [];
 	$scope.pedidoSeleccionado=[];
 	$scope.detallespedido=[];
-    CRUD.select('select distinct pedidos.valor_impuesto,pedidos.fecha_solicitud,pedidos.sincronizado, pedidos.rowid as rowidpedido,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total,detalle.rowid_pedido,count(detalle.rowid_pedido) cantidaddetalles,sum(detalle.cantidad) as cantidadproductos from  t_pedidos pedidos inner join erp_terceros_sucursales sucursal on sucursal.rowid=pedidos.rowid_cliente_facturacion  inner join erp_terceros terceros on terceros.rowid=sucursal.rowid_tercero  left  join t_pedidos_detalle detalle on detalle.rowid_pedido=pedidos.rowid left join erp_terceros_punto_envio punto_envio on punto_envio.rowid=pedidos.id_punto_envio group by  pedidos.fecha_solicitud,detalle.rowid_pedido,pedidos.rowid,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total order by pedidos.fecha_solicitud desc',function(elem) {$scope.pedidos.push(elem)});
+    CRUD.select('select distinct pedidos.valor_impuesto,pedidos.fecha_solicitud,pedidos.sincronizado, pedidos.rowid as rowidpedido,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total,detalle.rowid_pedido,count(detalle.rowid_pedido) cantidaddetalles,sum(detalle.cantidad) as cantidadproductos from  t_pedidos pedidos inner join erp_terceros_sucursales sucursal on sucursal.rowid=pedidos.rowid_cliente_facturacion  inner join erp_terceros terceros on terceros.rowid=sucursal.rowid_tercero  left  join t_pedidos_detalle detalle on detalle.rowid_pedido=pedidos.rowid left join erp_terceros_punto_envio punto_envio on punto_envio.rowid=pedidos.id_punto_envio group by  pedidos.fecha_solicitud,detalle.rowid_pedido,pedidos.rowid,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total order by pedidos.fecha_solicitud desc    LIMIT 50',function(elem) {$scope.pedidos.push(elem)});
     CRUD.select("select count(*) as cantidad",function(elem){
     	
     	if (elem.cantidad==0) {

@@ -790,7 +790,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                 ProcesadoHiden();
                 $route.reload();
                 Mensajes('Sincronizado Con Exito','success','')
-            },7000)
+            },10000)
             
             
         },8000)
