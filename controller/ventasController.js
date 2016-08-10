@@ -153,6 +153,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
     	}
 	}
 	$scope.onChangeTercero=function(){
+		document.getElementById("fecha_entrega").valueAsDate = null;
+		document.getElementById("fecha_solicitud").valueAsDate = null;
 		$scope.pedidos=[];
 		$scope.criterio=[];
 		$scope.list_Sucursales=[];
@@ -354,7 +356,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	}
 	$scope.validacionInsert=function()
 	{
-
+		debugger
 		if ($scope.pedidos.rowid_cliente_facturacion =='' || $scope.pedidos.rowid_cliente_facturacion==undefined) {
 			Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
 			return
