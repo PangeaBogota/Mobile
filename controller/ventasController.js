@@ -357,7 +357,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	}
 	$scope.validacionInsert=function()
 	{
-		debugger
+		$scope.pedidos.fecha_entrega=$scope.SelectedDate($scope.dateEntrega);
 		if ($scope.pedidos.rowid_cliente_facturacion =='' || $scope.pedidos.rowid_cliente_facturacion==undefined) {
 			Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
 			return
@@ -371,12 +371,14 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			return
 		}
 		if ($scope.pedidos.fecha_solicitud =='' || $scope.pedidos.fecha_solicitud==undefined) {
-			Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
-			return
+			$scope.pedidos.fecha_solicitud =$scope.pedidos.fecha_entrega
+			//Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
+			//return
 		}
 		if ($scope.pedidos.fecha_entrega =='' || $scope.pedidos.fecha_entrega==undefined) {
-			Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
-			return
+			$scope.pedidos.fecha_solicitud =$scope.pedidos.fecha_entrega
+			//Mensajes("Verifique Que Todos lo campos esten Llenos","error","")
+			//return
 		}
 		if($scope.itemsAgregadosPedido.length==0)
 		{
