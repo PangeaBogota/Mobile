@@ -153,8 +153,12 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
     	}
 	}
 	$scope.onChangeTercero=function(){
+		$scope.pedidos=[];
+		$scope.criterio=[];
 		$scope.list_Sucursales=[];
 		$scope.list_puntoEnvio=[];
+		$scope.itemsAgregadosPedido=[];
+		$scope.pedidoDetalles=[];
 		$scope.sucursalDespacho=[];
 		$scope.ciudad='';
 		$scope.ciudadSucursal=[];
