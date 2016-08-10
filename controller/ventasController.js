@@ -139,6 +139,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
     	}
 	}
 	$scope.fechaentrega=function(){
+		debugger
 		$scope.pedidos.fecha_entrega=$scope.SelectedDate($scope.dateEntrega);
 		$scope.pedidos.fecha_pedido=$scope.CurrentDate();
     	var FechaCreacion=$scope.pedidos.fechacreacion.replace('-','');
