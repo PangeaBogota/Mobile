@@ -11,7 +11,7 @@ app_angular.controller("TercerosController",['Conexion','$scope','$http',functio
 	$scope.terceroSeleccionado=[];
 	$scope.detalleTercero=[];
 	$scope.terceroDetalles=[];
-    CRUD.selectAll('erp_terceros',function(elem) {$scope.terceros.push(elem)});
+    CRUD.select('select*from erp_terceros order by razonsocial',function(elem) {$scope.terceros.push(elem)});
     $scope.query=
 	$scope.ConsultarDatos =function(tercero){
 		$scope.terceroSeleccionado=tercero;
