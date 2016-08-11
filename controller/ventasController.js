@@ -364,7 +364,13 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.onConfirmarSalida=function(accion){
 		debugger
 		if (accion=='salir') {
-			var a='/'+$scope.confimar.next.params.modulo+'/'+$scope.confimar.next.params.url;
+			var a='';
+			if ($scope.confimar.next.params.modulo==undefined) {
+				a='/';
+			}
+			else{
+				a='/'+$scope.confimar.next.params.modulo+'/'+$scope.confimar.next.params.url;
+			}
 
 			$timeout(function () {
 		        $location.path(a)
