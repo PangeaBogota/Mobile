@@ -63,6 +63,9 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
         $('#openConfirmacion').click();
         
     }
+    CRUD.select("select count(*) a from erp_terceros  ",function(elem){
+        console.log(elem.a)
+    });
     $scope.datosSubir=function(){
         $scope.pedidos=[];
         $scope.actividades=[];
@@ -340,6 +343,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].id_impuesto+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].descripcion+"' "; 
                         if (contador==499) {
+
                             CRUD.Updatedynamic(stringSentencia)
                             NewQuery=true;
                             stringSentencia="";

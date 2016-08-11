@@ -144,8 +144,8 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control col-md-7 col-xs-12"  ng-change="onChangeFiltroTercero()"  ></input>
                                             <select 
-                                                ng-model="terceroSelected" id="TerceroSelected" ng-options="partner as partner.razonsocial 
-                                                for partner in list_tercero | filter:Search" class="form-control" ng-change="onChangeTercero()" >
+                                                ng-model="terceroSelected" id="TerceroSelected" ng-options="partner as partner.cliente 
+                                                for partner in list_tercero | filter:{ cliente : Search }" class="form-control" ng-change="onChangeTercero()" >
                                             </select>
                                         </div>
                                     </div>
@@ -262,13 +262,13 @@
                                     <label for="rowid_item" class="control-label">Items<span class="required">*</span></label>
                                         <div class="form-group">
                                             <div class="row ">
-                                                <div class="form-group">
-                                                    <input type="text" ng-model="filter.codigoitem"  placeholder="Codigo Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
+                                                <div class="form-group col-md-12 col-xs-12">
+                                                    <input type="number" ng-model="filter.codigoitem"  placeholder="Codigo Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
                                                 </div>
                                                 
                                             </div>  
                                             <div class="row">
-                                                <div class="form-group">
+                                                <div class="form-group col-md-12 col-xs-12">
                                                     <input type="text" ng-model="filter.descripcionitem"  placeholder="Referencia-Descripcion Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
                                                 </div>
                                             </div>
@@ -281,7 +281,7 @@
                                 </div>
                                 <div class="form-group">
                                     <select   ng-model="item" id="dataFiltered"  ng-options="item as item.producto 
-                                        for item in list_items  |filter:SearchItem"   ng-change="hasFocus1=true" class="form-control" required >
+                                        for item in list_items  |filter:SearchItem"    ng-change="form.colorTarget.select();$scope.focusCantidad()" class="form-control" required >
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -291,7 +291,7 @@
                                                  
                                         </div>
                                          <div class="col-md-2">  
-                                                 <input type="number" class="form-control "  set-focus-if="hasFocus1" ng-model="cantidadBase" value="1" min="1" style=" height: 34px;width: 51px;" />
+                                                 <input type="number" class="form-control " id="cantidadBase" ng-model="cantidadBase" ng-target="form.colorTarget"  value="1" min="1" style=" height: 34px;width: 51px;" />
                                         </div>
                                        <div class="col-md-2 pull-right">
                                             <button type="button" class="btn btn-success"  ng-click="hasFocus1=false;adicionaritem()" data-toggle="dropdown">
@@ -320,9 +320,10 @@
                                             <input type="number" class="form-control " ng-model="itemsAgregadoPedido.cantidad" ng-change="actualizarPrecio()" value="1" min="1" style=" height: 34px;width: 51px;" />
                                         </div>
                                         <div class="col-md-2 col-sm-13 col-xs-12 form-group">
-                                            <span style="background:#333" class="badge">V/U :{{itemsAgregadoPedido.precio + itemsAgregadoPedido.iva    | currency}}</span>
-                                            <span  style="background:#455A64" class="badge">V/N :{{itemsAgregadoPedido.precio*itemsAgregadoPedido.cantidad  | currency}}</span>
+                                            <span style="background:#333" class="badge">V/B :{{itemsAgregadoPedido.precio   | currency}}</span>
                                             <span  style="background:#607D8B" class="badge">IVA :{{itemsAgregadoPedido.iva* itemsAgregadoPedido.cantidad | currency}}</span>
+                                            <span  style="background:#455A64" class="badge">V/BASE :{{itemsAgregadoPedido.precio+ itemsAgregadoPedido.iva | currency}}</span>
+                                            <span  style="background:#455A64" class="badge">V/N :{{itemsAgregadoPedido.precio* itemsAgregadoPedido.cantidad | currency}}</span>
                                             <span  style="background: rgba(96,125,139,.6)" class="badge">V/T :{{(itemsAgregadoPedido.precio+itemsAgregadoPedido.iva)*itemsAgregadoPedido.cantidad  | currency}}</span>
                                            
                                             
@@ -347,17 +348,18 @@
                         <div class="tab-pane" id="tab_3">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form class="form-inline">
+                                    <form class="form-horizontal">
+                                    </br>
                                         <div class="form-group">
                                             <div class="form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Criterio Clasificacion <span ></span>
+                                                <label class="control-label col-md-8">Criterio Clasificacion <span ></span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <input class="form-control" type="text" ng-model="criterio.erp_descripcion" readonly>
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Observaciones <span ></span>
+                                                <label class="control-label col-md-8">Observaciones <span ></span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
                                                     <textarea class="form-control" ng-model="pedidos.observaciones">
@@ -418,4 +420,32 @@
                 </div>
         </div>
     </div>
+    <div id="confirmacionsalida" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Confirmacion Salida</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="testmodal" style="padding: 0px;">
+                        <form id="antoform" class="form-horizontal calender form-label-left" role="form">
+                            
+                            <div>
+                                Desea Salir sin Guardar Los Cambios
+                            </div>
+                            
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <a href="#/{{$scope.confimar.next.params.modulo}}/{{$scope.confimar.next.params.url}}">adasdas</a>
+                <button type="button" class="btn btn-danger antoclose" ng-click="onConfirmarSalida('salir')" data-dismiss="modal">Salir</button>
+                    <button type="button" class="btn btn-success antoclose" onConfirmarSalida('permanecer') data-dismiss="modal">Permanecer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="confirmacion" data-toggle="modal" data-target="#confirmacionsalida"></div>
 </div>
