@@ -362,6 +362,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.confimar.current=[]
 	$scope.confimar.salir=false
 	$scope.onConfirmarSalida=function(accion){
+		debugger
 		if (accion=='salir') {
 			var a='/'+$scope.confimar.next.params.modulo+'/'+$scope.confimar.next.params.url;
 
@@ -374,6 +375,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		}
 	}
 	$scope.$on('$routeChangeStart', function(event,next, current) { 
+		debugger
 		if ($scope.confimar.salir==false) {
 			$scope.confimar.next=next;
 			  $scope.confimar.current=current

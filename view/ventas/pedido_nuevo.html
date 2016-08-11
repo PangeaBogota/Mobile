@@ -432,7 +432,7 @@
                         <form id="antoform" class="form-horizontal calender form-label-left" role="form">
                             
                             <div>
-                                Desea Salir sin Guardar Los Cambios
+                                Desea Salir de La Creacion del Pedido.
                             </div>
                             
                             
@@ -440,9 +440,8 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                <a href="#/{{$scope.confimar.next.params.modulo}}/{{$scope.confimar.next.params.url}}">adasdas</a>
                 <button type="button" class="btn btn-danger antoclose" ng-click="onConfirmarSalida('salir')" data-dismiss="modal">Salir</button>
-                    <button type="button" class="btn btn-success antoclose" onConfirmarSalida('permanecer') data-dismiss="modal">Permanecer</button>
+                <button type="button" class="btn btn-success antoclose" ng-click="onConfirmarSalida('permanecer')" data-dismiss="modal">Permanecer</button>
                 </div>
             </div>
         </div>
