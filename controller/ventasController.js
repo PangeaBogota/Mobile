@@ -78,8 +78,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		else {
 			vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  order by rowid LIMIT 100 ";
 		}
-		CRUD.selectAllinOne(vista,function(elem){debugger;$scope.list_items=elem});
-		Mensajes('Busqueda Realizada','success','');
+		CRUD.selectAllinOne(vista,function(elem){$scope.list_items=elem;Mensajes('Busqueda Realizada','success','');});
+		
 	}
 	$scope.onChangeFiltro=function()
 	{
