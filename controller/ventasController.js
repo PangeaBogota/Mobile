@@ -60,7 +60,6 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			}
 		});
 	
-	
 	$scope.onChangeListaPrecios=function(){
 
 		if ($scope.pedidos.rowid_lista_precios==undefined) {$scope.list_items=[];return}
@@ -79,7 +78,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		else {
 			vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  order by rowid LIMIT 100 ";
 		}
-		CRUD.select(vista,function(elem){$scope.list_items.push(elem)});
+		CRUD.selectAllinOne(vista,function(elem){debugger;$scope.list_items=elem});
 		Mensajes('Busqueda Realizada','success','');
 	}
 	$scope.onChangeFiltro=function()

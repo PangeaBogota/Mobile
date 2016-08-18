@@ -31,6 +31,15 @@ app_angular.service('Conexion', ['Factory',function (Factory) {
             }
         })
     }
+    CRUD.selectAllinOne = function(query,handler,callback){
+        db.selectINNERJOIN(query).then(function(results) {
+            var data=[];
+            for(var i=0; i < results.rows.length; i++){
+                data.push(results.rows.item(i))   
+            }
+            handler(data);
+        })
+    }
 	//Eliminar Registro
     CRUD.Delete = function(tabla,valor,callback){
         db.del(tabla,{'rowid':valor});
