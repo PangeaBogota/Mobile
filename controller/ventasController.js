@@ -79,7 +79,6 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			vista="select*from vw_items_precios  where  rowid="+$scope.pedidos.rowid_lista_precios+"  order by rowid LIMIT 100 ";
 		}
 		CRUD.selectAllinOne(vista,function(elem){$scope.list_items=elem;Mensajes('Busqueda Realizada','success','');});
-		
 	}
 	$scope.onChangeFiltro=function()
 	{
@@ -164,7 +163,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.list_items=[];
 		$scope.filter=[];
 		$scope.list_precios=[];
-		CRUD.select("select  codigo_sucursal||'-'||nombre_sucursal as sucursal,*from erp_terceros_sucursales where rowid_tercero = '"+$scope.terceroSelected.rowid+"' ",function(elem){$scope.list_Sucursales.push(elem)})
+		CRUD.select("select  codigo_sucursal||'-'||nombre_sucursal as sucursal,*from erp_terceros_sucursales where rowid_tercero = '"+$scope.terceroSelected.rowid+"'  order by codigo_sucursal ",function(elem){$scope.list_Sucursales.push(elem)})
 
 		//CRUD.selectParametro('erp_terceros_sucursales','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_Sucursales.push(elem)});
 		//CRUD.selectParametro('erp_terceros_punto_envio','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_puntoEnvio.push(elem)});	''
@@ -219,6 +218,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		},1000)
 		Mensajes('Pedido Guardado Correctamente','success','');
 		window.setTimeout(function(){
+			$scope.confimar.salir=true;
 			window.location.href = '#/ventas/pedidos_ingresados';
 		},1200)
 		
