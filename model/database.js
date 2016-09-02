@@ -126,7 +126,7 @@ app_angular.service('Factory', function ($webSql) {
         }
 
     })
-     db.createTable('crm_contactos',{
+    db.createTable('crm_contactos',{
         "rowid": {
             "type": "INTEGER",
             "null": "NULL"
@@ -425,6 +425,10 @@ app_angular.service('Factory', function ($webSql) {
             "null": "NULL"
         },
         "cantidad_embalaje": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "stock": {
             "type": "INTEGER",
             "null": "NULL"
         }
@@ -1456,7 +1460,7 @@ app_angular.service('Factory', function ($webSql) {
     " as  "+ 
     "select    "+
     "  a.item_codigo||'-'||a.item_referencia||'-'||a.item_descripcion||'-'||a.id_unidad  as producto, a.impuesto_porcentaje  , "+
-    "a.id_unidad,a.rowid as rowid_item,a.item_descripcion as descripcion,a.item_codigo as item_codigo1,a.item_referencia as item_referencia1 ,b.rowid as rowid_listaprecios,b.precio_lista as precio,erp_entidades_master.rowid "+
+    "a.id_unidad,a.rowid as rowid_item,a.item_descripcion as descripcion,a.item_codigo as item_codigo1,a.item_referencia as item_referencia1 ,b.rowid as rowid_listaprecios,b.precio_lista as precio,erp_entidades_master.rowid,a.stock "+
     " FROM erp_items a "  +
         " INNER JOIN erp_items_precios b "+
             " ON b.rowid_item = a.rowid "+

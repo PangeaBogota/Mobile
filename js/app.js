@@ -1,7 +1,7 @@
 /**
  * Created by dev10 on 12/23/2015.
  */
-var app_angular = angular.module('PedidosOnline', ['chart.js','ui.calendar','angular-websql', 'ngResource', 'ngRoute','angular-bootbox']);
+var app_angular = angular.module('PedidosOnline', ['chart.js','ui.calendar','angular-websql', 'ngResource', 'ngRoute','angular-bootbox','angular.chosen']);
 
 app_angular.config(['$routeProvider',//'$locationProvider',
     function ($routeProvider) {
@@ -509,7 +509,8 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].impuesto_id+
                         "', '"+DATOS_ENTIDADES_SINCRONIZACION[i][j].impuesto_porcentaje+
                         "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].descripcion_adicional+
-                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].cantidad_embalaje+"' "; 
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].cantidad_embalaje+
+                        "','"+DATOS_ENTIDADES_SINCRONIZACION[i][j].stock+"' "; 
                         
                         if (contador==499) {
                             CRUD.Updatedynamic(stringSentencia)

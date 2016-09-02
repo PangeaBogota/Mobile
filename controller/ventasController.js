@@ -42,11 +42,10 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.cantidadBase;
 	$scope.dataFiltro;
 	$scope.SearchItem;
+	$scope.searchsuc1='';
+	$scope.searchsuc2='';
 	$scope.filter=[];
 	$scope.criterio=[];
-	//var query1="select item.item_referencia||'-'||item.item_descripcion as producto,item.id_unidad,item.rowid as rowid_item,item.item_descripcion as descripcion,precios.rowid as rowid_listaprecios,precios.precio_lista as precio";
-	//var query=query1+" from erp_items item inner join erp_items_precios precios on  item.rowid=precios.rowid_item ";
-	//CRUD.select(query,function(elem){$scope.list_items.push(elem);});
     $scope.terceroDeTercero=$routeParams.personId;
 	CRUD.select("select identificacion ||'-'|| razonsocial as  cliente,* from erp_terceros  order by razonsocial",
 		function(elem)
@@ -55,9 +54,9 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 			if ($scope.terceroDeTercero!=undefined   && elem.rowid==$scope.terceroDeTercero) 
 			{
 				$scope.terceroSelected=elem
-				//$scope.Search=$scope.terceroSelected.razonsocial;
 				
 			}
+			
 		});
 	
 	$scope.onChangeListaPrecios=function(){
@@ -159,6 +158,8 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.pedidoDetalles=[];
 		$scope.sucursalDespacho=[];
 		$scope.ciudad='';
+		$scope.searchsuc1='';
+	$scope.searchsuc2='';
 		$scope.ciudadSucursal=[];
 		$scope.list_items=[];
 		$scope.filter=[];

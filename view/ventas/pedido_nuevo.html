@@ -1,34 +1,9 @@
-<!-- select2 -->
-        <script>
-           
-            $(document).ready(function () {
-                $(".select2_single").select2({
-                    placeholder: "Select a state",
-                    allowClear: true
-                });
-                $(".select2_group").select2({});
-                $(".select2_multiple").select2({
-                    maximumSelectionLength: 4,
-                    placeholder: "With Max Selection limit 4",
-                    allowClear: true
-                });
-
-                $('#filterBTN').on('click',function(){
-                     //do stuff here
-                  });
-
-                
-            });
-
-
-        </script>
-        <!-- /select2 -->
-        
         <!-- form validation -->
         <script type="text/javascript">
         
 
             $(document).ready(function () {
+                
                 $.listen('parsley:field:validate', function () {
                     validateFront();
                 });
@@ -143,19 +118,23 @@
                                         <label for="rowid_tercero" class="control-label col-md-3 col-sm-3 col-xs-12">Tercero<span class="required">*</span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
                                             <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control col-md-7 col-xs-12"  ng-change="onChangeFiltroTercero()"  ></input>
-                                            <select 
-                                                ng-model="terceroSelected" id="TerceroSelected" ng-options="partner as partner.cliente 
-                                                for partner in list_tercero | filter:{ cliente : Search }" class="form-control" ng-change="onChangeTercero()" >
+                                            <select  
+                                                ng-model="terceroSelected"  id="TerceroSelected" ng-options="partner as partner.cliente 
+                                                for partner in list_tercero | filter:{ cliente : Search }" class="form-control  sucursal" ng-change="onChangeTercero()" >
+                                                <option>asdasd</option>
                                             </select>
                                         </div>
                                     </div>
                                     
+                                    
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Facturacion<span class="required">*</span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <select  id="rowid_cliente_facturacion" required
+                                            <input  placeholder="Filtro Sucursal" type="text" ng-model="searchsuc1" class="form-control col-md-7 col-xs-12"   ></input>
+                                            <select  id="rowid_cliente_facturacion" required  on-ready="doStuff"
                                                 ng-model="sucursal"  ng-options="sucursal as sucursal.sucursal 
-                                                for sucursal in list_Sucursales " class="form-control" ng-change="onChangeSucursal()" >
+                                                for sucursal in list_Sucursales | filter:searchsuc1" class="form-control sucursal
+                                                  select2-select-00  full-width-fix select2-offscreen" ng-change="onChangeSucursal()" >
                                             </select>
                                         </div>
                                     </div>
@@ -163,9 +142,10 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Despacho<span class="required">*</span></label>
                                         <div class="col-md-6 col-sm-6 col-xs-12">
-                                            <select  id="rowid_cliente_despacho" required
+                                        <input  placeholder="Filtro Sucursal" type="text" ng-model="searchsuc2" class="form-control col-md-7 col-xs-12"   ></input>
+                                            <select  id="rowid_cliente_despacho" required style="max-width:100%" 
                                                         ng-model="sucursalDespacho"  ng-options="sucursal as sucursal.sucursal 
-                                                        for sucursal in list_Sucursales " class="form-control"  ng-change="onChangeSucursalDespacho()" >
+                                                        for sucursal in list_Sucursales | filter:searchsuc2" class="form-control sucursal"  ng-change="onChangeSucursalDespacho()" >
                                             </select>
                                         </div>
                                     </div>
@@ -293,9 +273,18 @@
                                          <div class="col-md-2">  
                                                  <input type="number" class="form-control " id="cantidadBase" ng-model="cantidadBase" ng-target="form.colorTarget"  value="1" min="1" style=" height: 34px;width: 51px;" />
                                         </div>
+                                        <div class="col-md-2">
+                                            <label for="rowid_item" class="control-label">Stock:</label>
+                                                 
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="rowid_item" class="control-label">{{item.stock}}</label>
+                                                 
+                                        </div>
+                                        
                                        <div class="col-md-2 pull-right">
-                                            <button type="button" class="btn btn-success"  ng-click="hasFocus1=false;adicionaritem()" data-toggle="dropdown">
-                                                <span class="icon-ok control-label" ng-disabled"form_detalle.$invalid"></span>
+                                            <button type="button" class="btn btn-success"  ng-click="hasFocus1=false;adicionaritem()" >
+                                                <span class="fa fa-check control-label" ng-disabled"form_detalle.$invalid"></span>
                                             </button> 
                                         </div>
                                     
