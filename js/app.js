@@ -45,6 +45,7 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
     $scope.actividades=[];
     $scope.status=[];
     $scope.alerta=[];
+    $scope.errorAlerta=[];
     $scope.$watch('online', function(newStatus) 
         {$scope.status.connextionstate=newStatus;  
             if ($scope.status.connextionstate==false) {
@@ -88,11 +89,8 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                     }
                 }
             }
-
             $scope.usuario=$scope.sessiondate.nombre_usuario;
             $scope.codigoempresa=$scope.sessiondate.codigo_empresa;
-            //$scope.usuario=$scope.sessiondate.nombre_usuario;
-            //$scope.codigoempresa=$scope.sessiondate.codigo_empresa;
             for (var i =0;i< STEP_SUBIRDATOS.length;i++) {
                 //ACTIVIDADES 
                 if (STEP_SUBIRDATOS[i]==ENTIDAD_ACTIVIDADES && ALMACENARDATOS[i].length!=0) {
@@ -109,22 +107,11 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                         });  
                     }  
                 }
-                //PEDIDOS
                 if (STEP_SUBIRDATOS[i]==ENTIDAD_PEDIDOS && ALMACENARDATOS[i].length!=0) {
                     for (var j =0;j< ALMACENARDATOS[i].length ; j++) {
                         $scope.objeto=ALMACENARDATOS[i][j];
                         $scope.url='http://demos.pedidosonline.co/Mobile/SubirDatos?usuario='+$scope.usuario+'&entidad=PEDIDOS&codigo_empresa=' + $scope.codigoempresa + '&datos=' + JSON.stringify($scope.objeto);
-                        
-                        //SubirDatos($scope.usuario,'PEDIDOS',$scope.objeto,$scope.codigoempresa);
-                        //var promise=myService.getData($scope.url);
-                        //promise.then(
-                        //    function(data){
-                        //        debugger
-                        //        $scope.data=d;
-                        //})
                         $scope.Request($scope.url);
-                        
-                        
                     }  
                 }
             }
@@ -132,7 +119,6 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
         },3000)
     }
     $scope.Request=function(url){
-        
         var responsePromise =$http.get(url);
         responsePromise.success(function(data) {
             $scope.pedidorowid=data.rowid
@@ -147,19 +133,24 @@ app_angular.controller('sessionController',['bootbox','Conexion','$scope','$loca
                     })
                     .then(
                         function success(data) {}, 
-                        function error(err) {Mensajes('Error al Subir items del Pedido','error','');return }
+                        function error(err) {Mensajes('Error al Subir items del Pedido','error','');$scope.errorAlerta.bandera=1;return  }
                     ); 
                 }
             });
         });
-        responsePromise.error(function() {
-            function error(err) {Mensajes('Error al Subir El Pedido','error','');return }
+        responsePromise.error(function(error) {
+            Mensajes('Error al Subir El Pedido','error','');$scope.errorAlerta.bandera=1;return
         });
     }
     $scope.sincronizar=function(){
         ProcesadoShow();
         $scope.datosSubir();
         window.setTimeout(function(){
+            if ($scope.errorAlerta.bandera==1) {
+                Mensajes('Error al Sincronizar, Por favor revise que su conexion sea estable','error','');
+                ProcesadoHiden();
+                return
+            }
             //VACIAR TABLAS
             CRUD.Updatedynamic("delete from crm_actividades");
             CRUD.Updatedynamic("delete from t_pedidos");
