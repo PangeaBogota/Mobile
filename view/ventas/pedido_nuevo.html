@@ -121,7 +121,7 @@
                                             <select  
                                                 ng-model="terceroSelected"  id="TerceroSelected" ng-options="partner as partner.cliente 
                                                 for partner in list_tercero | filter:{ cliente : Search }" class="form-control  sucursal" ng-change="onChangeTercero()" >
-                                                <option>asdasd</option>
+                                                
                                             </select>
                                         </div>
                                     </div>
@@ -337,7 +337,7 @@
                         <div class="tab-pane" id="tab_3">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form class="form-horizontal">
+                                    <form class="">
                                     </br>
                                         <div class="form-group">
                                             <div class="form-group">
@@ -351,7 +351,7 @@
                                                 <label class="control-label col-md-8">Observaciones <span ></span>
                                                 </label>
                                                 <div class="col-md-6 col-sm-6 col-xs-12">
-                                                    <textarea class="form-control" ng-model="pedidos.observaciones">
+                                                    <textarea rows="3" class="form-control" ng-model="pedidos.observaciones">
                                                         
                                                     </textarea>
                                                 </div>

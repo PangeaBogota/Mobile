@@ -32,6 +32,12 @@
                                            <strong> {{pedidos.razonsocial}}</strong>
                                         </div>
                                     </div>
+                                    <div class="row" style="margin: 0px" ng-hide='pedidos.numpedido_erp=="null"'>
+                                        <div class="form-group col-md-12" style="margin: 1px">
+                                           <strong> {{pedidos.numpedido_erp}}</strong>
+                                        </div>
+                                    </div>
+
                                     <div class="row" style="margin: 0px">
                                         <div class="form-group col-md-6" style="margin: 1px" >
                                             Cantidad Productos: {{pedidos.cantidadproductos}}

@@ -164,7 +164,12 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		$scope.list_items=[];
 		$scope.filter=[];
 		$scope.list_precios=[];
-		CRUD.select("select  codigo_sucursal||'-'||nombre_sucursal as sucursal,*from erp_terceros_sucursales where rowid_tercero = '"+$scope.terceroSelected.rowid+"'  order by codigo_sucursal ",function(elem){$scope.list_Sucursales.push(elem)})
+		CRUD.select("select  s.codigo_sucursal||'-'||s.nombre_sucursal  sucursal,s.*,e.erp_descripcion from erp_terceros_sucursales s left join erp_entidades_master e on e.id_tipo_maestro='CRITERIO_CLASIFICACION' and e.erp_id_maestro=replace(s.id_criterio_clasificacion,' ','') where s.rowid_tercero = '"+$scope.terceroSelected.rowid+"'   order by s.codigo_sucursal ",function(elem){
+			debugger
+			if (elem.erp_descripcion!=null) {
+				elem.sucursal+=" - "+elem.erp_descripcion
+			}
+			$scope.list_Sucursales.push(elem)})
 
 		//CRUD.selectParametro('erp_terceros_sucursales','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_Sucursales.push(elem)});
 		//CRUD.selectParametro('erp_terceros_punto_envio','rowid_tercero',$scope.terceroSelected.rowid,function(elem){$scope.list_puntoEnvio.push(elem)});	''
@@ -468,7 +473,7 @@ app_angular.controller("PedidosController",['Conexion','$scope',function (Conexi
 	$scope.pedidos = [];
 	$scope.pedidoSeleccionado=[];
 	$scope.detallespedido=[];
-    CRUD.select('select distinct pedidos.valor_impuesto,pedidos.fecha_solicitud,pedidos.sincronizado, pedidos.rowid as rowidpedido,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total,detalle.rowid_pedido,count(detalle.rowid_pedido) cantidaddetalles,sum(detalle.cantidad) as cantidadproductos from  t_pedidos pedidos inner join erp_terceros_sucursales sucursal on sucursal.rowid=pedidos.rowid_cliente_facturacion  inner join erp_terceros terceros on terceros.rowid=sucursal.rowid_tercero  left  join t_pedidos_detalle detalle on detalle.rowid_pedido=pedidos.rowid left join erp_terceros_punto_envio punto_envio on punto_envio.rowid=pedidos.id_punto_envio group by  pedidos.fecha_solicitud,detalle.rowid_pedido,pedidos.rowid,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total order by pedidos.rowid desc    LIMIT 50',function(elem) {$scope.pedidos.push(elem)});
+    CRUD.select('select distinct pedidos.valor_impuesto,pedidos.fecha_solicitud,pedidos.sincronizado, pedidos.rowid as rowidpedido,terceros.razonsocial,sucursal.nombre_sucursal,pedidos.numpedido_erp,punto_envio.nombre_punto_envio,pedidos.valor_total,detalle.rowid_pedido,count(detalle.rowid_pedido) cantidaddetalles,sum(detalle.cantidad) as cantidadproductos from  t_pedidos pedidos inner join erp_terceros_sucursales sucursal on sucursal.rowid=pedidos.rowid_cliente_facturacion  inner join erp_terceros terceros on terceros.rowid=sucursal.rowid_tercero  left  join t_pedidos_detalle detalle on detalle.rowid_pedido=pedidos.rowid left join erp_terceros_punto_envio punto_envio on punto_envio.rowid=pedidos.id_punto_envio group by  pedidos.fecha_solicitud,detalle.rowid_pedido,pedidos.rowid,terceros.razonsocial,sucursal.nombre_sucursal,punto_envio.nombre_punto_envio,pedidos.valor_total order by pedidos.rowid desc    LIMIT 50',function(elem) {$scope.pedidos.push(elem)});
     CRUD.select("select count(*) as cantidad",function(elem){
     	
     	if (elem.cantidad==0) {
