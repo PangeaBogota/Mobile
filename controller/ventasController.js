@@ -84,6 +84,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 		if ($scope.SearchItem=='') {$scope.item=[]}
 	}
 	$scope.focusCantidad=function(){
+		$('#cantidadBase').focus();
 		$('#cantidadBase').click();
 		
 	}
