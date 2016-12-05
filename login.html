@@ -11,8 +11,6 @@
     <title> </title>
     
     <!-- Bootstrap core CSS -->
-
-
     <link href="css/bootstrap.min.css" rel="stylesheet">
 
     <link href="fonts/css/font-awesome.min.css" rel="stylesheet">
@@ -40,7 +38,7 @@
     <script type="text/javascript" src="cssjs/noty/layouts/bottomCenter.js"></script>
     <script type="text/javascript" src="cssjs/noty/layouts/bottom.js"></script>
     <script type="text/javascript" src="cssjs/noty/themes/default.js"></script>
-
+    
     
 
     <script type="text/javascript">
@@ -156,7 +154,7 @@
 
                         localStorage.removeItem('CUR_USER');
                         localStorage.setItem('CUR_USER', JSON.stringify(data.data));
-                        Sincronizar();
+                        
 
                         ProcesadoHiden();
                         Mensajes('Bienvenido', 'success', '');
@@ -167,11 +165,11 @@
                         ProcesadoHiden();
                         Mensajes(data.message,'error','');
                     }
-                }/*,
+                },
                 error: function (request,a,b) {
                     ProcesadoHiden();
-                    alert('Error Login  '+JSON.stringify(request)+' | '+ a+ ' | '+b);
-                }*/
+                    alert('Error Procesar  Login, Verificar Conexion');
+                }
             });
         }
 
@@ -194,8 +192,9 @@
                             <input id="username" type="text" class="form-control" placeholder="Usuario" required="" />
                         </div>
                         <div>
-                            <input id="codigo_empresa" type="text" class="form-control" placeholder="Usuario" required="" />
+                            <input id="codigo_empresa" type="number" class="form-control" placeholder="Codigo Empresa" required="" />
                         </div>
+                        </br>
                         <div>
                             <input id="password" type="password" class="form-control" placeholder="Contraseña" required="" />
                         </div>
@@ -214,7 +213,7 @@
 
                                 <p>©2016 Todos los Derechos Reservados.  </p>
                                 <p>
-                                    Powered Group Pangea.
+                                    Powered Group Pangea. Version 1.1.0
                                 </p>
                             </div>
                         </div>

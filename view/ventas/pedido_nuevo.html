@@ -1,51 +1,18 @@
-<!-- select2 -->
-        <script>
-            $(document).ready(function () {
-                $(".select2_single").select2({
-                    placeholder: "Select a state",
-                    allowClear: true
-                });
-                $(".select2_group").select2({});
-                $(".select2_multiple").select2({
-                    maximumSelectionLength: 4,
-                    placeholder: "With Max Selection limit 4",
-                    allowClear: true
-                });
-            });
-        </script>
-        <!-- /select2 -->
-        
         <!-- form validation -->
         <script type="text/javascript">
-            $(document).ready(function () {
-                $.listen('parsley:field:validate', function () {
-                    validateFront();
-                });
-                $('#demo-form .btn').on('click', function () {
-                    $('#demo-form').parsley().validate();
-                    validateFront();
-                });
-                var validateFront = function () {
-                    if (true === $('#demo-form').parsley().isValid()) {
-                        $('.bs-callout-info').removeClass('hidden');
-                        $('.bs-callout-warning').addClass('hidden');
-                    } else {
-                        $('.bs-callout-info').addClass('hidden');
-                        $('.bs-callout-warning').removeClass('hidden');
-                    }
-                };
-            });
+        
 
             $(document).ready(function () {
+                
                 $.listen('parsley:field:validate', function () {
                     validateFront();
                 });
-                $('#demo-form2 .btn').on('click', function () {
-                    $('#demo-form2').parsley().validate();
+                $('#form_encabezado .btn').on('click', function () {
+                    $('#form_encabezado').parsley().validate();
                     validateFront();
                 });
                 var validateFront = function () {
-                    if (true === $('#demo-form2').parsley().isValid()) {
+                    if (true === $('#form_encabezado').parsley().isValid()) {
                         $('.bs-callout-info').removeClass('hidden');
                         $('.bs-callout-warning').addClass('hidden');
                     } else {
@@ -128,107 +95,344 @@
 <div ng-controller="pedidoController">
 	<div class="page-title">
 		<div class="title_left">
-            <h3>Nuevo Pedido</h3>
+            <h3 style="width: 200px">Nuevo Pedido</h3>
         </div>
-
 	</div>
-	<div class="clearfix"></div>
+
 	<div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-            <div class="x_panel">
-                <div class="x_title">
-                    <ul class="nav navbar-right panel_toolbox">
-                        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                            <ul class="dropdown-menu" role="menu">
-                                <li><a href="#">Settings 1</a>
-                                </li>
-                                <li><a href="#">Settings 2</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li><a class="close-link"><i class="fa fa-close"></i></a>
-                        </li>
-                    </ul>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <br />
+                <div class="tabbable tabbable-custom">
+                    <ul class="nav nav-tabs tabs">
+                        <li data-tab="tab_1" class="active"><a data-tab="tab_1" data-toggle="tab">Encabezado</a></li>
+                        <li data-tab="tab_2"><a data-tab="tab_2" data-toggle="tab">Detalle</a></li>
+                        <li data-tab="tab_3"><a data-tab="tab_3" data-toggle="tab">Balance</a></li>
+                    </ul>   
+                    <div class="tab-content ">
+                        <div id="tab_1" class="tab-pane active">
+                            <form id="form_encabezado" data-parsley-validate class="form-horizontal form-label-left" name="form_encabezado"  novalidate>
+                            </br>
+                                <div class="row">
+                                    <div class="x_content ">
+                                    </br>
+                                    <div class="form-group">
+                                        <label for="rowid_tercero" class="control-label col-md-3 col-sm-3 col-xs-12">Tercero<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control col-md-7 col-xs-12"  ng-change="onChangeFiltroTercero()"  ></input>
+                                            <select  
+                                                ng-model="terceroSelected"  id="TerceroSelected" ng-options="partner as partner.cliente 
+                                                for partner in list_tercero | filter:{ cliente : Search }" class="form-control  sucursal" ng-change="onChangeTercero()" >
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Facturacion<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  placeholder="Filtro Sucursal" type="text" ng-model="searchsuc1" class="form-control col-md-7 col-xs-12"   ></input>
+                                            <select  id="rowid_cliente_facturacion" required  on-ready="doStuff"
+                                                ng-model="sucursal"  ng-options="sucursal as sucursal.sucursal 
+                                                for sucursal in list_Sucursales | filter:searchsuc1" class="form-control sucursal
+                                                  select2-select-00  full-width-fix select2-offscreen" ng-change="onChangeSucursal()" >
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Despacho<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                        <input  placeholder="Filtro Sucursal" type="text" ng-model="searchsuc2" class="form-control col-md-7 col-xs-12"   ></input>
+                                            <select  id="rowid_cliente_despacho" required style="max-width:100%" 
+                                                        ng-model="sucursalDespacho"  ng-options="sucursal as sucursal.sucursal 
+                                                        for sucursal in list_Sucursales | filter:searchsuc2" class="form-control sucursal"  ng-change="onChangeSucursalDespacho()" >
+                                            </select>
+                                        </div>
+                                    </div>
 
-                    <form id="form_encabezado" data-parsley-validate class="form-horizontal form-label-left"  ng-submit="Add()">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Ciudad<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  placeholder="Ciudad"  ng-model="ciudadSucursal.nombre" type="text"  readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Direccion<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  placeholder="Direccion"  type="text" ng-model="sucursalDespacho.direccion1" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Contacto<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input placeholder="Contacto" ng-model="sucursalDespacho.nombre_contacto"  type="text"  readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Email<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input placeholder="Email" ng-model="sucursalDespacho.email_contacto"   type="text"  readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Telefono<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  placeholder="Telefono"  type="text" ng-model="sucursalDespacho.telefono1" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Condicion de Pago<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  placeholder="Condicion Pago"  type="text" ng-model="sucursalDespacho.id_condicion_pago" readonly class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Lista Precio<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <select  id="rowid_lista_precios" 
+                                                        ng-model="listaPrecios"  ng-options="listprecios as listprecios.concatenado 
+                                                        for listprecios in list_precios " class="form-control"  required>
+                                            </select>
+                                        </div>
+                                    </div>
 
-                        <div class="form-group">
-                            <label for="rowid_tercero" class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Tercero<span class="required">*</span></label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control col-md-7 col-xs-12"></input>
-                                <select 
-                                        	ng-model="pedidos.rowid_cliente_facturacion" id="TerceroSelected" ng-options="partner.rowid as partner.razonsocial 
-                                            for partner in list_tercero | filter:Search" class="form-control col-md-7 col-xs-12" ng-change="onChangeTercero()">
-                            	</select>
-                            </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Punto Envio<span class="required">*</span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <select id="id_punto_envio"  required
+                                                        ng-model="puntoEnvio"  ng-options="puntoenvio as puntoenvio.concatenado 
+                                                        for puntoenvio in list_puntoEnvio " class="form-control" >
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12" >Orden Compra<span class="required"></span></label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input  placeholder="Orden Compra" id="orden_compra" type="text" ng-model="pedidos.orden_compra" class="form-control col-md-7 col-xs-12"  ></input>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Solicitud <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="date" id="fecha_solicitud" name="fecha_solicitud" class="form-control"  ng-model="date"  ng-change="fechasolicitud()" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Fecha Entrega <span class="required">*</span>
+                                        </label>
+                                        <div class="col-md-6 col-sm-6 col-xs-12">
+                                            <input type="date" id="fecha_entrega" name="fecha_entrega" class="form-control"  ng-model="dateEntrega"  ng-change="fechaentrega()" required>
+                                        </div>
+                                        <div id="fecha_entrega1"></div>
+                                    </div>
+                                </div>
+                                <div class="form-actions ">
+                                    <button type="submit" class="btn btn-success pull-right" ng-disabled="form_encabezado.$invalid"  ng-click="ValidacionCabezera();focusInput=true;">Continuar</button>
+                                </div>
+                                </div>
+                                
+                            </form>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="rowid_tercero" class="control-label col-md-3 col-sm-3 col-xs-12" >Sucursal Facturacion<span class="required">*</span></label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control col-md-7 col-xs-12"></input>
-                                <select  id="rowid_cliente_facturacion"
-                                            ng-model="sucursal"  ng-options="sucursal as sucursal.nombre_sucursal 
-                                            for sucursal in list_Sucursales " class="form-control" ng-change="onChangeSucursal()" >
-                                        </select>
-                            </div>
+                        <div id="tab_2" class="tab-pane">
+                            <form class="form-horizontal form-label-left" name="form_detalle" >
+                                <div class="form-group">
+                                    </br>
+                                    <label for="rowid_item" class="control-label">Items<span class="required">*</span></label>
+                                        <div class="form-group">
+                                            <div class="row ">
+                                                <div class="form-group col-md-12 col-xs-12">
+                                                    <input type="number" ng-model="filter.codigoitem"  placeholder="Codigo Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
+                                                </div>
+                                                
+                                            </div>  
+                                            <div class="row">
+                                                <div class="form-group col-md-12 col-xs-12">
+                                                    <input type="text" ng-model="filter.descripcionitem"  placeholder="Referencia-Descripcion Item" name="  rowid_item"  ng-change="onChangeFiltro()" class="form-control"  focus-me="focusInput"/>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 pull-right">
+                                                    <button class="btn btn-success"  id="rowid_item" ng-click="onGetFiltro()"> <span class="fa fa-search"></span></button>
+                                                </div>
+                                            </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <select   ng-model="item" id="dataFiltered"  ng-options="item as item.producto 
+                                        for item in list_items  |filter:SearchItem"    ng-change="focusCantidad=true" class="form-control" required >
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <label for="rowid_item" class="control-label">Cantidad:</label>
+                                                 
+                                        </div>
+                                         <div class="col-md-2">  
+                                                 <input type="number" class="form-control " id="cantidadBase" ng-model="cantidadBase" ng-target="form.colorTarget" focus-me="focusCantidad"  value="1" min="1" style=" height: 34px;width: 51px;" />
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="rowid_item" class="control-label">Stock:</label>
+                                                 
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for="rowid_item" class="control-label">{{item.stock}}</label>
+                                                 
+                                        </div>
+                                        
+                                       <div class="col-md-2 pull-right">
+                                            <button type="button" class="btn btn-success"  ng-click="hasFocus1=false;adicionaritem()" >
+                                                <span class="fa fa-check control-label" ng-disabled"form_detalle.$invalid"></span>
+                                            </button> 
+                                        </div>
+                                    
+                                    
+                                    </div>
+                                    
+                                </div>
+                                <label class="control-label">Valor Total  Parcial:{{pedidoDetalles.total|currency}}</label>
+                                </br>
+                                <label class="control-label">Cantidad Parcial :{{pedidoDetalles.cantidad}}</label>
+                                <div>
+                                    
+                                </div>
+                                <label for="rowid_item" class="control-label">Listado de items agregados:</label>
+                                <!--| orderBy:'':reverse"  -->
+                                <div class="form-group" ng-repeat="itemsAgregadoPedido in itemsAgregadosPedido " >
+                                    <div class="row">
+                                        <div class="col-md-8 col-sm-8 col-xs-8 form-group">
+                                            {{itemsAgregadoPedido.producto}}
+                                        </div>
+                                        <div class="  col-xs-3 form-group pull-right">
+                                            <input type="number" class="form-control " ng-model="itemsAgregadoPedido.cantidad" ng-change="actualizarPrecio()" value="1" min="1" style=" height: 34px;width: 51px;" />
+                                        </div>
+                                        <div class="col-md-2 col-sm-13 col-xs-12 form-group">
+                                            <span style="background:#333" class="badge">V/B :{{itemsAgregadoPedido.precio   | currency}}</span>
+                                            <span  style="background:#607D8B" class="badge">IVA :{{itemsAgregadoPedido.iva* itemsAgregadoPedido.cantidad | currency}}</span>
+                                            <span  style="background:#455A64" class="badge">V/BASE :{{itemsAgregadoPedido.precio+ itemsAgregadoPedido.iva | currency}}</span>
+                                            <span  style="background:#455A64" class="badge">V/N :{{itemsAgregadoPedido.precio* itemsAgregadoPedido.cantidad | currency}}</span>
+                                            <span  style="background: rgba(96,125,139,.6)" class="badge">V/T :{{(itemsAgregadoPedido.precio+itemsAgregadoPedido.iva)*itemsAgregadoPedido.cantidad  | currency}}</span>
+                                           
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-3 form-group pull-right ">        
+                                           <button type="button" class="btn btn-danger " 
+                                                ng-click="delete($index)" value="Eliminar" data-toggle="dropdown">
+                                                <span class="fa fa-trash-o"></span>
+                                            </button> 
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button class="btn btn-success pull-right" type="submit" ng-click="CambiarTab('2','siguiente')" >Continuar</button>
+                                    <button class="btn btn-primary pull-right" type="submit" ng-click="CambiarTab('2','atras');">Atras</button>
+                                </div>
+                            </form>
                         </div>
-                        
-                        
-                        
-                        
-                        
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input type="text" id="last-name" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Middle Name / Initial</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="middle-name" class="form-control col-md-7 col-xs-12" type="text" name="middle-name">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <div id="gender" class="btn-group" data-toggle="buttons">
-                                    <label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                        <input type="radio" name="gender" value="male"> &nbsp; Male &nbsp;
-                                    </label>
-                                    <label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-                                        <input type="radio" name="gender" value="female" checked=""> Female
-                                    </label>
+                        <div class="tab-pane" id="tab_3">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form class="">
+                                    </br>
+                                        <div class="form-group">
+                                            <div class="form-group">
+                                                <label class="control-label col-md-8">Criterio Clasificacion <span ></span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <input class="form-control" type="text" ng-model="criterio.erp_descripcion" readonly>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="control-label col-md-8">Observaciones <span ></span>
+                                                </label>
+                                                <div class="col-md-6 col-sm-6 col-xs-12">
+                                                    <textarea rows="3" class="form-control" ng-model="pedidos.observaciones">
+                                                        
+                                                    </textarea>
+                                                </div>
+                                            </div>
+                                            <table class="table table-hover table-striped">
+                                                <tr>
+                                                    <td>
+                                                        Item
+                                                    </td>
+                                                    <td>
+                                                        Cant.
+                                                    </td>
+                                                    <td>
+                                                        V. Total
+                                                    </td>
+                                                </tr>
+                                                <tr ng-repeat="itemsAgregadoPedido in itemsAgregadosPedido  | orderBy:'':reverse" >
+                                                    <td>{{itemsAgregadoPedido.producto}} </td>
+                                                    <td>{{itemsAgregadoPedido.cantidad}}</td>
+                                                    <td>{{itemsAgregadoPedido.precio*itemsAgregadoPedido.cantidad| currency}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cantidad</td>
+                                                    <td></td>
+                                                    <td>{{pedidoDetalles.cantidad}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Valor Neto</td>
+                                                    <td></td>
+                                                    <td>{{pedidoDetalles.neto| currency}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>IVA</td>
+                                                    <td></td>
+                                                    <td>{{pedidoDetalles.iva| currency}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Valor Total</td>
+                                                    <td></td>
+                                                    <td>{{pedidoDetalles.total| currency}}</td>
+                                                </tr>
+                                            </table>
+                                            
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Date Of Birth <span class="required">*</span>
-                            </label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                <input id="birthday" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
+                            <div class="form-actions">
+                                <button class="btn btn-success pull-right" ng-click="validacionInsert()">Finalizar <i class="icon-angle-right"></i></button>
+                                <button class="btn btn-primary pull-right" ng-click="CambiarTab(3,'atras');">Atras</button>
                             </div>
+                            
                         </div>
-                        <div class="ln_solid"></div>
-                        <div class="form-group">
-                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                <button type="submit" class="btn btn-primary">Cancel</button>
-                                <button type="submit" class="btn btn-success">Submit</button>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div id="confirmacionsalida" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Confirmacion Salida</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="testmodal" style="padding: 0px;">
+                        <form id="antoform" class="form-horizontal calender form-label-left" role="form">
+                            
+                            <div>
+                                Desea Salir de La Creacion del Pedido.
                             </div>
-                        </div>
-
-                    </form>
+                            
+                            
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-danger antoclose" ng-click="onConfirmarSalida('salir')" data-dismiss="modal">Salir</button>
+                <button type="button" class="btn btn-success antoclose" ng-click="onConfirmarSalida('permanecer')" data-dismiss="modal">Permanecer</button>
                 </div>
             </div>
         </div>
     </div>
+    <div id="confirmacion" data-toggle="modal" data-target="#confirmacionsalida"></div>
 </div>

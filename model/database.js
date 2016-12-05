@@ -4,6 +4,328 @@ app_angular.service('Factory', function ($webSql) {
 
     db = $webSql.openDatabase(DATABASE, '1.0', 'Test DB', 200000);
 
+    db.createTable('s_usuarios',{
+        "rowid": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_empresa": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "identificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "erp_codigo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombre_usuario": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombre_completo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "mail": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "clave": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_cambiarclave": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "acepto_condiciones": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_activo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "id_cia": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "descripcion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "idioma": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tipo_usuario": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "coordinador_canal_deault": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "superior_rowid": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_canal_superior": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fechacreacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuariocreacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fechamod": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuariomod": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "id_canal_vendedor": {
+            "type": "text",
+            "null": "NULL"
+        }
+    })
+
+    db.createTable('s_canales_usuario',{
+        "rowid": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_usuario": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "id_canal": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombre_canal": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuario_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_creacion": {
+            "type": "text",
+            "null": "NULL"
+        }
+
+    })
+    db.createTable('crm_contactos',{
+        "rowid": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "rowid_sucursal": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "identificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombres": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "apellidos": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "email": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "telefono": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "skype": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "descripcion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ruta_imagen": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "celular": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "cargo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "area": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_principal": {
+            "type": "integer",
+            "null": "NULL"
+        },
+        "usuario_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuario_modificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_modificacion": {
+            "type": "text",
+            "null": "NULL"
+        }
+    });
+
+    db.createTable('m_metaclass',{
+        "rowid": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "class_code": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tipo_reg_codigo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tipo_reg_nombre": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_activo": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "CreatedBy": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "CreationDate": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ModifiedBy": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ModDate": {
+            "type": "text",
+            "null": "NULL"
+        }
+    })
+    db.createTable('m_estados',{
+        "id_estado": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "tipo_estado": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "nombre_estado": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_editar": {
+            "type": "integer",
+            "null": "NULL"
+        }
+    })
+
+
+    db.createTable('crm_actividades',{
+        "rowid": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "tipo": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tema": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "ind_prioridad": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "descripcion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "tipo_relacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_estado": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "relacionado_a": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_inicial": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_final": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuario_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_creacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "usuario_modificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "fecha_modificacion": {
+            "type": "text",
+            "null": "NULL"
+        },
+        "rowid_relacion": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "sincronizado": {
+            "type": "text",
+            "null": "NULL"
+        }
+
+    })
     db.createTable('erp_items', {
         //1
         "rowid": {
@@ -103,6 +425,10 @@ app_angular.service('Factory', function ($webSql) {
             "null": "NULL"
         },
         "cantidad_embalaje": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "stock": {
             "type": "INTEGER",
             "null": "NULL"
         }
@@ -279,6 +605,14 @@ app_angular.service('Factory', function ($webSql) {
             "null": "NULL"
         },
         "modulo_creacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "sincronizado": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "key_mobile": {
             "type": "TEXT",
             "null": "NULL"
         }
@@ -523,7 +857,7 @@ app_angular.service('Factory', function ($webSql) {
         "rowid": {
             "type": "INTEGER",
             "null": "NULL"
-         },
+        },
         "rowid_empresa": {
             "type": "INTEGER",
             "null": "NULL"
@@ -753,56 +1087,6 @@ app_angular.service('Factory', function ($webSql) {
         }
     });
 
-    db.createTable('erp_items_precios', {
-        "rowid": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "rowid_empresa": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "id_cia": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "id_lista_precios": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "rowid_item": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "rowid_item_ext": {
-            "type": "INTEGER",
-            "null": "NULL"
-        },
-        "id_unidad": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "precio_lista": {
-            "type": "REAL",
-            "null": "NULL"
-        },
-        "fechacreacion": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "usuariocreacion": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "fechamod": {
-            "type": "TEXT",
-            "null": "NULL"
-        },
-        "usuariomod": {
-            "type": "TEXT",
-            "null": "NULL"
-        }
-    });
 
     db.createTable('m_empresas_config', {
         "rowid": {
@@ -1033,7 +1317,6 @@ app_angular.service('Factory', function ($webSql) {
             "type": "TEXT",
             "null": "NULL"
         },
-		
 		"id_vendedor": {
             "type": "TEXT",
             "null": "NULL"
@@ -1108,7 +1391,103 @@ app_angular.service('Factory', function ($webSql) {
         "usuariomod": {
             "type": "TEXT",
             "null": "NULL"
+        },
+        "fecha_activacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "fecha_inactivacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "estado_item": {
+            "type": "TEXT",
+            "null": "NULL"
         }
 	});
 
+    db.createTable('m_localizacion',{
+        "rowid": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "id_tipo_erp": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "tipo_localizacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "id_pais": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "id_depto": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "id_ciudad": {
+            "type": "INTEGER",
+            "null": "NULL"
+        },
+        "nombre": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "codigo_alterno": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "fechacreacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "usuariocreacion": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "fechamod": {
+            "type": "TEXT",
+            "null": "NULL"
+        },
+        "usuariomod": {
+            "type": "TEXT",
+            "null": "NULL"
+        }
+    });
+    db.select("create view if not exists  vw_items_precios "+
+    " as  "+ 
+    "select    "+
+    "  a.item_codigo||'-'||a.item_referencia||'-'||a.item_descripcion||'-'||a.id_unidad  as producto, a.impuesto_porcentaje  , "+
+    "a.id_unidad,a.rowid as rowid_item,a.item_descripcion as descripcion,a.item_codigo as item_codigo1,a.item_referencia as item_referencia1 ,b.rowid as rowid_listaprecios,b.precio_lista as precio,erp_entidades_master.rowid,a.stock "+
+    " FROM erp_items a "  +
+        " INNER JOIN erp_items_precios b "+
+            " ON b.rowid_item = a.rowid "+
+        " INNER JOIN erp_entidades_master "+
+            " ON erp_entidades_master.erp_id_maestro=b.id_lista_precios "+
+                " AND erp_entidades_master.id_tipo_maestro='LISTA_PRECIOS' "+
+    " WHERE item_referencia NOT LIKE '%*DESC*%' and b.estado_item=1 "+
+    "AND strftime('%Y%m%d')>=strftime('%Y%m%d',b.fecha_activacion) and  (strftime('%Y%m%d')<=strftime('%Y%m%d',b.fecha_inactivacion ) or  b.fecha_inactivacion='null'  )   "+
+    "");
+    db.select("create view if not exists vw_actividades_usuario "+
+        " as "  +
+        " select  "+
+        " usu.id_canal_vendedor as canal,act.tipo,act.tema,  " +
+        " act.ind_prioridad,act.descripcion, " +
+        " act.fecha_inicial,act.fecha_final,act.rowid," +
+        " usu.nombre_completo  as usuario , "+
+        " case when usu.id_canal_vendedor=null  then  'false'  else  'true' end as cond " +
+        " from " +
+        " crm_actividades  act  inner join   s_usuarios usu  on " +
+        " usu.nombre_usuario=act.usuario_creacion " +
+        " ")
+    db.select("create view if not exists vw_actividades_dia  " + 
+        " as "  +
+        " select  usu.id_canal_vendedor as canal,usu.nombre_completo as usuario, act.tema,act.descripcion,act.fecha_inicial,"+
+        " case when usu.id_canal_vendedor=null  then  'false'  else  'true' end as cond  , " +
+        " act.fecha_final ,replace(act.fecha_inicial,'-','') as fecha_inicialF,replace(act.fecha_final,'-','') as fecha_finalF from crm_actividades  act "  +
+        "   inner join   s_usuarios usu  on " +
+        " usu.nombre_usuario=act.usuario_creacion " +
+        "" )
 });

@@ -1,102 +1,162 @@
-<div class="row">
-    <!--=== Feeds (with Tabs) ===-->
-    <div class="col-md-12">
-        <div class="widget">
-            <div class="widget-header">
-                <h4><i class="icon-reorder"></i> Clientes</h4>
-                <div class="toolbar no-padding">
-                    <div class="btn-group">
-                        <!--<a href="#/ventas/pedido_nuevo" class="btn btn-xs"><i class="icon-plus"></i></a>-->
-                        <span class="btn btn-xs widget-refresh" ><i class="icon-refresh" ng-click = "ConsultarDatos(menu)"></i></span>
+<script type="text/javascript">
+        $(document).ready(function () {
+            // Smart Wizard     
+            $('#wizard').smartWizard();
+
+            function onFinishCallback() {
+                $('#wizard').smartWizard('showMessage', 'Finish Clicked');
+                //alert('Finish Clicked');
+            }
+        });
+
+    </script>
+
+<div   ng-controller='TercerosController'>
+    <div >
+        <div class="x_panel">
+            <div class="x_title">
+                <h2>Clientes </h2>
+                
+                <div class="clearfix"></div>
+            </div>
+                <br />
+                <form id="demo-form2" data-parsley-validate class="form-horizontal form-label-left">
+                    <div class="x_content">
+                        <div class="wizard_content" id="">
+                            <div class="form-group">
+                                <label class="form-label">Cliente</label>
+                                <input ng-model='search' class="form-control" ></input>
+                            </div>
+                            <div class="form-group col-md-12 col-xs-12" ng-repeat="terceros in terceros | filter:search" ng-click="abrirModal(terceros)">
+                                <div >
+                                    Nit :  <strong>{{terceros.identificacion}}</strong>
+                                </div>
+                                <div>
+                                    Razon Social : <strong>{{terceros.razonsocial}}</strong>
+                                </div>
+                                <div class="separator"></div>
+                            </div>   
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+    <div id="terceroDetalle" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Informacion Cliente</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="testmodal" style="padding: 0px;">
+                        <form id="antoform" class="form-horizontal calender form-label-left" role="form">
+                            <div class="row" style="margin-left: 10px">
+                                <a class="btn btn-success" href="#/crm/calendario/{{terceroSeleccionado.rowid}}">Actividad</a>
+                                <a class="btn btn-success" href="#/ventas/pedido_nuevo/{{terceroSeleccionado.rowid}}">Pedido</a>
+                            </div>
+                            <div class="row " style="margin: 0px">
+                                <div class="form-group col-md-4 col-xs-12" style="margin: 1px">
+                                    Razon Social : <strong>{{terceroSeleccionado.razonsocial}}</strong>
+                                </div> 
+                            </div>
+                            
+                            <div class="row" style="margin: 0px">
+                                <div class="form-group col-md-12" style="margin: 1px">
+                                    Documento : <strong>{{terceroSeleccionado.identificacion}}</strong> 
+                                </div>
+                            </div>
+                            <div class="row" style="margin: 0px">
+                                <div class="form-group col-md-12" style="margin: 1px">
+                                    Telefono : <a href="tel:+{{terceroDetalles.telefono1}}"><strong>{{terceroDetalles.telefono1}}</strong> </a>
+                                </div>
+                            </div>
+                            <div class="row" style="margin: 0px">
+                                <a href="http://maps.google.com/?q={{terceroDetalles.direccion1}}">
+                                   <div class="form-group col-md-12" style="margin: 1px">
+                                    Direccion : <strong>{{terceroDetalles.direccion1}}</strong> 
+                                    </div>  
+                                </a>
+                               
+                            </div>
+                            <h3>Informacion Contacto</h3>
+                            <div class="row" style="margin: 0px">
+                                <div class="form-group col-md-12 col-xs-12" style="margin: 1px">
+                                    Nombre :<strong> {{terceroDetalles.contacto}}</strong>
+                                </div>
+                            </div>
+                            <div class="row" style="margin: 0px">
+                                <div class="form-group col-md-12 col-xs-12" style="margin: 1px">
+                                    Telefono Pricipal :<a href="tel:+{{terceroDetalles.telefono}}"><strong> {{terceroDetalles.telefono}}</strong></a>
+                                </div>
+                            </div>
+                            <div class="row" style="margin: 0px">
+                                <div class="form-group col-md-6 col-xs-12" style="margin: 1px">
+                                    Telefono Alterno :<a href="tel:+{{terceroDetalles.celular}}"><strong> {{terceroDetalles.celular}}</strong></a>
+                                </div>
+                            </div>
+                            <div class="row" style="margin: 0px">
+                                <div class="form-group col-md-6 col-xs-12" style="margin: 1px">
+                                    Correo :<a href="mailto:{{terceroDetalles.email}}"><strong> {{terceroDetalles.email}}</strong></a>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal">Close</button>
+                </div>
             </div>
-            
-            <div class="widget-content" ng-controller="TercerosController">
-
-            <div class="tabbable tabbable-custom">
-                    <ul class="nav nav-tabs tabs">
-                        <li data-tab="tab_1" class="active"><a data-tab="tab_1" data-toggle="tab">Lista de terceros</a></li>
-                        <li data-tab="tab_2"><a data-tab="tab_2" data-toggle="tab">2. Detalle</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="tab_1">
-                            <div class="col-md-12">
-                                
-                                <label for="rowid_tercero" class="control-label">Tercero  <span class="required">*</span></label>
-                                        <input  placeholder="Seleccionar Tercero" type="text" ng-model="Search" class="form-control"></input>
-                                <ul class="feeds clearfix" >
-                        
-                                <!--<li ng-repeat="menu in terceros  |filter:Search">
-                                    <a  ng-click = "ConsultarDatos(menu)">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                        {{menu.razonsocial}} - {{menu.identificacion}}
-                                    </a>
-                                    
-                                </li>
-            
-                                </ul> <!-- /.feeds -->
-
-                                
-                                <table class="table table-hover table-striped" >
-                                            <thead>
-                                            <tr>
-                                                <th></th>
-                                                <th>Nit</th>
-                                                <th>Razon social</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr ng-repeat="menu in terceros  |filter:Search">
-                                                <td>
-                                                    <a  ng-click = "ConsultarDatos(menu)">
-                                                    <i class="glyphicon glyphicon-search"></i>
-                                                     </a>
-                                                </td>
-                                                <td>{{menu.identificacion}}</td>
-                                                <td>{{menu.razonsocial}}</td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                
-                            </div>
-                        </div>
-                        <div class="tab-pane" id="tab_2">
-                            <div class="col-md-12">
-                                
-                                <form class="form-vertical row-border">
-                                
-                                    <div class="form-group">
-                                        <label class="control-label">Razon Social:</label>              
-                                        <input class="form-control" type="text" ng-model="terceroSeleccionado.razonsocial"  />
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="control-label">Nombre Comercial:</label>              
-                                        <input class="form-control" type="text" ng-model="terceroSeleccionado.razonsocial" />
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="control-label">Tipo Documento:</label>                
-                                        <input class="form-control" type="text" ng-model="terceroSeleccionado.tipo_identificacion"/>
-                                    </div>
-                                    
-                                    <div class="form-group">
-                                        <label class="control-label">Identificacion:</label>                
-                                        <input class="form-control" type="text" ng-model="terceroSeleccionado.identificacion"  />
-                                    </div>
-                                </form>
-                                
-                            </div>
-                            <div class="form-actions">
-                                <button class="btn btn-primary pull-right" type="submit" ng-click="CambiarTab('2','atras')" >Atras</button>
-                            </div>
-                        </div>
-                    </div>
+        </div>
     </div>
-
-            </div> <!-- /.widget-content -->
-        </div> <!-- /.widget .box -->
-    </div> <!-- /.col-md-6 -->
-    <!-- /Feeds (with Tabs) -->
-</div> <!-- /.row -->
+    <div id="terceroEmail" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">Enviar Correo</h4>
+                </div>
+                <div class="modal-body">
+                    <div id="testmodal" style="padding: 0px;">
+                        <form id="antoform" class="form-horizontal calender form-label-left" role="form">
+                            <div class="row form-group">
+                                <div class="col-md-3 col-sm-3 col-xs-4" style="padding: 0px">
+                                    <label class="control-label ">Para:</label>
+                                </div>
+                                
+                                <div class="col-sm-9">
+                                    <strong> {{terceroDetalles.email}}</strong>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-4 col-sm-3 " style="padding: 0px">
+                                    <label class="control-label ">Asunto:</label>
+                                </div>
+                                
+                                <div class="col-sm-8 col-md-12 col-xs-12">
+                                    <input class="form-control" ng-model="correoDescripcion.asunto"></input>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-4 col-sm-3 " style="padding: 0px">
+                                    <label class="control-label ">Descripcion:</label>
+                                </div>
+                                
+                                <div class="col-sm-8 col-md-12 col-xs-12">
+                                    <textarea class="form-control" ng-model="correoDescripcion.body"></textarea>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default antoclose" data-dismiss="modal"  >Close</button>
+                    <button type="button" class="btn btn-success antoclose" data-dismiss="modal"  ng-click="enviarCorreo()">Enviar Correo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="terceroOpenModalEmail" data-toggle="modal" data-target="#terceroEmail"></div>
+    <div id="terceroOpenModal" data-toggle="modal" data-target="#terceroDetalle"></div>
+</div>

@@ -402,3 +402,10 @@
   padding: 6px; }
 .select2-container--classic.select2-container--open .select2-dropdown {
   border-color: #5897fb; }
+
+
+  @media screen and (max-width: 400px){
+ .sucursal{
+  width: 60%;
+ }
+}
