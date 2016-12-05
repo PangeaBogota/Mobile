@@ -261,7 +261,7 @@
                                 </div>
                                 <div class="form-group">
                                     <select   ng-model="item" id="dataFiltered"  ng-options="item as item.producto 
-                                        for item in list_items  |filter:SearchItem"    ng-change="form.colorTarget.select();$scope.focusCantidad()" class="form-control" required >
+                                        for item in list_items  |filter:SearchItem"    ng-change="$scope.focusCantidad()" class="form-control" required >
                                     </select>
                                 </div>
                                 <div class="form-group">

@@ -86,7 +86,7 @@ app_angular.controller("pedidoController",['Conexion','$scope','$location','$htt
 	$scope.focusCantidad=function(){
 		$('#cantidadBase').focus();
 		$('#cantidadBase').click();
-		
+		 $('#cantidadBase').trigger('click');
 	}
 	$scope.onGetFiltro=function()
 	{
